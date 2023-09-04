@@ -14,29 +14,18 @@ return [
     'image'=>'الصورة',
    // ----------------------end user table inputs ---------------------
 
-    // ----------------------start projects table inputs ---------------------
-    'info'=>'التفاصيل',
-    'projects_urls'=>'روابط المشاريع',
-    'projects_connections_types'=>'نوع اتصال المشاريع سواء داتا بيز او API',
-    'projects_connections_data'=>'بيانات الاتصال للمشاريع',
-    // ----------------------end projects table inputs ---------------------
 
-    // ----------------------start branch table inputs ---------------------
+    // ----------------------start seller info  inputs ---------------------
     'name'=>'الاسم',
-    'project'=>'المشروع',
-    // ----------------------end branch table inputs ---------------------
-
-    // ----------------------start operation table inputs ---------------------
-    'branch'=>'الفرع',
-    'connection_type'=>'نوع الاتصال',
-    'tables'=>'الجداول',
-    'columns'=>'الاعمدة',
-    'api_urls'=>'رابط ال api مطلوب',
-    'parameters'=>'بيانات ال header مطلوبة',
-    'repeat_period'=>'تكرار الفتره الزمنية',
-    'period_type'=>'نوع التكرار', // hour or minute or months
-    'manual_or_url'=>'ادخال البيانات يدويا او عن طريق رابط',
-    // ----------------------end operation table inputs ---------------------
+    'info'=>'التفاصيل',
+    'type'=>'النوع',
+    'business_email'=>'البريد الالكتروني الخاص بالعمل',
+    'business_phone'=>'رقم الجوال الخاص بالعمل',
+    'images'=>'الصور',
+    'owner_name'=>'اسم  صاحب الحساب',
+    'bank_name'=>'اسم البنك',
+    'bank_account'=>'رقم الحساب',
+    'bank_iban'=>'رقم ال iban',
 
     // ----------------------start packages table inputs ---------------------
     'no_points'=>'عدد النقاط',

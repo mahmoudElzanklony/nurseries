@@ -10,11 +10,13 @@ use App\Models\cities;
 use App\Models\countries;
 use App\Models\roles;
 use App\Models\tenants;
+use App\Models\User;
 use App\Services\auth\register_service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -23,23 +25,6 @@ class AuthControllerApi extends AuthServicesClass
 {
     use messages;
 
-    public function test(){
-        // for testing
-        $perPage = 1; // Number of results per page
-        $allUsers = new Collection(); // Create an empty collection to hold all the results
-
-        for ($page = 1; ; $page++) {
-            $users = tenants::query()->paginate($perPage, ['*'], 'page', $page); // Get the current page of results
-
-            if ($users->isEmpty()) {
-                break; // Exit the loop if there are no more results
-            }
-            $allUsers = $allUsers->merge($users->items()); // Add the current page of results to the collection
-        }
-
-        // Do something with the collection of all results
-        return $allUsers;
-    }
 
     public function validate_user(){
         try {
@@ -67,14 +52,13 @@ class AuthControllerApi extends AuthServicesClass
 
     public function login_api(){
         $data = Validator::make(request()->all(),[
-            'email'=>'required',
+            'phone'=>'required',
             'password'=>'required',
         ]);
-
         if(sizeof($data->errors()) == 0) {
 
-            $credential = request()->only(['email', 'password']);
-            $token = auth('api')->attempt($credential);
+            $credential = request()->only(['phone', 'password']);
+            $token = Auth::guard('api')->attempt($credential);
             if(!$token){
                 return messages::error_output(trans('errors.unauthenticated'));
             }else {
@@ -82,7 +66,6 @@ class AuthControllerApi extends AuthServicesClass
                 $role = roles::query()->find($user->role_id);
                 $user['role'] = $role;
                 $user['token'] =  $token;
-                $user['country_id'] =  cities::query()->find($user['city_id'])->country_id;
                 return messages::success_output('',$user);
             }
         }else{
@@ -97,6 +80,21 @@ class AuthControllerApi extends AuthServicesClass
         JWTAuth::invalidate(true);
         return messages::success_output('logout successfully');
 
+    }
+
+    public function check_otp(usersFormRequest $formRequest){
+        $data = $formRequest->validated();
+
+        $user = User::query()
+            ->where('phone',$data['phone'])
+            ->where('activation_code',$data['otp'])->first();
+        if($user != null){
+            $user->activation_status = 1;
+            $user->save();
+            return messages::success_output(trans('messages.activation_done'),$user);
+        }else{
+            return messages::error_output(trans('errors.incorrect_otp'));
+        }
     }
 
     public function user(){

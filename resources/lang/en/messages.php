@@ -14,6 +14,7 @@ return [
     'confirmed_bought'=>'operation of buying this package is done successfully',
     'payment_success'=>'Payment has been done successfully',
     'operation_saved_successfully'=>'Operation saved successfully',
+    'activation_done'=>'Activation account has been done successfully',
 
 
 ];

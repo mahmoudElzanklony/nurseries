@@ -17,8 +17,8 @@ class CheckApiAuth extends BaseMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $token = $request->header('auth-token');
-        $request->headers->set('auth-token',(string)$token,true);
+        $token = $request->header('token');
+        $request->headers->set('token',(string)$token,true);
         $request->headers->set('Authorization','Bearer '.$token,true);
         try {
             $user = $this->auth->parseToken()->authenticate($request);

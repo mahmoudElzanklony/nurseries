@@ -19,13 +19,12 @@ class register_service
     public static function register_process($req,$validated){
         $user_info = $validated;
         // check if role exist in roles or not
-        if($req['type'] == 'client' || $req['type'] == 'marketer') {
+        if($req['type'] == 'client' || $req['type'] == 'seller') {
             $role = roles::query()->where('name', $req['type'])->first();
             // role is correct
             if ($role != null) {
                 $user_info['address'] = '';
-                $user_info['activation_code'] = time();
-                $user_info['wallet'] = 0;
+                $user_info['activation_code'] = rand(1000,9999);
                 $user_info['role_id'] = $role->id;
                 $user_info['password'] = bcrypt($user_info['password']);
                 // create new user
@@ -41,30 +40,8 @@ class register_service
 
                 // check if role name is client
                 // mohamed_1234
-                if($role->name == 'client'){
-                    // create DB if type is client
-                    $db_name = str_replace(
-                        substr($user_info['email'],
-                            strpos($user_info['email'], '@')), '_'.$user_info['activation_code'], $user_info['email']);
-                    // create database for client
-                    $user_info['user_id'] = $user->id;
 
-                    // check if client register from marketer
-                    if(isset($req['marketer_id'])){
-                        // check marketer id is true
-                        $marketer = User::query()->find($req['marketer_id']);
-                        if($marketer != null) {
-                            marketer_clients::query()->create([
-                                'marketer_id' => $req['marketer_id'],
-                                'client_id' => $user->id,
-                            ]);
-                        }
-                    }
-
-                    DB_connections::create_db($db_name,$user_info);
-                }
-
-                return self::success_output(trans('messages.registered_user'));
+                return self::success_output(trans('messages.registered_user'),$user);
             } else {
                 // role isn't correct
                 return self::error_output(self::errors(['type' => trans('messages.err_invalid_type')]));

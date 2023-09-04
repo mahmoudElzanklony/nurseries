@@ -24,4 +24,5 @@ return [
   'charge_wallet_payment'=>'تمت عملية شحن المحفظه',
   'successfully'=>'بنجاح',
   'reply_saved_successfully'=>'تم حفظ الرد بنجاح',
+  'activation_done'=>'تم التفعيل الخاص بك بنجاح',
 ];

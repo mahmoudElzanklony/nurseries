@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersStoreInfosTable extends Migration
+class CreatePagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateUsersStoreInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('users_store_infos', function (Blueprint $table) {
+        Schema::create('pages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
-            $table->string('type');
-            $table->string('address');
-            $table->string('business_phone')->nullable();
-            $table->string('business_email')->nullable();
+            $table->string('url');
+            $table->string('icon');
+            $table->string('parent_id')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateUsersStoreInfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_store_infos');
+        Schema::dropIfExists('pages');
     }
 }

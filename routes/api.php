@@ -17,16 +17,30 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RemoteConnectionController;
 use App\Http\Controllers\Api\UsersControllerApi;
 use App\Http\Controllers\classes\general\GeneralServiceController;
+use App\Http\Controllers\SellerInfoController;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
     Route::get('/test',[AuthControllerApi::class,'test']);
 
 
-    Route::post('/register',[AuthControllerApi::class,'register_post']);
-    Route::post('/login',[AuthControllerApi::class,'login_api']);
+    Route::group(['prefix'=>'/auth'],function(){
+        Route::post('/register',[AuthControllerApi::class,'register_post']);
+        Route::post('/login',[AuthControllerApi::class,'login_api']);
+        Route::post('/check-otp',[AuthControllerApi::class,'check_otp']);
+        Route::post('/logout',[AuthControllerApi::class,'logout_api']);
+
+    });
+
+
+    Route::group(['prefix'=>'/seller','middleware'=>['CheckApiAuth','checkSeller']],function(){
+        Route::post('/save-store',[SellerInfoController::class,'save_store']);
+        Route::post('/save-bank',[SellerInfoController::class,'save_bank']);
+        Route::post('/save-commercial-infos',[SellerInfoController::class,'save_commercial_infos']);
+
+    });
+
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
-    Route::post('/logout',[AuthControllerApi::class,'logout_api']);
     Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
 
     // ---------------------start of resources --------------------

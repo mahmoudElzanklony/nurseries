@@ -15,8 +15,12 @@ class CreateCategoriesHeadingQuestionsDatasTable extends Migration
     {
         Schema::create('categories_heading_questions_datas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_heading_question_id')
-                ->constrained('categories_heading_questions')->onUpdate('cascade')->onDelete('cascade');
+
+            $table->bigInteger('category_heading_question_id')->unsigned();
+            $table->foreign('category_heading_question_id','fk_category_heading_question_id')
+                ->references('id')->on('categories_heading_questions')
+                ->onUpdate('cascade')->onDelete('cascade');
+
             $table->string('name');
             $table->string('type')->default('text');
             $table->timestamps();

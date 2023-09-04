@@ -29,9 +29,9 @@ class changeLang
         }else{
             app()->setLocale('ar');
         }
-        /*if(!(request()->hasHeader('api_key') && request()->header('api_key') == env('api_key','sync2023'))){
+        if(!(request()->hasHeader('api_key') && request()->header('api_key') == env('api_key','nurseries2023'))){
             return messages::error_output('api key is missing !!');
-        }*/
+        }
         return $next($request);
     }
 }

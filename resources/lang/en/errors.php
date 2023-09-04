@@ -14,6 +14,7 @@ return [
     'not_enough_points_to_pay_for_this_listing'=>'Not enough points to pay for this listing',
     'not_completed'=>'Not completed',
     'no_data'=>'No data to show',
+    'incorrect_otp'=>'Otp number is not correct please try again',
 
 
 ];

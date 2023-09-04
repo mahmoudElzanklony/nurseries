@@ -9,5 +9,5 @@ class users_store_info extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','name','type','address','business_phone','business_address'];
+    protected $fillable = ['user_id','name','type','address','business_phone','business_email'];
 }

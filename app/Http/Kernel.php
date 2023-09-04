@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'changeLang' => \App\Http\Middleware\changeLang::class,
         'CheckApiAuth' => \App\Http\Middleware\CheckApiAuth::class,
         'checkAdmin' => \App\Http\Middleware\checkAdmin::class,
+        'checkSeller' => \App\Http\Middleware\sellerCheck::class,
 
     ];
 }

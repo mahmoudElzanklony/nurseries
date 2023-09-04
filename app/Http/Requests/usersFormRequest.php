@@ -30,17 +30,22 @@ class usersFormRequest extends FormRequest
         ];
     }
 
+    public function check_otp(){
+        return [
+            'phone'=>'required',
+            'otp'=>'required',
+        ];
+    }
+
     public function personal_info(){
         return [
             //
-            'city_id'=>'required|integer|exists:cities,id',
             'username'=>'required|max:191',
             'email'=>'required|email|max:191|unique:users,email'.(auth()->check() ? ( auth()->user()->role_id == 1?','.auth()->id():','.request('id')):''),
             'password'=>'nullable|min:7|confirmed|max:191',
-            'phone'=>'filled|min:7',
+            'phone'=>'required|min:7',
             'address'=>'filled|max:191',
-            'image'=>'nullable|image|mimes:jpg,jpeg,png,gif',
-            'type'=>'filled',
+            'type'=>'required',
         ];
     }
     public function update_admin(){
@@ -93,7 +98,9 @@ class usersFormRequest extends FormRequest
     {
         if(str_contains($this->getRequestUri(),'/login')){
             return $this->login();
-        }else if(str_contains($this->getRequestUri() , '/update-personal') || str_contains($this->getRequestUri() , '/register')){
+        }if(str_contains($this->getRequestUri(),'check-otp')){
+        return $this->check_otp();
+    }else if(str_contains($this->getRequestUri() , '/update-personal') || str_contains($this->getRequestUri() , '/register')){
             return $this->personal_info();
         }else if(str_contains($this->getRequestUri() , '/profile/update-password')){
             return $this->update_password();
