@@ -1,0 +1,7 @@
+when seller delete a product that has been sold before 
+the data will be deleted from client that bought 
+
+
+make number of products published based on status of product because maybe seller want to delete product
+and upload another 
+and this product thas been sold before so we will lost data of this product
