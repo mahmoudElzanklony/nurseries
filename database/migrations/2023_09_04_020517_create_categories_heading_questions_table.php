@@ -16,7 +16,8 @@ class CreateCategoriesHeadingQuestionsTable extends Migration
         Schema::create('categories_heading_questions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name');
+            $table->string('ar_name');
+            $table->string('en_name')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductsFeaturesPricesTable extends Migration
+class CreateProductsQuestionsAnswersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateProductsFeaturesPricesTable extends Migration
      */
     public function up()
     {
-        Schema::create('products_features_prices', function (Blueprint $table) {
+        Schema::create('products_questions_answers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('category_feature_id')->constrained('categories_features')
-                ->onUpdate('cascade')->onDelete('cascade');
-            $table->float('price')->default(0);
-            $table->string('note')->nullable();
+
+            $table->foreignId('category_heading_questions_data_id')
+                ->constrained('categories_heading_questions_datas')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('ar_answer');
+            $table->string('en_answer')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateProductsFeaturesPricesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products_features_prices');
+        Schema::dropIfExists('products_questions_answers');
     }
 }

@@ -9,10 +9,14 @@ class products extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['name','description','price','quantity'];
+    protected $fillable = ['category_id','ar_name','ar_description','en_name','en_description','main_price','quantity'];
 
     public function images(){
         return $this->morphMany(images::class,'imageable');
+    }
+
+    public function category(){
+        return $this->belongsTo(categories::class,'category_id');
     }
 
     public function wholesale_prices(){
@@ -25,5 +29,9 @@ class products extends Model
 
     public function features(){
         return $this->hasMany(products_features_prices::class,'product_id');
+    }
+
+    public function answers(){
+        return $this->hasMany(products_questions_answers::class,'product_id');
     }
 }

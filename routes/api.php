@@ -18,6 +18,7 @@ use App\Http\Controllers\RemoteConnectionController;
 use App\Http\Controllers\Api\UsersControllerApi;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 use App\Http\Controllers\SellerInfoController;
+use App\Http\Controllers\ProductsControllerResource;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -37,42 +38,18 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::post('/save-store',[SellerInfoController::class,'save_store']);
         Route::post('/save-bank',[SellerInfoController::class,'save_bank']);
         Route::post('/save-commercial-infos',[SellerInfoController::class,'save_commercial_infos']);
-
     });
 
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
     Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
 
-    // ---------------------start of resources --------------------
-    Route::apiResources([
-        'projects'=>ProjectsController::class, // projects Resource
-        'branches'=>BranchController::class ,// branches Resource
-        'operations'=>OperationController::class, // operations Resource
-        'countries'=>CountriesController::class, // countries Resource
-        'cities'=>CitiesController::class // cities Resource
+
+
+    Route::resources([
+        'products'=>ProductsControllerResource::class
     ]);
-    // ---------------------end of resources --------------------
-
-    // ---------------------start of projects --------------------
-    Route::group(['prefix'=>'/projects'],function (){
-        Route::post('/last',[ProjectsController::class,'last']);
-    });
-    // ---------------------end of projects --------------------
-
-    // ---------------------start of operations --------------------
-    Route::group(['prefix'=>'/operations'],function (){
-        Route::post('/report',[OperationController::class,'report']);
-        Route::post('/statistic-report-per-year',[OperationController::class,'statistic_report_per_year']);
-    });
-    // ---------------------end of operations --------------------
 
 
-    // ---------------------start of packages --------------------
-    Route::group(['prefix'=>'/packages'],function (){
-       Route::get('/',[PackagesController::class,'index']);
-       Route::post('/make-order',[PackagesController::class,'make_order'])->middleware('CheckApiAuth');
-    });
-    // ---------------------end of packages --------------------
 
     // ---------------------start of users actions --------------------
     Route::group(['prefix'=>'/user','middleware'=>'CheckApiAuth'],function (){

@@ -10,7 +10,7 @@ class categories extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['ar_name','en_name'];
 
     public function features(){
         return $this->hasMany(categories_features::class,'category_id');

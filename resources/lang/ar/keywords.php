@@ -34,6 +34,19 @@ return [
     'package'=>'الباقة',
     // ----------------------end packages table inputs ---------------------
 
+
+    // ----------------------start products table inputs ---------------------
+    'ar_name'=>'الاسم بالعربي',
+    'en_name'=>'الاسم بالانجليزي',
+    'ar_description'=>'الوصف بالعبي',
+    'en_description'=>'الوصف بالانجليزي',
+    'main_price'=>'السعر الاساسي',
+    'wholesale_prices'=>'اسعار الجملة',
+    'answers'=>'الاجابات',
+    'features'=>'المميزات',
+    'discounts'=>'التخفيضات',
+    // ----------------------end products table inputs ---------------------
+
     // ----------------------start bank model payment table inputs ---------------------
     'type_of_transfer'=>'نوع التحويل',
     'receiver'=>'المرسل له',

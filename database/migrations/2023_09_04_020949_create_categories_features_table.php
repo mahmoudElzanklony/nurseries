@@ -16,8 +16,8 @@ class CreateCategoriesFeaturesTable extends Migration
         Schema::create('categories_features', function (Blueprint $table) {
             $table->id();
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name');
-            $table->tinyInteger('is_free');
+            $table->string('ar_name');
+            $table->string('en_name')->nullable();
             $table->timestamps();
         });
     }

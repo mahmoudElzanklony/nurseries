@@ -32,6 +32,20 @@ return [
     'package'=>'Package',
     // ----------------------end packages table inputs ---------------------
 
+
+    // ----------------------start products table inputs ---------------------
+    'ar_name'=>'Name in arabic',
+    'en_name'=>'Name in english',
+    'ar_description'=>'Description in arabic',
+    'en_description'=>'Description in english',
+    'main_price'=>'Main price',
+    'wholesale_prices'=>'Wholesale prices',
+    'answers'=>'Answers',
+    'features'=>'Features',
+    'discounts'=>'Discounts',
+    // ----------------------end products table inputs ---------------------
+
+
     // ----------------------start bank model payment table inputs ---------------------
     'type_of_transfer'=>'نوع التحويل',
     'receiver'=>'المرسل له',

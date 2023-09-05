@@ -11,7 +11,7 @@ class categories_heading_questions extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['category_id','name'];
+    protected $fillable = ['category_id','ar_name','en_name'];
 
     public function questions_data(){
         return $this->hasMany(categories_heading_questions_data::class,'category_heading_question_id');

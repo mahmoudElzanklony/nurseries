@@ -21,7 +21,8 @@ class CreateCategoriesHeadingQuestionsDatasTable extends Migration
                 ->references('id')->on('categories_heading_questions')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->string('name');
+            $table->string('ar_name');
+            $table->string('en_name')->nullable();
             $table->string('type')->default('text');
             $table->timestamps();
         });

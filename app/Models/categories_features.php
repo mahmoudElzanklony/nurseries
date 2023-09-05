@@ -9,5 +9,5 @@ class categories_features extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id','name','is_free'];
+    protected $fillable = ['category_id','ar_name','en_name'];
 }
