@@ -19,6 +19,11 @@ class products extends Model
         return $this->belongsTo(categories::class,'category_id');
     }
 
+    public function favourite(){
+        return $this->hasOne(favourites::class,'product_id')
+            ->where('user_id',auth()->id());
+    }
+
     public function wholesale_prices(){
         return $this->hasMany(products_wholesale_prices::class,'product_id');
     }

@@ -22,6 +22,7 @@ class ProductResource extends JsonResource
             'main_price'=>$this->main_price,
             'created_at'=>$this->created_at->format('Y m d, h:i A'),
             'images'=>ImagesResource::collection($this->whenLoaded('images')),
+            'favourite'=>FavouriteResource::make($this->favourite),
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
             'discounts'=>ProductDiscountsResource::collection($this->whenLoaded('discounts')),

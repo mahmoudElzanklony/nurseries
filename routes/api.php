@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\UsersControllerApi;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 use App\Http\Controllers\SellerInfoController;
 use App\Http\Controllers\ProductsControllerResource;
+use App\Http\Controllers\SearchesController;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -48,6 +49,23 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::resources([
         'products'=>ProductsControllerResource::class
     ]);
+
+
+    // ---------------------start of products actions --------------------
+    Route::group(['prefix'=>'/products','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/toggle-fav',[ProductsControllerResource::class,'toggle_fav']);
+        Route::post('/toggle-like',[ProductsControllerResource::class,'toggle_like']);
+
+    });
+    // ---------------------end of products actions --------------------
+
+    // ---------------------start of searches actions --------------------
+
+    Route::group(['prefix'=>'/searches','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/products',[SearchesController::class,'products']);
+
+    });
+    // ---------------------end of searches actions --------------------
 
 
 

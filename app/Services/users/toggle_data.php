@@ -1,0 +1,50 @@
+<?php
+
+
+namespace App\Services\users;
+
+
+use App\Http\traits\messages;
+use App\Models\favourites;
+use App\Models\likes;
+use Illuminate\Support\Facades\DB;
+
+class toggle_data
+{
+    public static function toggle_fav($product_id){
+        $fav = favourites::query()->where('user_id','=',auth()->id())
+            ->where('product_id','=',$product_id)->first();
+        if($fav != null){
+            $fav->delete();
+            $msg = trans('messages.removed_from_fav_successfully');
+        }else{
+            favourites::query()->create([
+               'user_id'=>auth()->id(),
+               'product_id'=>$product_id
+            ]);
+            $msg = trans('messages.added_to_fav_successfully');
+        }
+        return messages::success_output([$msg]);
+    }
+
+
+    public static function toggle_like($id,$table){
+        $like = likes::query()
+            ->where('user_id','=',auth()->id())
+            ->where('item_id','=',$id)
+            ->where('type','=',$table)->first();
+        if($like != null){
+            $like->delete();
+            $msg = trans('messages.removed_like_successfully');
+        }else{
+            likes::query()->create([
+                'user_id'=>auth()->id(),
+                'item_id'=>$id,
+                'type'=>$table,
+            ]);
+            $msg = trans('messages.added_like_successfully');
+        }
+        return messages::success_output([$msg]);
+    }
+
+}

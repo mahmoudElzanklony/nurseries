@@ -2,20 +2,34 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GetAuthenticatedUser;
+use App\Actions\ProductWithAllData;
+use App\Actions\SeenItem;
+use App\Filters\CategoryIdFilter;
+use App\Filters\EndDateFilter;
+use App\Filters\products\MaxPriceFilter;
+use App\Filters\products\MinPriceFilter;
+use App\Filters\StartDateFilter;
 use App\Http\Requests\ProductsFormRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
 use App\Models\products;
 use App\Repositories\ProductsRepository;
+use App\Services\SearchesResults;
+use App\Services\users\favourite_toggle;
+use App\Services\users\toggle_data;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 use App\Http\traits\upload_image;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 class ProductsControllerResource extends Controller
 {
     use upload_image;
     public function __construct()
     {
-        $this->middleware('CheckApiAuth')->only('store');
+         $this->middleware('CheckApiAuth')->only('store');
     }
 
     /**
@@ -26,6 +40,19 @@ class ProductsControllerResource extends Controller
     public function index()
     {
         //
+        $data = ProductWithAllData::get();
+        $output = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+                CategoryIdFilter::class,
+                MinPriceFilter::class,
+                MaxPriceFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+        return ProductResource::collection($output);
     }
 
     /**
@@ -58,6 +85,23 @@ class ProductsControllerResource extends Controller
 
     }
 
+
+    public function toggle_fav(){
+        $product = products::query()->find(request('product_id'));
+        if($product != null){
+            return toggle_data::toggle_fav($product->id);
+        }
+        return messages::error_output('product id not found');
+    }
+
+    public function toggle_like(){
+        $product = products::query()->find(request('product_id'));
+        if($product != null){
+            return toggle_data::toggle_like($product->id,'products');
+        }
+        return messages::error_output('product id not found');
+    }
+
     /**
      * Display the specified resource.
      *
@@ -66,14 +110,17 @@ class ProductsControllerResource extends Controller
      */
     public function show($id)
     {
-        $data = products::query()->with(['category','images','wholesale_prices','discounts'
-            ,'features'=>function($f){
-                $f->with('feature');
-            },'answers'=>function($e){
-                $e->with('question');
-            }])->first();
+        $data = ProductWithAllData::get()->first();
+        if($data != null){
+            SeenItem::add($data->id,'products');
+        }
+        if(request()->has('from_search') && GetAuthenticatedUser::get_info() != null && $data != null){
+            SearchesResults::added_to_search($data->id,'products');
+        }
         return ProductResource::make($data);
     }
+
+
 
     /**
      * Update the specified resource in storage.
