@@ -1,0 +1,13 @@
+1- there must be category_id at page of add new product because you show products of main page under search word
+
+2- rate operation not found at ui ? and it make after order status be completed ?
+
+3- description input must be added at create product page
+
+4-articles rate is wrong replace it with like at page article details
+
+5- add button at article details like for article
+
+6- remove dislike button
+
+7-control panel one page only ? and this statistics is not clickable to pages ?!

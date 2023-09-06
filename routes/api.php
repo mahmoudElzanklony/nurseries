@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\UsersControllerApi;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 use App\Http\Controllers\SellerInfoController;
 use App\Http\Controllers\ProductsControllerResource;
+use App\Http\Controllers\CategoriesControllerResource;
 use App\Http\Controllers\SearchesController;
 
 
@@ -47,8 +48,16 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
     Route::resources([
-        'products'=>ProductsControllerResource::class
+        'products'=>ProductsControllerResource::class,
+        'categories'=>CategoriesControllerResource::class
     ]);
+
+    // ---------------------start of categories actions --------------------
+    Route::group(['prefix'=>'/categories-data','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/cat-questions-features',[CategoriesControllerResource::class,'cat_questions_features']);
+
+    });
+    // ---------------------end of categories actions --------------------
 
 
     // ---------------------start of products actions --------------------
