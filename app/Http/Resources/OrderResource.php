@@ -17,15 +17,13 @@ class OrderResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'price'=>$this->price,
-          'user_id'=>$this->user_id,
-          'payment_type'=>$this->payment_type,
-          'current_points'=>$this->current_points,
-          'status'=>$this->status,
-          'package'=>PackageResource::make($this->package),
-          'user'=>$this->whenLoaded('user'),
-          'bank_modal'=>($this->bank_modal != null && ($this->payment_type == 'mobile' || $this->payment_type == 'bank')) ?
-              BankModalResource::make($this->bank_modal):null,
+          'payment_method'=>$this->payment_method,
+          'has_coupon'=>$this->has_coupon,
+          'seller_profit'=>$this->seller_profit,
+          'items_price'=>$this->total_items,
+          'client'=>UserResource::make($this->whenLoaded('client')),
+          'seller'=>UserResource::make($this->whenLoaded('seller')),
+          'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'created_at'=>$this->created_at->format('Y m d, h:i A'),
 
         ];

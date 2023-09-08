@@ -6,6 +6,7 @@ namespace App\Services\users;
 
 use App\Http\traits\messages;
 use App\Models\favourites;
+use App\Models\followers;
 use App\Models\likes;
 use Illuminate\Support\Facades\DB;
 
@@ -43,6 +44,22 @@ class toggle_data
                 'type'=>$table,
             ]);
             $msg = trans('messages.added_like_successfully');
+        }
+        return messages::success_output([$msg]);
+    }
+
+    public static function toggle_following($user_id){
+        $follow_obj = followers::query()->where('user_id','=',auth()->id())
+            ->where('following_id','=',$user_id)->first();
+        if($follow_obj != null){
+            $follow_obj->delete();
+            $msg = trans('messages.removed_from_following_successfully');
+        }else{
+            followers::query()->create([
+                'user_id'=>auth()->id(),
+                'following_id'=>$user_id
+            ]);
+            $msg = trans('messages.added_to_following_successfully');
         }
         return messages::success_output([$msg]);
     }

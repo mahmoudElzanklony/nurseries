@@ -2,39 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\OrdersWithAllData;
 use App\Actions\SendNotification;
 use App\Filters\orders\PaymentTypeFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\EndDateFilter;
+use App\Http\Requests\ordersFormRequest;
 use App\Http\Resources\OrderResource;
 use App\Http\traits\messages;
-use App\Models\packages_orders;
+use App\Models\orders;
+use App\Models\orders_items;
 use App\Models\reports;
 use App\Models\User;
+use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class OrdersController extends Controller
 {
     //
-    public function __construct(){
-        $this->middleware('CheckApiAuth');
-    }
-    public function client_orders(){
-        $user = User::query()->with('role')->find(auth()->id());
-        $orders = packages_orders::with('package','bank_modal','user')
-            ->when($user->role->name == 'client',function ($e){
-                $e->where('user_id','=',auth()->id());
-            })->when($user->role->name != 'client',function ($q){
-                $q->with('user');
-            });
 
-        // filter data
+    public function make_order(ordersFormRequest $request){
+        DB::beginTransaction();
+        $data = $request->validated();
+        $order_repo = new OrderRepository();
+        if($order_repo->validate_payment_info($data)['status'] == true){
+            // the visa is okay now
+            $result = $order_repo->init_order($data)->order_items($data['items']);
+            if($result != null) {
+                $result = json_decode($result->content(), true);
+                if (array_key_exists('status', $result) && $result['status'] != 200) {
+                    return messages::error_output($result['errors']);
+                }
+            }
+            DB::commit();
+            return messages::success_output(trans('messages.order_done_successfully'),$order_repo->order);
+        }else{
+            return messages::error_output($order_repo->validate_payment_info($data));
+        }
+
+    }
+
+    public function all_orders(){
+        $orders = OrdersWithAllData::get();
+
         $data = app(Pipeline::class)
             ->send($orders)
             ->through([
-                PaymentTypeFilter::class,
                 StartDateFilter::class,
                 EndDateFilter::class,
             ])
@@ -44,22 +60,4 @@ class OrdersController extends Controller
         return OrderResource::collection($data);
     }
 
-    public function accept(){
-        // accept package request order
-        $order = packages_orders::query()
-            ->with('package','bank_modal','user')
-            ->find(request('id'));
-        $order->status = 1;
-        $order->save();
-        // send notification
-        SendNotification::to_any_one_else_admin($order->user_id,'تم قبول طلب الباقة '.$order->package->name.' الخاص بك '
-            ,'profile/'.$order->user_id.'/report');
-        // make report
-        reports::query()->create([
-          'user_id'=>auth()->id(),
-          'info'=>'قام '.auth()->user()->username.' بقبول الباقة  '.$order->package->name.' للعميل '.$order->user->username,
-          'type'=>'package(accept)'
-        ]);
-        return messages::success_output('',$order);
-    }
 }

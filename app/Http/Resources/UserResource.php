@@ -19,7 +19,6 @@ class UserResource extends JsonResource
           'username'=>$this->username,
           'email'=>$this->email,
           'phone'=>$this->phone,
-          'image'=>$this->image,
           'role'=>$this->whenLoaded('role'),
           'created_at'=>$this->created_at->format('Y m d, h:i A'),
         ];

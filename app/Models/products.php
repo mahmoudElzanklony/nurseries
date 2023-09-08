@@ -9,7 +9,7 @@ class products extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['category_id','ar_name','ar_description','en_name','en_description','main_price','quantity'];
+    protected $fillable = ['user_id','category_id','ar_name','ar_description','en_name','en_description','main_price','quantity'];
 
     public function images(){
         return $this->morphMany(images::class,'imageable');
@@ -25,7 +25,7 @@ class products extends Model
     }
 
     public function wholesale_prices(){
-        return $this->hasMany(products_wholesale_prices::class,'product_id');
+        return $this->hasMany(products_wholesale_prices::class,'product_id')->orderBy('min_quantity','ASC');
     }
 
     public function discounts(){

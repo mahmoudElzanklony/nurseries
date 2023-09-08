@@ -19,7 +19,8 @@ class CreateNotificationsTable extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('receiver_id')->constrained('users')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->string('content');
+            $table->string('ar_content');
+            $table->string('en_content')->nullable();
             $table->string('url')->nullable();
             $table->tinyInteger('seen')->default(0);
             $table->timestamps();

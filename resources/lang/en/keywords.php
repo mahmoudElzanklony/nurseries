@@ -10,6 +10,11 @@ return [
     'image'=>'Image',
     // ----------------------end user table inputs ---------------------
 
+    // ----------------------start of  rates- ---------------------
+    'product'=>'Product',
+    'comment'=>'Comment',
+    'rate'=>'Rate',
+    // ----------------------end of  rates- ---------------------
 
     // ----------------------start Seller info inputs ---------------------
     'name'=>'Name',

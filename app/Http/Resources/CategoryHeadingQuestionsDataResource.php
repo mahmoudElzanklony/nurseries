@@ -17,6 +17,7 @@ class CategoryHeadingQuestionsDataResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->{app()->getLocale().'_name'},
+            'image'=>ImagesResource::make($this->whenLoaded('image')),
         ];
     }
 }

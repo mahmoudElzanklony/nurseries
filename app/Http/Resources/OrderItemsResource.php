@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NotificationResource extends JsonResource
+class OrderItemsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,12 @@ class NotificationResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'sender'=>UserResource::make($this->sender),
-          'content'=>$this->{app()->getLocale().'_content'},
-          'url'=>$this->url,
-          'seen'=>$this->seen,
+          'product'=>ProductResource::make($this->whenLoaded('product')),
+          'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
+          'quantity'=>$this->quantity,
+          'price'=>$this->price,
           'created_at'=>$this->created_at->format('Y m d, h:i A'),
+
         ];
     }
 }

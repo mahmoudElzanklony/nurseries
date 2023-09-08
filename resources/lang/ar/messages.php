@@ -9,8 +9,10 @@ return [
   'saved_successfully'=>'تم حفظ العملية بنجاح',
   'removed_from_fav_successfully'=>'تمت الازاله من المفضلة بنجاح',
   'removed_like_successfully'=>'تمت ازاله عمليه الاعجاب بنجاح',
+  'removed_from_following_successfully'=>'تمت ازاله عملية المتابعة بنجاح',
   'added_to_fav_successfully'=>'تمت الاضافة الي المفضلة بنجاح',
   'added_like_successfully'=>'تمت اضافه الاعجاب بنجاح',
+  'added_to_following_successfully'=>'تمت اضافه عملية المتابعه بنجاح',
   'sent_successfully'=>'تمت عملية الارسال بنجاح',
   'confirmed_bought'=>'تمت عملية شراء نقاط الباقة بنجاح',
   'email_sent_successfully'=>'تم ارسال لك رساله علي البريد الالكتروني',
@@ -27,4 +29,6 @@ return [
   'successfully'=>'بنجاح',
   'reply_saved_successfully'=>'تم حفظ الرد بنجاح',
   'activation_done'=>'تم التفعيل الخاص بك بنجاح',
+  'order_done_successfully'=>'تمت عملية الطلب بنجاح',
+  'rated_successfully'=>'تمت عملية التقييم بنجاح',
 ];

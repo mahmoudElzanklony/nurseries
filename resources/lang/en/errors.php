@@ -15,6 +15,7 @@ return [
     'not_completed'=>'Not completed',
     'no_data'=>'No data to show',
     'incorrect_otp'=>'Otp number is not correct please try again',
-
+    'quantity_not_exists_for'=>'Quantity in stock not available for ',
+    'please_order_this_product_to_rate_it'=>'Please order this product first so you can rate it',
 
 ];

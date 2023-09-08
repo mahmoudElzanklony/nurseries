@@ -7,12 +7,16 @@ use App\Actions\ProductWithAllData;
 use App\Actions\SeenItem;
 use App\Filters\CategoryIdFilter;
 use App\Filters\EndDateFilter;
+use App\Filters\IDsFilter;
 use App\Filters\products\MaxPriceFilter;
 use App\Filters\products\MinPriceFilter;
 use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Requests\ProductsFormRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
+use App\Jobs\sendNotificationsToFollowersJob;
+use App\Models\followers;
 use App\Models\products;
 use App\Repositories\ProductsRepository;
 use App\Services\SearchesResults;
@@ -49,6 +53,8 @@ class ProductsControllerResource extends Controller
                 CategoryIdFilter::class,
                 MinPriceFilter::class,
                 MaxPriceFilter::class,
+                UserIdFilter::class,
+                IDsFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
@@ -81,6 +87,13 @@ class ProductsControllerResource extends Controller
             ->save_product_features($data['features'] ?? [])
             ->save_product_wholesale_prices($data['wholesale_prices'] ?? []);
         DB::commit();
+        // get following me
+        $following_data = followers::query()->where('following_id','=',auth()->id())->get();
+        $msg = [
+          'ar'=>'تم نشر منتج جديد من قبل '.auth()->user()->username,
+          'en'=>'there is a new product published from '.auth()->user()->username,
+        ];
+        dispatch(new sendNotificationsToFollowersJob($following_data,$msg,'/following'));
         return messages::success_output(trans('messages.saved_successfully'),$product_reposit->product);
 
     }

@@ -21,4 +21,6 @@ return [
     'not_found_data'=>'لا يوجد بيانات لعرضها',
     'no_data'=>'لا يوجد بيانات لعرضها',
     'incorrect_otp'=>'رمز التحقق غير صحيح برجاء المحاولة مرة اخري',
+    'quantity_not_exists_for'=>'الكمية في المخزن غير متوفره ل ',
+    'please_order_this_product_to_rate_it'=>'من فضلك اشتري المنتج لكي تتمكن من تقيمة',
 ];

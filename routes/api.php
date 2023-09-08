@@ -18,9 +18,12 @@ use App\Http\Controllers\RemoteConnectionController;
 use App\Http\Controllers\Api\UsersControllerApi;
 use App\Http\Controllers\classes\general\GeneralServiceController;
 use App\Http\Controllers\SellerInfoController;
+use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\ProductsControllerResource;
 use App\Http\Controllers\CategoriesControllerResource;
 use App\Http\Controllers\SearchesController;
+use App\Http\Controllers\FavouriteController;
+use App\Http\Controllers\RateController;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -60,6 +63,17 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------end of categories actions --------------------
 
 
+    // ---------------------start of followers actions --------------------
+    Route::group(['prefix'=>'/follow','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/toggle',[FollowersController::class,'toggle']);
+        Route::get('/all',[FollowersController::class,'all']);
+
+    });
+    // ---------------------end of followers actions --------------------
+
+
+
+
     // ---------------------start of products actions --------------------
     Route::group(['prefix'=>'/products','middleware'=>'CheckApiAuth'],function (){
         Route::post('/toggle-fav',[ProductsControllerResource::class,'toggle_fav']);
@@ -68,6 +82,13 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
     // ---------------------end of products actions --------------------
 
+    // ---------------------start of favourite actions --------------------
+    Route::group(['prefix'=>'/favourite','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/',[FavouriteController::class,'index']);
+
+    });
+    // ---------------------end of favourite actions --------------------
+
     // ---------------------start of searches actions --------------------
 
     Route::group(['prefix'=>'/searches','middleware'=>'CheckApiAuth'],function (){
@@ -75,6 +96,22 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     });
     // ---------------------end of searches actions --------------------
+
+    // ---------------------start of orders actions --------------------
+    Route::group(['prefix'=>'/orders','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/',[OrdersController::class,'all_orders']);
+        Route::post('/make',[OrdersController::class,'make_order']);
+
+    });
+    // ---------------------end of orders actions --------------------
+
+
+    // ---------------------start of rates actions --------------------
+    Route::group(['prefix'=>'/rates','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/make',[RateController::class,'make']);
+
+    });
+    // ---------------------end of rates actions --------------------
 
 
 

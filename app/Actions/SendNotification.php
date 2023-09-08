@@ -12,7 +12,8 @@ class SendNotification
         notifications::query()->create([
             'sender_id'=>$sender_id,
             'receiver_id'=>GetFirstAdmin::admin_info()->id,
-            'content'=>$info,
+            'ar_content'=>$info['ar'],
+            'en_content'=>$info['en'],
             'url'=>$url,
             'seen'=>'0',
         ]);
@@ -22,7 +23,8 @@ class SendNotification
         notifications::query()->create([
             'sender_id'=>GetFirstAdmin::admin_info()->id,
             'receiver_id'=>$receiver_id,
-            'content'=>$info,
+            'ar_content'=>$info['ar'],
+            'en_content'=>$info['en'],
             'url'=>$url,
             'seen'=>'0',
         ]);

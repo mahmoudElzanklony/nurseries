@@ -9,7 +9,7 @@ class notifications extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sender_id','receiver_id','content','url','seen'];
+    protected $fillable = ['sender_id','receiver_id','ar_content','en_content','url','seen'];
 
 
     public function sender(){

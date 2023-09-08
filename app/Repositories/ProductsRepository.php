@@ -15,6 +15,7 @@ class ProductsRepository
 {
     public $product;
     public function save_product_main_info($data,$images = []){
+        $data['user_id'] = auth()->id();
         $product = products::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);

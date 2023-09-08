@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NotificationResource extends JsonResource
+class OrderItemsFeaturesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,13 +14,11 @@ class NotificationResource extends JsonResource
      */
     public function toArray($request)
     {
+        //return parent::toArray($request);
         return [
-          'id'=>$this->id,
-          'sender'=>UserResource::make($this->sender),
-          'content'=>$this->{app()->getLocale().'_content'},
-          'url'=>$this->url,
-          'seen'=>$this->seen,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+            'id'=>$this->id,
+            'price'=>$this->price,
+            'feature'=>ProductFeatureResource::make($this->product_feature->feature),
         ];
     }
 }

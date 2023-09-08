@@ -9,14 +9,19 @@ return [
     'deleted_successfully'=>'Delete operation done successfully',
     'removed_from_fav_successfully'=>'removed from favourite has done successfully',
     'removed_like_successfully'=>'Like operation has done removed successfully',
+    'removed_from_following_successfully'=>'Following operation has done removed successfully',
     'added_to_fav_successfully'=>'adding to favourite has done successfully',
     'added_like_successfully'=>'Like operation has been done successfully',
+    'added_to_following_successfully'=>'Following operation has been done successfully',
     'sent_successfully'=>'operation done successfully',
     'email_sent_successfully'=>'Email message has been sent to you successfully',
     'confirmed_bought'=>'operation of buying this package is done successfully',
     'payment_success'=>'Payment has been done successfully',
     'operation_saved_successfully'=>'Operation saved successfully',
     'activation_done'=>'Activation account has been done successfully',
+    'order_done_successfully'=>'Order done successfully',
+    'rated_successfully'=>'Rate operation done successfully',
+
 
 
 ];

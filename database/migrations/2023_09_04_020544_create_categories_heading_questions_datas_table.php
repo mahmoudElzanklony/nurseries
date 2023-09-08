@@ -24,6 +24,7 @@ class CreateCategoriesHeadingQuestionsDatasTable extends Migration
             $table->string('ar_name');
             $table->string('en_name')->nullable();
             $table->string('type')->default('text');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

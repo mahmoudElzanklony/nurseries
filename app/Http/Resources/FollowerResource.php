@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class NotificationResource extends JsonResource
+class FollowerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,7 @@ class NotificationResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'sender'=>UserResource::make($this->sender),
-          'content'=>$this->{app()->getLocale().'_content'},
-          'url'=>$this->url,
-          'seen'=>$this->seen,
+          'follower'=>UserResource::make($this->whenLoaded('follower')),
           'created_at'=>$this->created_at->format('Y m d, h:i A'),
         ];
     }

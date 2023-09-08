@@ -16,6 +16,7 @@ class ProductResource extends JsonResource
     {
         return [
             'id'=>$this->id,
+            'user_id'=>$this->user_id,
             'name'=>$this->{app()->getLocale().'_name'},
             'description'=>$this->{app()->getLocale().'_description'},
             'quantity'=>$this->quantity,
