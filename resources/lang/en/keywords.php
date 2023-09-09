@@ -16,6 +16,13 @@ return [
     'rate'=>'Rate',
     // ----------------------end of  rates- ---------------------
 
+    // ----------------------start of  orders- ---------------------
+    'shipped'=>'Shipped',
+    'delivered'=>'Delivered',
+    'cancelled'=>'Cancelled',
+    // ----------------------end of  orders- ---------------------
+
+
     // ----------------------start Seller info inputs ---------------------
     'name'=>'Name',
     'info'=>'Info',

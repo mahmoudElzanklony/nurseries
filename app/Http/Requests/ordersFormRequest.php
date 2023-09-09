@@ -23,13 +23,28 @@ class ordersFormRequest extends FormRequest
      */
     public function rules()
     {
+        if(str_contains($this->getRequestUri(),'/update-status')){
+            return [
+              'id'=>'required|exists:orders,id',
+              'status'=>'required',
+            ];
+        }else {
+            return [
+                'seller_id' => 'required|exists:users,id',
+                'address' => 'required',
+                'items' => 'required|array',
+                'items.*' => 'required',
+                'payment_method' => 'filled',
+                'has_coupon' => 'filled',
+                'payment_data' => 'required',
+            ];
+        }
+    }
+
+    public function attributes()
+    {
         return [
-            'seller_id'=>'required|exists:users,id',
-            'items'=>'required|array',
-            'items.*'=>'required',
-            'payment_method'=>'filled',
-            'has_coupon'=>'filled',
-            'payment_data'=>'required',
+          'status'=>trans('keywords.status')
         ];
     }
 }

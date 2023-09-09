@@ -15,6 +15,14 @@ class products extends Model
         return $this->morphMany(images::class,'imageable');
     }
 
+    public function seen(){
+        return $this->hasOne(seen::class,'item_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
+
     public function category(){
         return $this->belongsTo(categories::class,'category_id');
     }
@@ -38,5 +46,9 @@ class products extends Model
 
     public function answers(){
         return $this->hasMany(products_questions_answers::class,'product_id');
+    }
+
+    public function rates(){
+        return $this->hasManyThrough(orders_items_rates::class,orders_items::class,'product_id','order_item_id');
     }
 }

@@ -7,8 +7,11 @@ namespace App\Http\traits\helpers_requests_api;
 use App\Actions\MyCurrentPoints;
 use App\Http\Resources\MarketerClientResource;
 use App\Http\traits\messages;
+use App\Models\followers;
 use App\Models\marketer_clients;
+use App\Models\orders;
 use App\Models\packages_orders;
+use App\Models\products;
 use App\Models\projects;
 use App\Models\User;
 use App\Services\DB_connections;
@@ -28,47 +31,28 @@ trait QuickReportUserHelperApi
         $user = User::query()->where('id','=',auth()->id())->with('role')->first();
         if($user->role->name == 'client'){
             return messages::success_output('',$this->client_report($id));
-        }else if($user->role->name == 'marketer'){
-            return messages::success_output('',$this->markter_report($id));
+        }else if($user->role->name == 'seller'){
+            return messages::success_output('',$this->seller_report($id));
         }
     }
 
-    public function markter_report(){
-        $result = [];
-        $clients_of_markter = marketer_clients::query()->with('client')
-            ->select('client_id')
-            ->where('marketer_id','=',auth()->id())->get();
-        $output = [];
-        foreach($clients_of_markter as $client){
+    public function client_report(){
 
-
-            DB_connections::get_wanted_tenant_user($client->client_id);
-            $data = projects::query()->select('id')
-                ->with('operations',function($q){
-                    $q->select('branch_id')->withCount('transactions');
-                })
-                ->withCount('branches','operations')
-                ->where('user_id','=',$client->client_id)->get();
-            $output[] =  $this->handle_date($result,$data,$client->client);
-        }
-        return $output;
-
-    }
-
-    public function client_report($id){
         $result = [
-            'points'=>MyCurrentPoints::get(),
-            'wallet'=>auth()->user()->wallet,
+            'orders'=>orders::query()->where('user_id','=',auth()->id())->count(),
+            'following'=>followers::query()->where('user_id','=',auth()->id())->count(),
         ];
-        DB_connections::get_wanted_tenant_user();
-        $data = projects::query()->select('id')
-            ->with('operations',function($q){
-                $q->select('branch_id')->withCount('transactions');
-            })
-            ->withCount('branches','operations')
-            ->where('user_id','=',$id ?? auth()->id())->get();
+        return $result;
 
-        return $this->handle_date($result,$data);
+    }
+
+    public function seller_report($id){
+        $result = [
+            'products'=>products::query()->where('user_id','=',$id)->count(),
+            'followers'=>followers::query()->where('following_id',$id)->count(),
+            'orders'=>orders::query()->where('seller_id','=',$id)->count(),
+        ];
+        return $result;
     }
 
     public function handle_date($result,$data,$client = null){

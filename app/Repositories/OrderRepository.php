@@ -26,6 +26,7 @@ class OrderRepository
         $order = orders::query()->create([
            'user_id'=>auth()->id(),
            'seller_id'=>$data['seller_id'],
+           'address'=>$data['address'],
            'payment_method'=>$data['payment_method'] ?? 'visa',
            'has_coupon'=>$data['has_coupon'] ?? 0,
            'seller_profit'=>0,

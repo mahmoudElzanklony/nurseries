@@ -12,6 +12,7 @@ use App\Http\Resources\OrderResource;
 use App\Http\traits\messages;
 use App\Models\orders;
 use App\Models\orders_items;
+use App\Models\orders_shipment_info;
 use App\Models\reports;
 use App\Models\User;
 use App\Repositories\OrderRepository;
@@ -58,6 +59,36 @@ class OrdersController extends Controller
             ->orderBy('id','DESC')
             ->get();
         return OrderResource::collection($data);
+    }
+
+    public function update_status(ordersFormRequest $request){
+        $order = orders::query()->where('id','=',request('id'))->first();
+        if($order != null){
+            $status = request('status');
+            if($this->validate_update_order($status) == true) {
+                orders_shipment_info::query()->create([
+                    'user_id' => auth()->id(),
+                    'order_id' => $order->id,
+                    'content' => $status
+                ]);
+                return messages::success_output(messages::success_output('messages.operation_saved_successfully'));
+            }else{
+                return messages::error_output('error in status value you sent  of this order');
+            }
+        }
+    }
+
+    public function validate_update_order($status){
+        $available_statues = ['shipped','delivered'];
+        $user = User::query()->with('role')->find(auth()->id());
+        if($user->role->name == 'client' && $status != 'cancelled') {
+            return false;
+        }else if($user->role->name == 'seller'){
+            if(!(in_array($status,$available_statues))){
+                return false;
+            }
+        }
+        return true;
     }
 
 }

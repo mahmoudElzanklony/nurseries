@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Actions\ImageModalSave;
 use App\Http\Requests\usersFormRequest;
 use App\Http\traits\messages;
 use App\Models\packages_orders;
@@ -19,6 +20,7 @@ class UsersController extends Controller
 {
     //
     use messages , QuickReportUserHelperApi,MarketerProfitHelperApi,upload_image;
+
     public function update_personal_info(usersFormRequest $usersFormRequest){
         $data = $usersFormRequest->validated();
         if(request('password') != '') {
@@ -26,11 +28,15 @@ class UsersController extends Controller
         }
         if(request()->hasFile('image')){
             $image = $this->upload(request()->file('image'),'users');
-            $data['image'] = $image;
+            ImageModalSave::make(auth()->id(),'users','users/'.$image);
         }
         User::query()->where('id',auth()->id())->update($data);
         $output = User::query()->find(auth()->id());
         return messages::success_output(trans('messages.updated_successfully'),$output);
+    }
+
+    public function update_password(usersFormRequest $usersFormRequest){
+        $data = $usersFormRequest->validated();
     }
 
     public function points_transactions(){

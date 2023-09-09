@@ -8,8 +8,10 @@ use App\Actions\SeenItem;
 use App\Filters\CategoryIdFilter;
 use App\Filters\EndDateFilter;
 use App\Filters\IDsFilter;
+use App\Filters\NameFilter;
 use App\Filters\products\MaxPriceFilter;
 use App\Filters\products\MinPriceFilter;
+use App\Filters\products\SellerNameFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\UserIdFilter;
 use App\Http\Requests\ProductsFormRequest;
@@ -54,7 +56,9 @@ class ProductsControllerResource extends Controller
                 MinPriceFilter::class,
                 MaxPriceFilter::class,
                 UserIdFilter::class,
-                IDsFilter::class
+                IDsFilter::class,
+                NameFilter::class,
+                SellerNameFilter::class
             ])
             ->thenReturn()
             ->paginate(10);

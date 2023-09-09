@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class productRateFormRequest extends FormRequest
+class articleFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +24,16 @@ class productRateFormRequest extends FormRequest
     public function rules()
     {
         return [
-           'id'=>'filled',
-           'product_id'=>'required|exists:products,id',
-           'comment'=>'required',
-           'rate'=>'required',
+            'title'=>'required',
+            'description'=>'required',
         ];
     }
 
     public function attributes()
     {
         return [
-          'product_id'=>trans('keywords.product'),
-          'comment'=>trans('keywords.comment'),
-          'rate'=>trans('keywords.rate'),
+          'title'=>trans('keywords.name'),
+          'description'=>trans('keywords.info'),
         ];
     }
 }

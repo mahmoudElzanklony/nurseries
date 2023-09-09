@@ -21,12 +21,12 @@ class FilterRequest
           });
         })
             // filter start date
-            ->when($filter != '' && $filter == 'start_date',
+            ->when($filter != '' && $filter == 'start_date' && request()->input($filter) != '',
                 function ($q) use ($filter){
                     $q->where('created_at','>=', request()->input($filter));
                 })
             // filter end date
-            ->when($filter != '' && $filter == 'end_date',
+            ->when($filter != '' && $filter == 'end_date' && request()->input($filter) != '',
             function ($q) use ($filter){
                 $q->where('created_at','<=', request()->input($filter));
             });

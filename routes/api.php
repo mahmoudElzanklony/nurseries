@@ -21,6 +21,7 @@ use App\Http\Controllers\SellerInfoController;
 use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\ProductsControllerResource;
 use App\Http\Controllers\CategoriesControllerResource;
+use App\Http\Controllers\ArticlesControllerResource;
 use App\Http\Controllers\SearchesController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\RateController;
@@ -52,7 +53,8 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     Route::resources([
         'products'=>ProductsControllerResource::class,
-        'categories'=>CategoriesControllerResource::class
+        'categories'=>CategoriesControllerResource::class,
+        'articles'=>ArticlesControllerResource::class
     ]);
 
     // ---------------------start of categories actions --------------------
@@ -101,14 +103,16 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/orders','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[OrdersController::class,'all_orders']);
         Route::post('/make',[OrdersController::class,'make_order']);
+        Route::post('/update-status',[OrdersController::class,'update_status']);
 
     });
     // ---------------------end of orders actions --------------------
 
 
+
     // ---------------------start of rates actions --------------------
     Route::group(['prefix'=>'/rates','middleware'=>'CheckApiAuth'],function (){
-        Route::get('/make',[RateController::class,'make']);
+        Route::post('/make',[RateController::class,'make']);
 
     });
     // ---------------------end of rates actions --------------------
@@ -116,26 +120,12 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
     // ---------------------start of users actions --------------------
-    Route::group(['prefix'=>'/user','middleware'=>'CheckApiAuth'],function (){
+    Route::group(['prefix'=>'/profile','middleware'=>'CheckApiAuth'],function (){
         Route::post('/update-personal-info',[UsersController::class,'update_personal_info']);
         Route::post('/report',[UsersController::class,'quick_report']);
-        Route::post('/points-transactions',[UsersController::class,'points_transactions']);
-        // ==========================start of marketer=========================
-        Route::group(['prefix'=>'/marketer'],function (){
-            Route::post('/profit',[UsersController::class,'get_profit']);
-            Route::post('/profit-percentage',[UsersController::class,'profit_percentage']);
-            Route::post('/request-take-profit',[UsersController::class,'request_profit']);
-        });
-        // ==========================end of marketer=========================
-
     });
     // ---------------------end of users actions --------------------
 
-    // ---------------------start of payment actions --------------------
-    Route::group(['prefix'=>'/payment'],function (){
-        Route::post('/make',[PaymentActionsController::class,'do_payment'])->middleware('CheckApiAuth');
-    });
-    // ---------------------end of payment actions --------------------
 
 
 

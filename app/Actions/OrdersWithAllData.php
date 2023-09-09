@@ -12,7 +12,7 @@ class OrdersWithAllData
 {
     public static function get(){
         $user = User::query()->with('role')->find(auth()->id());
-        $orders = orders::query()->with(['items'=>function($e){
+        $orders = orders::query()->with(['shipments_info','items'=>function($e){
             $e->with(['product','features']);
         }])
             ->addSelect([

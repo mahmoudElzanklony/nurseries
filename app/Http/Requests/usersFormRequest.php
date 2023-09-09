@@ -87,8 +87,8 @@ class usersFormRequest extends FormRequest
 
     public function update_personal_data(){
         return [
-            'full_name'=>'required|max:191',
             'username'=>'required|max:191',
+            'email'=>'required|max:191|email|unique:users,email,'.auth()->user()->id,
             'phone'=>'required|min:7',
         ];
     }
@@ -100,8 +100,8 @@ class usersFormRequest extends FormRequest
             return $this->login();
         }if(str_contains($this->getRequestUri(),'check-otp')){
         return $this->check_otp();
-    }else if(str_contains($this->getRequestUri() , '/update-personal') || str_contains($this->getRequestUri() , '/register')){
-            return $this->personal_info();
+        }else if(str_contains($this->getRequestUri() , '/update-personal') || str_contains($this->getRequestUri() , '/register')){
+            return $this->update_personal_data();
         }else if(str_contains($this->getRequestUri() , '/profile/update-password')){
             return $this->update_password();
         }else if(str_contains($this->getRequestUri() , '/newpass')){
