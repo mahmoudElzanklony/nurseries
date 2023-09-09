@@ -16,6 +16,9 @@ use App\Http\Requests\articleFormRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\traits\messages;
 use App\Models\articles;
+use App\Models\articles_comments;
+use App\Models\likes;
+use App\Services\users\toggle_data;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
 use Illuminate\Pipeline\Pipeline;
@@ -24,7 +27,7 @@ class ArticlesControllerResource extends Controller
 {
     public function __construct()
     {
-        $this->middleware('CheckApiAuth')->only('store');
+        $this->middleware('CheckApiAuth')->only(['store','make_comment','make_like']);
     }
 
     use upload_image;
@@ -101,12 +104,26 @@ class ArticlesControllerResource extends Controller
         }
     }
 
+
+    public function save_comment(articleFormRequest $request){
+        $data = $request->validated();
+        $data['user_id'] = auth()->id();
+        $art = articles_comments::query()->updateOrCreate([
+            'id' => request('id') ?? null
+        ], $data);
+        return messages::success_output(trans('messages.operation_saved_successfully'),$art);
+    }
+
+    public function save_like(articleFormRequest $request){
+        return toggle_data::toggle_like(request('article_id'),'articles');
+    }
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function edit($id)
     {
         //

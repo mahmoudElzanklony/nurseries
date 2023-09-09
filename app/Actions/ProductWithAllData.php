@@ -13,6 +13,7 @@ class ProductWithAllData
             ->when(GetAuthenticatedUser::get_info() != null , function ($e){
                 $e->with('favourite');
             })
+            ->withCount('likes')
             ->with(['category','user','seen','images','rates.user','wholesale_prices','discounts'
                 ,'features'=>function($f){
                     $f->with('feature');

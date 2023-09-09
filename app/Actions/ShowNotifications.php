@@ -12,7 +12,7 @@ class ShowNotifications
     public static function get_data(){
         $user = User::query()->with('role:id,name')->where('id',auth()->id())->first();
         $notifications = notifications::query()->with('sender');
-        if($user->role->name == 'client' || $user->role->name == 'marketer'){
+        if($user->role->name == 'client' || $user->role->name == 'seller'){
             $notifications->where('receiver_id','=',auth()->id());
         }else{
             $notifications->whereHas('receiver',function($q){
@@ -21,6 +21,6 @@ class ShowNotifications
                 });
             });
         }
-        return $notifications->orderBy('id','DESC')->pagisnate(8);
+        return $notifications->orderBy('id','DESC')->paginate(15);
     }
 }

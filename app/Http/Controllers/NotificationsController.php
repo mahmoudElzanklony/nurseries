@@ -13,7 +13,6 @@ class NotificationsController extends Controller
     //
     // all notifications
     public function index(){
-
         return NotificationResource::collection(ShowNotifications::get_data());
 
     }

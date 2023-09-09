@@ -15,6 +15,10 @@ class articles extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function likes(){
+        return $this->hasMany(likes::class,'item_id');
+    }
+
     public function seen(){
         return $this->hasOne(seen::class,'item_id');
     }

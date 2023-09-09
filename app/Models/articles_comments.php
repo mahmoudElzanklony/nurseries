@@ -10,4 +10,8 @@ class articles_comments extends Model
     use HasFactory;
 
     protected $fillable = ['article_id','user_id','comment'];
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

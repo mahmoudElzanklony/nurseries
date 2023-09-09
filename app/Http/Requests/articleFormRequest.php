@@ -23,10 +23,17 @@ class articleFormRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'title'=>'required',
-            'description'=>'required',
-        ];
+        if(str_contains($this->getRequestUri(),'save')){
+            return [
+                'article_id'=>'required|exists:articles,id',
+                'comment'=>'filled',
+            ];
+        }else {
+            return [
+                'title' => 'required',
+                'description' => 'required',
+            ];
+        }
     }
 
     public function attributes()

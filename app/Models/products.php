@@ -15,6 +15,10 @@ class products extends Model
         return $this->morphMany(images::class,'imageable');
     }
 
+    public function likes(){
+        return $this->hasMany(likes::class,'item_id');
+    }
+
     public function seen(){
         return $this->hasOne(seen::class,'item_id');
     }

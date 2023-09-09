@@ -118,6 +118,15 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------end of rates actions --------------------
 
 
+    // ---------------------start of articles actions --------------------
+    Route::group(['prefix'=>'/articles','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/save-comment',[ArticlesControllerResource::class,'save_comment']);
+        Route::post('/save-like',[ArticlesControllerResource::class,'save_like']);
+
+    });
+    // ---------------------end of articles actions --------------------
+
+
 
     // ---------------------start of users actions --------------------
     Route::group(['prefix'=>'/profile','middleware'=>'CheckApiAuth'],function (){
@@ -130,7 +139,7 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
 
-    Route::post('/notifications/',[NotificationsController::class,'index'])->middleware('CheckApiAuth');
+    Route::post('/notifications',[NotificationsController::class,'index'])->middleware('CheckApiAuth');
 
     //----------------------- start of orders------------------
     Route::group(['prefix'=>'/orders'],function(){

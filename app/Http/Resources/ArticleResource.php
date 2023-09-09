@@ -20,6 +20,7 @@ class ArticleResource extends JsonResource
           'description'=>$this->description,
           'user'=>UserResource::make($this->whenLoaded('user')),
           'seen'=>$this->seen->count ?? 0,
+          'likes_count'=>$this->likes_count,
           'images'=>ImagesResource::collection($this->whenLoaded('images')),
           'comments'=>CommentResource::collection($this->whenLoaded('comments')),
           'created_at'=>$this->created_at->format('Y m d, h:i A'),

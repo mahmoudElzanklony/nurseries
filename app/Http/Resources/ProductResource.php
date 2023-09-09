@@ -25,6 +25,7 @@ class ProductResource extends JsonResource
             'images'=>ImagesResource::collection($this->whenLoaded('images')),
             'favourite'=>FavouriteResource::make($this->favourite),
             'seen'=>$this->seen->count ?? 0,
+            'likes_count'=>$this->likes_count,
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
             'avg_rates'=>round($this->rates->avg('rate'),2),
             'user'=>UserResource::make($this->whenLoaded('user')),
