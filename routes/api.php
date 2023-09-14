@@ -22,6 +22,10 @@ use App\Http\Controllers\FollowersController;
 use App\Http\Controllers\ProductsControllerResource;
 use App\Http\Controllers\CategoriesControllerResource;
 use App\Http\Controllers\ArticlesControllerResource;
+use App\Http\Controllers\UsersAddressControllerResource;
+use App\Http\Controllers\AreasControllerResource;
+use App\Http\Controllers\CitiesControllerResource;
+use App\Http\Controllers\GovermentsControllerResource;
 use App\Http\Controllers\SearchesController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\RateController;
@@ -54,7 +58,11 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::resources([
         'products'=>ProductsControllerResource::class,
         'categories'=>CategoriesControllerResource::class,
-        'articles'=>ArticlesControllerResource::class
+        'articles'=>ArticlesControllerResource::class,
+        'addresses'=>UsersAddressControllerResource::class,
+        'governments'=>GovermentsControllerResource::class,
+        'cities'=>CitiesControllerResource::class,
+        'areas'=>AreasControllerResource::class,
     ]);
 
     // ---------------------start of categories actions --------------------

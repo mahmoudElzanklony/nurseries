@@ -6,10 +6,9 @@ use App\Http\Requests\cityFormRequest;
 use App\Http\Resources\CityResource;
 use App\Http\traits\messages;
 use App\Models\cities;
-use App\Models\countries;
 use Illuminate\Http\Request;
 
-class CitiesController extends Controller
+class CitiesControllerResource extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,9 +18,9 @@ class CitiesController extends Controller
     public function index()
     {
         //
-        $data = cities::query()->with('country')->when(request()->has('country_id'),function($e){
-            $e->where('country_id','=',request('country_id'));
-        })->get();
+        $data = cities::query()->when(request()->has('government_id'),function($e){
+            $e->where('government_id','=',request('government_id'));
+        })->orderBy('id','DESC')->get();
         return CityResource::collection($data);
     }
 
@@ -30,11 +29,6 @@ class CitiesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -45,8 +39,11 @@ class CitiesController extends Controller
     public function store(Request $request, cityFormRequest $formRequest)
     {
         //
-        cities::query()->create($formRequest->validated());
-        return messages::success_output(trans('messages.saved_successfully'));
+        $data = $formRequest->validated();
+        $city = cities::query()->updateOrCreate([
+            'id'=>$data['id'] ?? null
+        ],$data);
+        return messages::success_output(trans('messages.saved_successfully'),$city);
     }
 
     /**
@@ -60,7 +57,6 @@ class CitiesController extends Controller
         //
     }
 
-
     /**
      * Update the specified resource in storage.
      *
@@ -68,13 +64,9 @@ class CitiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id, cityFormRequest $formRequest)
+    public function update(Request $request, $id)
     {
         //
-        cities::query()->updateOrCreate([
-            'id'=>request()->has('id') ? request('id'):null,
-        ],$formRequest->validated());
-        return messages::success_output(trans('messages.updated_successfully'));
     }
 
     /**

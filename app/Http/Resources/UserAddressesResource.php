@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CityResource extends JsonResource
+class UserAddressesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +16,12 @@ class CityResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>$this->{app()->getLocale().'_name'},
-          'government'=>GovernmentResource::make($this->whenLoaded('government')),
-          'created_at'=>$this->created_at->format('Y h d,h:i A'),
+          'user_id'=>$this->id,
+          'address'=>$this->address,
+          'default_address'=>$this->default_address,
+          'area'=>AreaResource::make($this->whenLoaded('area')),
+          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+
         ];
     }
 }

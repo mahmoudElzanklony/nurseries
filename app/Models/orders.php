@@ -9,7 +9,7 @@ class orders extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['user_id','seller_id','payment_method','address','has_coupon','seller_profit'];
+    protected $fillable = ['user_id','seller_id','payment_method','has_coupon','seller_profit','financial_reconciliation_id'];
 
     public function seller(){
         return $this->belongsTo(User::class,'user_id');

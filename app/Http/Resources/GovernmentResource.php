@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CityResource extends JsonResource
+class GovernmentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,8 +17,8 @@ class CityResource extends JsonResource
         return [
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
-          'government'=>GovernmentResource::make($this->whenLoaded('government')),
           'created_at'=>$this->created_at->format('Y h d,h:i A'),
+
         ];
     }
 }

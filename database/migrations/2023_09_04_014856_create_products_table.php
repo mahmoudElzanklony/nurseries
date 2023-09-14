@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
             $table->text('en_description')->nullable();
             $table->integer('quantity');
             $table->float('main_price');
+            $table->float('main_delivery_price');
             $table->softDeletes();
             $table->timestamps();
         });

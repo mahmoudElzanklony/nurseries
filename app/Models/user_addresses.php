@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class cities extends Model
+class user_addresses extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['government_id','ar_name','en_name'];
+    protected $fillable = ['user_id','area_id','address','default_address'];
 
-    public function government(){
-        return $this->belongsTo(governments::class,'government_id');
+    public function area(){
+        return $this->belongsTo(areas::class,'area_id');
     }
-
-
 }
