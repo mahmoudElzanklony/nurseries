@@ -25,6 +25,7 @@ use App\Http\Controllers\ArticlesControllerResource;
 use App\Http\Controllers\UsersAddressControllerResource;
 use App\Http\Controllers\AreasControllerResource;
 use App\Http\Controllers\CitiesControllerResource;
+use App\Http\Controllers\FinancialReconciliationsControllerResource;
 use App\Http\Controllers\GovermentsControllerResource;
 use App\Http\Controllers\SearchesController;
 use App\Http\Controllers\FavouriteController;
@@ -63,6 +64,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         'governments'=>GovermentsControllerResource::class,
         'cities'=>CitiesControllerResource::class,
         'areas'=>AreasControllerResource::class,
+        'financial'=>FinancialReconciliationsControllerResource::class,
     ]);
 
     // ---------------------start of categories actions --------------------
@@ -150,22 +152,8 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::post('/notifications',[NotificationsController::class,'index'])->middleware('CheckApiAuth');
 
     //----------------------- start of orders------------------
-    Route::group(['prefix'=>'/orders'],function(){
-        Route::post('/client-orders',[OrdersController::class,'client_orders']);
-        Route::post('/accept',[OrdersController::class,'accept']);
 
-    });
     //----------------------- end of orders------------------
-
-    //----------------------- start of remote connections------------------
-    Route::group(['prefix'=>'/remote-connections'],function(){
-        Route::post('/db-test-connect',[RemoteConnectionController::class,'db_test_connect']);
-        Route::post('/show-tables',[RemoteConnectionController::class,'show_tables']);
-        Route::post('/show-columns',[RemoteConnectionController::class,'show_columns']);
-    });
-    //----------------------- end of remote connections------------------
-
-
 
     //----------------------- start of dashboard------------------
     Route::group(['prefix'=>'/dashboard','middleware'=>['CheckApiAuth']],function(){
@@ -190,14 +178,6 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::post('/messages',[DashboardController::class,'messages']);
     });
     //=========================end of tickets==================
-
-    //=========================start of marketer==================
-    Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
-        Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);
-        Route::post('/make',[DashboardController::class,'make_ticket']);
-        Route::post('/reply',[DashboardController::class,'reply_ticket']);
-    });
-    //=========================end of marketer==================
 
     // delete item
     Route::post('/delete-item',[GeneralServiceController::class,'delete_item']);

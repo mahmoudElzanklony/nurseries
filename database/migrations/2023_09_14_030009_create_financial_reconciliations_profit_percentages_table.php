@@ -13,9 +13,9 @@ class CreateFinancialReconciliationsProitPercentagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('financial_reconciliations_proit_percentages', function (Blueprint $table) {
+        Schema::create('financial_reconciliations_profit_percentages', function (Blueprint $table) {
             $table->id();
-            $table->string('from_who'); // from admin , fro
+            $table->string('from_who'); // from admin , seller
             $table->float('percentage');
             $table->string('note')->nullable();
             $table->softDeletes();

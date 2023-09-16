@@ -15,6 +15,10 @@ class orders extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function products(){
+        return $this->hasManyThrough(products::class,orders_items::class,'order_id','id');
+    }
+
     public function shipments_info(){
         return $this->hasMany(orders_shipment_info::class,'order_id');
     }

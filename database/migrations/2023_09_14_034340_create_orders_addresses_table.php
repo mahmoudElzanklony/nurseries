@@ -18,6 +18,7 @@ class CreateOrdersAddressesTable extends Migration
             $table->foreignId('order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('user_address_id')->constrained('user_addresses')->onUpdate('cascade')->onDelete('cascade');
             $table->float('delivery_price');
+            $table->integer('days_delivery');
             $table->timestamps();
         });
     }

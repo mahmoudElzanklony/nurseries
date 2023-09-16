@@ -4,19 +4,46 @@
 namespace App\Repositories;
 
 
+use App\Actions\CheckProductSupportDeliveryToUserAddress;
+use App\Actions\DefaultAddress;
+use App\Actions\DeliveryOfOrder;
 use App\Actions\SendNotification;
 use App\Http\Controllers\classes\payment\VisaPayment;
 use App\Http\traits\messages;
 use App\Models\notifications;
 use App\Models\orders;
+use App\Models\orders_addresses;
 use App\Models\orders_items;
 use App\Models\orders_items_features;
 use App\Models\products;
 use App\Models\products_features_prices;
+use App\Models\user_addresses;
 
 class OrderRepository
 {
     public $order;
+    public $default_address;
+
+    public function __construct($default_address)
+    {
+        $this->default_address = $default_address;
+    }
+
+    public  function check_delivery_products($products){
+        $err = 0;
+        foreach($products as $product){
+            if(CheckProductSupportDeliveryToUserAddress::check($product['product_id'],$this->default_address) == false){
+                $err++;
+                $product = products::query()->select(app()->getLocale().'_name as name')->find($product['product_id']);
+                break;
+            }
+        }
+        return [
+            'error'=>$err,
+            'product_name'=>$product->name ?? ''
+        ];
+    }
+
     public function validate_payment_info($data){
         $visa_obj = new VisaPayment();
         return $visa_obj->handle($data);
@@ -26,7 +53,6 @@ class OrderRepository
         $order = orders::query()->create([
            'user_id'=>auth()->id(),
            'seller_id'=>$data['seller_id'],
-           'address'=>$data['address'],
            'payment_method'=>$data['payment_method'] ?? 'visa',
            'has_coupon'=>$data['has_coupon'] ?? 0,
            'seller_profit'=>0,
@@ -43,8 +69,22 @@ class OrderRepository
         return $this;
     }
 
+
+    public function order_address($delivery_days,$delivery_price){
+        // get price and days of this order
+        // DeliveryOfOrder::get();
+        orders_addresses::query()->create([
+            'order_id'=>$this->order->id,
+            'user_address_id'=>$this->default_address->id,
+            'delivery_price'=>$delivery_price,
+            'days_delivery'=>$delivery_days,
+        ]);
+    }
+
     public function order_items($items){
         $err_quantity = 0;
+        $total_price_delivery = 0;
+        $total_days_delivery = 0;
         foreach($items as $item){
             $product = products::query()->with(['wholesale_prices','discounts'=>function($e){
                 $e->where('start_date','<=',date('Y-m-d'))
@@ -66,6 +106,11 @@ class OrderRepository
                         'quantity' => $item['quantity'],
                         'price' => $final_price,
                     ]);
+                    // get price of delivery , get days of delivery
+                    $price_days_delivery = DeliveryOfOrder::get($this->default_address,$item['product_id']);
+                    $total_price_delivery += ($price_days_delivery->price ?? 0);
+                    $total_days_delivery += ($price_days_delivery->days_delivery ?? 0);
+
                     // remove from product stock the amount of quantity client take
                     $this->remove_from_stock($product,$item['quantity']);
                     // handle order items features
@@ -80,6 +125,8 @@ class OrderRepository
         if($err_quantity > 0){
             return messages::error_output($msg ?? 'error in quantity');
         }
+        $this->order_address($total_price_delivery,round($total_days_delivery/sizeof($items)));
+
     }
 
     public function orders_items_features($order_item_id,$product,$discount,$features){

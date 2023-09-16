@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\DefaultAddress;
 use App\Actions\OrdersWithAllData;
 use App\Actions\SendNotification;
 use App\Filters\orders\PaymentTypeFilter;
@@ -28,7 +29,17 @@ class OrdersController extends Controller
     public function make_order(ordersFormRequest $request){
         DB::beginTransaction();
         $data = $request->validated();
-        $order_repo = new OrderRepository();
+        $default_address = DefaultAddress::get();
+        // check if user has no default address for delivery order
+        if($default_address == null){
+            return messages::error_output(trans('errors.no_default_address'));
+        }
+        $order_repo = new OrderRepository($default_address);
+        // check if this of any these products any one that has no delivery way to default client address
+        $check_err_delivery = $order_repo->check_delivery_products($data['items']);
+        if($check_err_delivery['error'] > 0){
+            return messages::error_output($check_err_delivery['product_name'].trans('errors.product_doesnt_support_delivery'));
+        }
         if($order_repo->validate_payment_info($data)['status'] == true){
             // the visa is okay now
             $result = $order_repo->init_order($data)->order_items($data['items']);

@@ -17,5 +17,8 @@ return [
     'incorrect_otp'=>'Otp number is not correct please try again',
     'quantity_not_exists_for'=>'Quantity in stock not available for ',
     'please_order_this_product_to_rate_it'=>'Please order this product first so you can rate it',
+    'no_default_address'=>'No default address for delivery process',
+    'product_doesnt_support_delivery'=>' Has no support to delivery to your default location',
+
 
 ];

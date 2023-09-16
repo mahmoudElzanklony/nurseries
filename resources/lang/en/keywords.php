@@ -17,6 +17,7 @@ return [
     // ----------------------end of  rates- ---------------------
 
     // ----------------------start of  orders- ---------------------
+    'orders'=>'Orders',
     'shipped'=>'Shipped',
     'delivered'=>'Delivered',
     'cancelled'=>'Cancelled',

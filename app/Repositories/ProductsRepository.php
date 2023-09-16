@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Actions\ImageModalSave;
 use App\Models\products;
+use App\Models\products_delivery;
 use App\Models\products_discount;
 use App\Models\products_features_prices;
 use App\Models\products_questions_answers;
@@ -74,5 +75,14 @@ class ProductsRepository
             }
         }
         return $this;
+    }
+
+    public function save_product_deliveries($data){
+        foreach($data as $d){
+            $d['product_id'] = $this->product->id;
+            products_delivery::query()->updateOrCreate([
+               'id'=>$d['id'] ?? null
+            ],$d);
+        }
     }
 }

@@ -48,6 +48,8 @@ class ProductsFormRequest extends FormRequest
             'answers.*'=>'required',
             'features'=>'required|array',
             'features.*'=>'required',
+            'deliveries'=>'required|array',
+            'deliveries.*'=>'required',
             'discounts'=>'filled|array',
             'discounts.*'=>'required',
 
