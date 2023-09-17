@@ -16,12 +16,13 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->constrained('roles')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('country_id')->constrained('countries')->onUpdate('cascade')->onDelete('cascade');
             $table->string('username');
             $table->string('email')->unique();
             $table->string('activation_code');
-            $table->string('password');
             $table->string('phone');
             $table->string('address')->nullable();
+            $table->string('register_by');
             $table->tinyInteger('block')->default(0);
             $table->integer('activation_status')->default(0);
             $table->rememberToken();

@@ -9,7 +9,7 @@ class orders_items_rates extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','order_item_id','comment','rate'];
+    protected $fillable = ['user_id','order_item_id','comment','rate_product_info','rate_product_services','rate_product_delivery'];
 
     public function user(){
         return $this->belongsTo(User::class,'user_id');

@@ -26,7 +26,7 @@ class usersFormRequest extends FormRequest
     public function login(){
         return [
             'email'=>'required|email|max:191',
-            'password'=>'required|min:6|max:191',
+           // 'password'=>'required|min:6|max:191',
         ];
     }
 
@@ -37,12 +37,21 @@ class usersFormRequest extends FormRequest
         ];
     }
 
+    public function register(){
+        return [
+            'phone'=>'filled',
+            'country_code'=>'required',
+            'type'=>'required',
+            'email'=>'filled',
+            'register_by'=>'required',
+        ];
+    }
+
     public function personal_info(){
         return [
             //
             'username'=>'required|max:191',
-            'email'=>'required|email|max:191|unique:users,email'.(auth()->check() ? ( auth()->user()->role_id == 1?','.auth()->id():','.request('id')):''),
-            'password'=>'nullable|min:7|confirmed|max:191',
+            'email'=>'filled|email|max:191|unique:users,email'.(auth()->check() ? ( auth()->user()->role_id == 1?','.auth()->id():','.request('id')):''),
             'phone'=>'required|min:7',
             'address'=>'filled|max:191',
             'type'=>'required',
@@ -54,8 +63,8 @@ class usersFormRequest extends FormRequest
             'country_id'=>'required|integer|exists:countries,id',
             'username'=>'required|max:191',
             'email'=>'required|email|max:191|unique:users,email,'.request('id'),
-            'password'=>'filled|confirmed|min:7|max:191',
-            'password_confirmation' => 'required| min:7',
+/*            'password'=>'filled|confirmed|min:7|max:191',
+            'password_confirmation' => 'required| min:7',*/
             'phone'=>'required|min:7',
             'address'=>'nullable|max:191',
             'block'=>'required',
@@ -89,7 +98,8 @@ class usersFormRequest extends FormRequest
         return [
             'username'=>'required|max:191',
             'email'=>'required|max:191|email|unique:users,email,'.auth()->user()->id,
-            'phone'=>'required|min:7',
+            'phone'=>'filled|min:7',
+            'address'=>'filled',
         ];
     }
 
@@ -99,8 +109,10 @@ class usersFormRequest extends FormRequest
         if(str_contains($this->getRequestUri(),'/login')){
             return $this->login();
         }if(str_contains($this->getRequestUri(),'check-otp')){
-        return $this->check_otp();
-        }else if(str_contains($this->getRequestUri() , '/update-personal') || str_contains($this->getRequestUri() , '/register')){
+        return $this->check_otp(); //
+        }if(str_contains($this->getRequestUri() , '/register')){
+        return $this->register();
+        }else if(str_contains($this->getRequestUri() , '/update-personal') ){
             return $this->update_personal_data();
         }else if(str_contains($this->getRequestUri() , '/profile/update-password')){
             return $this->update_password();

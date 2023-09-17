@@ -25,4 +25,5 @@ return [
     'please_order_this_product_to_rate_it'=>'من فضلك اشتري المنتج لكي تتمكن من تقيمة',
     'no_default_address'=>'لا يوجد عنوان افتراضي لعملية التوصيل',
     'product_doesnt_support_delivery'=>' لا يدعم التوصيل لعنوانك الافتراضي',
+    'wrong_otp'=>'رقم otp غير صحيح برجاء المحاولة مرة اخري',
 ];

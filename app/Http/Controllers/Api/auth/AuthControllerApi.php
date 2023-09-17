@@ -53,16 +53,16 @@ class AuthControllerApi extends AuthServicesClass
     public function login_api(){
         $data = Validator::make(request()->all(),[
             'phone'=>'required',
-            'password'=>'required',
+            'activation_code'=>'required',
         ]);
         if(sizeof($data->errors()) == 0) {
 
-            $credential = request()->only(['phone', 'password']);
-            $token = Auth::guard('api')->attempt($credential);
-            if(!$token){
-                return messages::error_output(trans('errors.unauthenticated'));
+            $credential = request()->only(['phone', 'activation_code']);
+            $user = User::query()->where($credential)->first();
+            if($user == null){
+                return messages::error_output(trans('errors.wrong_otp'));
             }else {
-                $user = auth('api')->user();
+                $token = Auth::guard('api')->login($user);
                 $role = roles::query()->find($user->role_id);
                 $user['role'] = $role;
                 $user['token'] =  $token;

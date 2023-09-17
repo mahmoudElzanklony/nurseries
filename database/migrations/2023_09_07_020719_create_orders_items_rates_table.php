@@ -18,7 +18,9 @@ class CreateOrdersItemsRatesTable extends Migration
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('order_item_id')->constrained('orders_items')->onUpdate('cascade')->onDelete('cascade');
             $table->text('comment');
-            $table->integer('rate');
+            $table->integer('rate_product_info');
+            $table->integer('rate_product_delivery');
+            $table->integer('rate_product_services');
             $table->timestamps();
         });
     }

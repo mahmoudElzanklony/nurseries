@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\SellerRateAVG;
+use App\Actions\WantToBeRated;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -14,6 +16,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        $seller_avg_rate = SellerRateAVG::get($this->user_id);
         return [
             'id'=>$this->id,
             'user_id'=>$this->user_id,
@@ -26,8 +29,10 @@ class ProductResource extends JsonResource
             'favourite'=>FavouriteResource::make($this->favourite),
             'seen'=>$this->seen->count ?? 0,
             'likes_count'=>$this->likes_count,
+            'want_rate'=>WantToBeRated::check($this->id),
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
-            'avg_rates'=>round($this->rates->avg('rate'),2),
+            'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),
+            'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
             'user'=>UserResource::make($this->whenLoaded('user')),
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),

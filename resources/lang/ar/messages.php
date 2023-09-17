@@ -14,6 +14,7 @@ return [
   'added_like_successfully'=>'تمت اضافه الاعجاب بنجاح',
   'added_to_following_successfully'=>'تمت اضافه عملية المتابعه بنجاح',
   'sent_successfully'=>'تمت عملية الارسال بنجاح',
+  'sent_otp_successfully'=>'تم ارسال  otp بنجاح',
   'confirmed_bought'=>'تمت عملية شراء نقاط الباقة بنجاح',
   'email_sent_successfully'=>'تم ارسال لك رساله علي البريد الالكتروني',
   'payment_success'=>'تمت عملية الدفع بنجاح',

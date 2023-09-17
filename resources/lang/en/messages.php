@@ -14,6 +14,8 @@ return [
     'added_like_successfully'=>'Like operation has been done successfully',
     'added_to_following_successfully'=>'Following operation has been done successfully',
     'sent_successfully'=>'operation done successfully',
+    'sent_otp_successfully'=>'OTP was sent successfully',
+
     'email_sent_successfully'=>'Email message has been sent to you successfully',
     'confirmed_bought'=>'operation of buying this package is done successfully',
     'payment_success'=>'Payment has been done successfully',

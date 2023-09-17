@@ -25,9 +25,12 @@ class productRateFormRequest extends FormRequest
     {
         return [
            'id'=>'filled',
-           'product_id'=>'required|exists:products,id',
+           'product_id'=>'filled|exists:products,id',
+           'order_id'=>'filled|exists:orders,id',
            'comment'=>'required',
-           'rate'=>'required',
+           'rate_product_info'=>'required',
+           'rate_product_services'=>'required',
+           'rate_product_delivery'=>'required',
         ];
     }
 
@@ -36,7 +39,9 @@ class productRateFormRequest extends FormRequest
         return [
           'product_id'=>trans('keywords.product'),
           'comment'=>trans('keywords.comment'),
-          'rate'=>trans('keywords.rate'),
+          'rate_product_info'=>trans('keywords.rate_product_info'),
+          'rate_product_services'=>trans('keywords.rate_product_services'),
+          'rate_product_delivery'=>trans('keywords.rate_product_delivery'),
         ];
     }
 }

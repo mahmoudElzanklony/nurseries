@@ -13,8 +13,9 @@ return [
     // ----------------------start of  rates- ---------------------
     'product'=>'Product',
     'comment'=>'Comment',
-    'rate'=>'Rate',
-    // ----------------------end of  rates- ---------------------
+    'rate_product_info'=>'Rate product info',
+    'rate_product_services'=>'Rate product services',
+    'rate_product_delivery'=>'Rate product Delivery',    // ----------------------end of  rates- ---------------------
 
     // ----------------------start of  orders- ---------------------
     'orders'=>'Orders',

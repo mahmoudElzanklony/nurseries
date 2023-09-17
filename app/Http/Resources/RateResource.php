@@ -17,7 +17,9 @@ class RateResource extends JsonResource
         return [
           'id'=>$this->id,
           'comment'=>$this->comment,
-          'rate'=>$this->rate,
+          'rate_product_info'=>$this->rate_product_info,
+          'rate_product_services'=>$this->rate_product_services,
+          'rate_product_delivery'=>$this->rate_product_delivery,
           'user'=>UserResource::make($this->whenLoaded('user')),
         ];
     }

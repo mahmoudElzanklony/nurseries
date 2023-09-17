@@ -23,9 +23,6 @@ class UsersController extends Controller
 
     public function update_personal_info(usersFormRequest $usersFormRequest){
         $data = $usersFormRequest->validated();
-        if(request('password') != '') {
-            $data['password'] = bcrypt(request('password'));
-        }
         if(request()->hasFile('image')){
             $image = $this->upload(request()->file('image'),'users');
             ImageModalSave::make(auth()->id(),'users','users/'.$image);
