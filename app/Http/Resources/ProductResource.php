@@ -34,6 +34,7 @@ class ProductResource extends JsonResource
             'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),
             'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
             'user'=>UserResource::make($this->whenLoaded('user')),
+            'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
             'discounts'=>ProductDiscountsResource::collection($this->whenLoaded('discounts')),

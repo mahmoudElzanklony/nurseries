@@ -52,6 +52,8 @@ class ProductsFormRequest extends FormRequest
             'deliveries.*'=>'required',
             'discounts'=>'filled|array',
             'discounts.*'=>'required',
+            'cares'=>'filled|required',
+            'cares.*'=>'required',
 
         ];
     }
@@ -70,6 +72,7 @@ class ProductsFormRequest extends FormRequest
           'answers'=>trans('keywords.answers'),
           'features'=>trans('keywords.product_features'),
           'discounts'=>trans('keywords.product_discounts'),
+          'cares'=>trans('keywords.cares'),
         ];
     }
 }

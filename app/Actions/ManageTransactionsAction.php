@@ -10,6 +10,7 @@ use Carbon\Carbon;
 
 class ManageTransactionsAction
 {
+
     public static function manage($type = 'create' , $operation){
         $difference = 0;
         $status = false;
@@ -33,7 +34,7 @@ class ManageTransactionsAction
                     } else if ($operation_period_obj->type == 'month') {
                         $time = $time->addMonths($operation_period_obj->period);
                         $difference = $now->diffInMonths($time);
-                    } else if ($operation_period_obj-- > type == 'year') {
+                    } else if ($operation_period_obj-> type == 'year') {
                         $time = $time->addYears($operation_period_obj->period);
                         $difference = $now->diffInYears($time);
                     }
@@ -73,4 +74,5 @@ class ManageTransactionsAction
         }
         return $status;
     }
+
 }

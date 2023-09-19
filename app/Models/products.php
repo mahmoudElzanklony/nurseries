@@ -23,6 +23,10 @@ class products extends Model
         return $this->hasOne(seen::class,'item_id');
     }
 
+    public function cares(){
+        return $this->hasMany(products_care::class,'product_id');
+    }
+
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }

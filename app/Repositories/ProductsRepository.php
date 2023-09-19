@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Actions\ImageModalSave;
 use App\Models\products;
+use App\Models\products_care;
 use App\Models\products_delivery;
 use App\Models\products_discount;
 use App\Models\products_features_prices;
@@ -58,6 +59,20 @@ class ProductsRepository
             foreach($data as $item){
                 $item['product_id'] = $this->product->id;
                 products_wholesale_prices::query()->updateOrCreate([
+                    'id'=>$item['id'] ?? null,
+                ],$item);
+            }
+        }
+        return $this;
+    }
+
+    public function save_product_cares($data){
+        if(sizeof($data) > 0){
+            foreach($data as $item){
+                $item['product_id'] = $this->product->id;
+                $item['user_id'] = auth()->id();
+                $item['type'] = 'seller';
+                products_care::query()->updateOrCreate([
                     'id'=>$item['id'] ?? null,
                 ],$item);
             }

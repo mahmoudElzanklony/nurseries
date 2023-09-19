@@ -45,6 +45,10 @@ return [
     'answers'=>'الاجابات',
     'features'=>'المميزات',
     'discounts'=>'التخفيضات',
+    'cares'=>'الرعايات',
+    'care'=>'الرعاية',
+    'time_number'=>'عدد المرات',
+    'time_type'=>'نوع الوقت',
     // ----------------------end products table inputs ---------------------
 
     // ----------------------start bank model payment table inputs ---------------------

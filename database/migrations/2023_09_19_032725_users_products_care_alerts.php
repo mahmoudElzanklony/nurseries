@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCaresTable extends Migration
+class UsersProductsCareAlerts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCaresTable extends Migration
      */
     public function up()
     {
-        Schema::create('cares', function (Blueprint $table) {
+        //
+        Schema::create('users_products_care_alerts', function (Blueprint $table) {
             $table->id();
-            $table->string('ar_name');
-            $table->string('en_name');
-            $table->tinyInteger('is_required')->default(0);
-            $table->softDeletes();
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('product_care_id')->constrained('products_cares')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('next_alert');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateCaresTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cares');
+        //
     }
 }

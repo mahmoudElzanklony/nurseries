@@ -30,6 +30,9 @@ use App\Http\Controllers\GovermentsControllerResource;
 use App\Http\Controllers\SearchesController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\CareControllerResource;
+use App\Http\Controllers\ProductsCaresAlerts;
+use App\Http\Controllers\UsersProductsCares;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -65,6 +68,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         'cities'=>CitiesControllerResource::class,
         'areas'=>AreasControllerResource::class,
         'financial'=>FinancialReconciliationsControllerResource::class,
+        'care'=>CareControllerResource::class,
     ]);
 
     // ---------------------start of categories actions --------------------
@@ -93,6 +97,22 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     });
     // ---------------------end of products actions --------------------
+
+    // ---------------------start of products cares actions --------------------
+    Route::group(['prefix'=>'/products-care','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/',[UsersProductsCares::class,'get_products_cares']);
+        Route::post('/add-to-care',[UsersProductsCares::class,'add']);
+        Route::post('/custom-care',[UsersProductsCares::class,'make_custom_product_care']);
+
+    });
+    // ---------------------end of products cares actions --------------------
+
+    Route::group(['prefix'=>'/users-products-care','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/add',[UsersProductsCares::class,'add']);
+        Route::post('/toggle-like',[ProductsControllerResource::class,'toggle_like']);
+
+    });
+    // ---------------------end of products cares alert actions --------------------
 
     // ---------------------start of favourite actions --------------------
     Route::group(['prefix'=>'/favourite','middleware'=>'CheckApiAuth'],function (){

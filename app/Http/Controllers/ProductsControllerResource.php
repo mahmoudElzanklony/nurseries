@@ -90,6 +90,7 @@ class ProductsControllerResource extends Controller
             ->save_product_discounts($data['discounts'] ?? [])
             ->save_product_features($data['features'] ?? [])
             ->save_product_wholesale_prices($data['wholesale_prices'] ?? [])
+            ->save_product_cares($data['cares'] ?? [])
             ->save_product_deliveries($data['deliveries'] ?? []);
         DB::commit();
         // get following me

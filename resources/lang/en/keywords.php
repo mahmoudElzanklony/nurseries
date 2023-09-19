@@ -57,6 +57,10 @@ return [
     'answers'=>'Answers',
     'features'=>'Features',
     'discounts'=>'Discounts',
+    'cares'=>'Cares',
+    'care'=>'Care',
+    'time_number'=>'Times number',
+    'time_type'=>'Time type',
     // ----------------------end products table inputs ---------------------
 
 

@@ -14,7 +14,10 @@ class ProductWithAllData
                 $e->with('favourite');
             })
             ->withCount('likes')
-            ->with(['category','user','seen','images','rates.user','wholesale_prices','discounts'
+            ->with(['category','user','seen',
+                'cares'=>function($e){
+                    $e->with('care');
+                },'images','rates.user','wholesale_prices','discounts'
                 ,'features'=>function($f){
                     $f->with('feature');
                 },'answers'=>function($e){
