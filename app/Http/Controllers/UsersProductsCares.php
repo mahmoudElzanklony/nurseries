@@ -22,9 +22,12 @@ class UsersProductsCares extends Controller
             /*->whereHas('cares',function ($e){
                 $e->whereRaw('(type = "seller" OR user_id = '.auth()->id().')');
             })*/
-            ->with('cares')
             ->where('user_id','=',auth()->id())->get();
-        return $data;
+            foreach($data as $datum){
+                $datum['cares'] = products_care::query()->with('care')
+                    ->where('product_id','=',$datum->product_id)
+                    ->whereRaw('(user_id = '.auth()->id().' OR type = "seller")')->get();
+            }
         return UsersProductsCareResource::collection($data);
     }
 

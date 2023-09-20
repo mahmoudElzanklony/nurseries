@@ -14,4 +14,8 @@ class products_care extends Model
     public function care(){
         return $this->belongsTo(care::class,'care_id');
     }
+
+    public function product(){
+        return $this->belongsTo(products::class,'product_id');
+    }
 }

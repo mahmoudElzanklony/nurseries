@@ -16,7 +16,8 @@ class UsersProductsCareResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),
+          'product_id'=>$this->product_id,
+          'cares'=>ProductCareResource::collection($this->cares),
           'created_at'=>$this->created_at->format('Y m d, h:i A'),
 
         ];

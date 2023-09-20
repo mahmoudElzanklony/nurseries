@@ -2,10 +2,13 @@
 
 namespace App\Console;
 
+use App\Actions\ManageTimeAlert;
+use App\Actions\SendNotification;
 use App\Console\Commands\MigrateClientDB;
 use App\Jobs\ManageCreateTransactionsJob;
 use App\Models\operations;
 use App\Models\tenants;
+use App\Models\users_products_care_alerts;
 use App\Services\DB_connections;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
@@ -32,32 +35,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        DB_connections::connect_to_master();
-        $allDB = tenants::query()->get();
-        foreach($allDB as $db){
-            // connect to client database
-            DB_connections::connect_to_tanent($db->database,[],true);
-            // get all operations for this client
-            $operations = operations::query()->with('period',function($p){
-                $p->where('save_type','=','create');
-            })->orderBy('id','DESC')->get();
+        $schedule->command('alerts:manage')
+               ->everyFiveMinutes()
+               ->withoutOverlapping()
+               ->runInBackground();
 
-            // Run the tasks in parallel
-            foreach($operations as $operation){
-              //  echo 'transactions:process '.$operation->id.' '.$db->id.'\\n';
-                echo "Start time for operation ==>".Carbon::now()."\n";
-
-                $schedule->command('transactions:process '.$operation->id.' '.$db->id)
-                    ->everyMinute()
-                    ->withoutOverlapping()
-                    ->runInBackground();
-            }
-
-        }
-
-
-
-       // $schedule->command('transactions:process')->everyMinute();
     }
 
     /**
