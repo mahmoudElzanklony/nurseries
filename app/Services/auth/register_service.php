@@ -44,6 +44,8 @@ class register_service
                     $user_info['activation_code'] = rand(1000,9999);
                     $user_info['role_id'] = $role->id;
                     $user_info['country_id'] = $country->id ?? 1;
+                    $user_info['new_user'] = true;
+
                     $user_info['register_by'] = $req['register_by'];
                     // create new user
                     $user = User::query()->create($user_info);

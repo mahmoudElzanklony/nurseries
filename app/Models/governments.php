@@ -11,5 +11,9 @@ class governments extends Model
     use SoftDeletes;
 
 
-    protected $fillable = ['ar_name','en_name'];
+    protected $fillable = ['ar_name','en_name','country_id'];
+
+    public function country(){
+        return $this->belongsTo(countries::class,'country_id');
+    }
 }

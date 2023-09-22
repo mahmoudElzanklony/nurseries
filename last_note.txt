@@ -40,4 +40,16 @@ if delivery for this seller support or not
 _____________________________________________________
 ملاحظات
 1- ف صفحه تفاصيل المنج عند عرض النباتات التي تم اختيارها اشيل عمليه التحكم اضافه او نقصان لان منعرفش يزود ف انهي منتج فيهم 
+
+
  وعمليه احببت هذا المنتج تكون ف تفاصيل المنتج 
+
+
+_______________________________________________________--
+
+api notes
+1- /auth/register-check need to send flag attribute boolean if user if exists or registered && falg for check username , email are not empty 
+
+2- feature image icon of product info (( svg ))
+
+3- product has discount true or false in product info 

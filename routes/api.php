@@ -26,6 +26,7 @@ use App\Http\Controllers\UsersAddressControllerResource;
 use App\Http\Controllers\AreasControllerResource;
 use App\Http\Controllers\CitiesControllerResource;
 use App\Http\Controllers\FinancialReconciliationsControllerResource;
+use App\Http\Controllers\CountriesControllerResource;
 use App\Http\Controllers\GovermentsControllerResource;
 use App\Http\Controllers\SearchesController;
 use App\Http\Controllers\FavouriteController;
@@ -33,6 +34,7 @@ use App\Http\Controllers\RateController;
 use App\Http\Controllers\CareControllerResource;
 use App\Http\Controllers\ProductsCaresAlerts;
 use App\Http\Controllers\UsersProductsCares;
+use App\Http\Controllers\BestController;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -64,6 +66,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         'categories'=>CategoriesControllerResource::class,
         'articles'=>ArticlesControllerResource::class,
         'addresses'=>UsersAddressControllerResource::class,
+        'countries'=>CountriesControllerResource::class,
         'governments'=>GovermentsControllerResource::class,
         'cities'=>CitiesControllerResource::class,
         'areas'=>AreasControllerResource::class,
@@ -94,25 +97,25 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/products','middleware'=>'CheckApiAuth'],function (){
         Route::post('/toggle-fav',[ProductsControllerResource::class,'toggle_fav']);
         Route::post('/toggle-like',[ProductsControllerResource::class,'toggle_like']);
+    });
+    // ---------------------end of products actions --------------------
 
+    // ---------------------start of products actions --------------------
+    Route::group(['prefix'=>'/best','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/products-rates',[BestController::class,'rates']);
+        Route::get('/products-orders',[BestController::class,'orders']);
     });
     // ---------------------end of products actions --------------------
 
     // ---------------------start of products cares actions --------------------
     Route::group(['prefix'=>'/products-care','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[UsersProductsCares::class,'get_products_cares']);
+        Route::get('/questions-of-product-care',[UsersProductsCares::class,'questions']);
         Route::post('/add-to-care',[UsersProductsCares::class,'add']);
         Route::post('/custom-care',[UsersProductsCares::class,'make_custom_product_care']);
 
     });
-    // ---------------------end of products cares actions --------------------
 
-    Route::group(['prefix'=>'/users-products-care','middleware'=>'CheckApiAuth'],function (){
-        Route::post('/add',[UsersProductsCares::class,'add']);
-        Route::post('/toggle-like',[ProductsControllerResource::class,'toggle_like']);
-
-    });
-    // ---------------------end of products cares alert actions --------------------
 
     // ---------------------start of favourite actions --------------------
     Route::group(['prefix'=>'/favourite','middleware'=>'CheckApiAuth'],function (){

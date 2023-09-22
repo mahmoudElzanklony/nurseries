@@ -9,11 +9,15 @@ class countries extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['ar_name','en_name','code'];
 
 
-    public function cities(){
-        return  $this->hasMany(cities::class,'country_id');
+    public function goverments(){
+        return  $this->hasMany(governments::class,'country_id');
+    }
+
+    public function image(){
+        return $this->morphOne(images::class,'imageable');
     }
 
 

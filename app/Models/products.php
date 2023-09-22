@@ -59,4 +59,8 @@ class products extends Model
     public function rates(){
         return $this->hasManyThrough(orders_items_rates::class,orders_items::class,'product_id','order_item_id');
     }
+
+    public function orders_items(){
+        return $this->hasMany(orders_items::class,'product_id');
+    }
 }

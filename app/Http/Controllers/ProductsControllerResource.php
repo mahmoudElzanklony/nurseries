@@ -129,7 +129,7 @@ class ProductsControllerResource extends Controller
      */
     public function show($id)
     {
-        $data = ProductWithAllData::get()->first();
+        $data = ProductWithAllData::get()->findOrFail($id);
         if($data != null){
             SeenItem::add($data->id,'products');
         }

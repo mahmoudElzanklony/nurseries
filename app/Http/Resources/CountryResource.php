@@ -16,7 +16,7 @@ class CountryResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>$this->name,
+          'name'=>$this->{app()->getLocale().'_name'},
           'code'=>$this->code,
           'icon'=>ImagesResource::make($this->whenLoaded('image')),
           'created_at'=>$this->created_at->format('Y h d,h:i A'),

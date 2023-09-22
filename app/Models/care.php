@@ -10,4 +10,8 @@ class care extends Model
     use HasFactory;
     use SoftDeletes;
     protected $fillable = ['ar_name','en_name','is_required'];
+
+    public function products_care(){
+        return $this->hasMany(products_care::class,'care_id');
+    }
 }

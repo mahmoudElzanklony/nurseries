@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Actions\ManageTimeAlert;
 use App\Http\Requests\productsCareFormRequest;
+use App\Http\Resources\CareResource;
 use App\Http\Resources\UsersProductsCareResource;
 use App\Http\traits\messages;
+use App\Models\care;
 use App\Models\products;
 use App\Models\products_care;
 use App\Models\users_products_care_alerts;
@@ -129,4 +131,27 @@ class UsersProductsCares extends Controller
             return messages::error_output('لا تستيطع اضافة عملية رعاية خاصه لهذا المنتج');
         }
     }
+
+    public function questions(){
+        $product_id = request('product_id');
+        $item_check = users_products_cares::query()
+            ->where('user_id','=',auth()->id())
+            ->where('product_id','=',$product_id)->first();
+        if($item_check == null){
+            return messages::error_output(trans('errors.item_doesnt_exist_at_care_list'));
+        }
+        // get product cares added from seller or by user custom
+        $cares = products_care::query()
+            ->where('product_id','=',$product_id)
+            ->whereRaw('(user_id = '.auth()->id().' OR type = "seller")')->select('care_id')
+            ->get();
+        if(sizeof($cares) > 0){
+            $cares = $cares->map(function ($e){
+                return $e->care_id ;
+            });
+        }
+        $data = care::query()->whereNotIn('id',$cares)->get();
+        return CareResource::collection($data);
+    }
+
 }
