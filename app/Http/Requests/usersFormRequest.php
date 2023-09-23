@@ -96,6 +96,7 @@ class usersFormRequest extends FormRequest
 
     public function update_personal_data(){
         return [
+            'id'=>'filled',
             'username'=>'required|max:191',
             'email'=>'required|max:191|email|unique:users,email,'.auth()->user()->id,
             'phone'=>'filled|min:7',

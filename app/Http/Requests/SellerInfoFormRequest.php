@@ -23,6 +23,7 @@ class SellerInfoFormRequest extends FormRequest
      */
     public function save_store(){
         return [
+            'id'=>'filled',
             'type'=>'required|max:191',
             'name'=>'required|max:191',
             'address'=>'required|max:191',

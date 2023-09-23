@@ -35,6 +35,7 @@ use App\Http\Controllers\CareControllerResource;
 use App\Http\Controllers\ProductsCaresAlerts;
 use App\Http\Controllers\UsersProductsCares;
 use App\Http\Controllers\BestController;
+use App\Http\Controllers\VisaBankControllerResource;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -72,6 +73,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         'areas'=>AreasControllerResource::class,
         'financial'=>FinancialReconciliationsControllerResource::class,
         'care'=>CareControllerResource::class,
+        'online-payment'=>VisaBankControllerResource::class,
     ]);
 
     // ---------------------start of categories actions --------------------

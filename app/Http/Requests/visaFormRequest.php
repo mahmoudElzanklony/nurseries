@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class countriesFormRequest extends FormRequest
+class visaFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,17 +24,21 @@ class countriesFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
             'id'=>'filled',
-            'ar_name'=>'required',
-            'code'=>'required',
+            'name'=>'required',
+            'card_number'=>'required|numeric|digits:10',
+            'end_date'=>'required',
+            'cvv'=>'required|numeric|digits:3',
         ];
     }
 
     public function attributes()
     {
         return [
-          'ar_name'=>trans('keywords.name'),
+          'name'=>trans('keywords.name'),
+          'card_number'=>trans('keywords.card_number'),
+          'end_date'=>trans('keywords.end_date'),
+          'cvv'=>trans('keywords.cvv'),
         ];
     }
 }

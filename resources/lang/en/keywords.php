@@ -36,6 +36,9 @@ return [
     'bank_name'=>'Bank name',
     'bank_account'=>'Bank account',
     'bank_iban'=>'Bank iban',
+    'card_number'=>'Card number',
+    'end_date'=>'End date',
+    'cvv'=>'CVV',
 
 
 

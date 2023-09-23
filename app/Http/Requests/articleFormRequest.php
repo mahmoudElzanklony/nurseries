@@ -25,11 +25,13 @@ class articleFormRequest extends FormRequest
     {
         if(str_contains($this->getRequestUri(),'save')){
             return [
+                'id'=>'filled',
                 'article_id'=>'required|exists:articles,id',
                 'comment'=>'filled',
             ];
         }else {
             return [
+                'id'=>'filled',
                 'title' => 'required',
                 'description' => 'required',
             ];

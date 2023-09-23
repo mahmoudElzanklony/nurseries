@@ -65,7 +65,11 @@ class AuthControllerApi extends AuthServicesClass
                 $token = Auth::guard('api')->login($user);
                 $role = roles::query()->find($user->role_id);
                 $user['role'] = $role;
-                $user_info['new_user'] = false;
+                if($user->email == '' && $user->username == '') {
+                    $user['new_user'] = true;
+                }else{
+                    $user['new_user'] = false;
+                }
                 $user['token'] =  $token;
                 return messages::success_output('',$user);
             }

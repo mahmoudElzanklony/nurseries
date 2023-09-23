@@ -57,6 +57,9 @@ return [
     'date_of_transfer'=>'تاريخ التحويل',
     'number_sent_from'=>'الرقم المحول منه',
     'number_sent_to'=>'الرقم المحول الية',
+    'card_number'=>'رقم البطاقة',
+    'end_date'=>'تاريخ الانتهاء ',
+    'cvv'=>'رقم التأمين',
     // ----------------------start bank model payment table inputs ---------------------
 
     'money'=>'المبلغ المطلوب',

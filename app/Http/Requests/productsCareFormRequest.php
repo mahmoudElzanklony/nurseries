@@ -24,6 +24,7 @@ class productsCareFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'id'=>'filled',
             'product_id'=>'required|exists:products,id',
             'care_id'=>'required|exists:cares,id',
             'time_number'=>'required',
