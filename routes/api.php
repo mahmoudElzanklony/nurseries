@@ -36,6 +36,8 @@ use App\Http\Controllers\ProductsCaresAlerts;
 use App\Http\Controllers\UsersProductsCares;
 use App\Http\Controllers\BestController;
 use App\Http\Controllers\VisaBankControllerResource;
+use App\Http\Controllers\CustomerOrdersControllerResource;
+use App\Http\Controllers\AllSellersDataController;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -74,6 +76,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         'financial'=>FinancialReconciliationsControllerResource::class,
         'care'=>CareControllerResource::class,
         'online-payment'=>VisaBankControllerResource::class,
+        'custom-orders'=>CustomerOrdersControllerResource::class
     ]);
 
     // ---------------------start of categories actions --------------------
@@ -142,6 +145,13 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     });
     // ---------------------end of orders actions --------------------
+
+    // ---------------------start of custome orders actions --------------------
+    Route::group(['prefix'=>'/sellers','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/',[AllSellersDataController::class,'index']);
+
+    });
+    // ---------------------end of custom orders actions --------------------
 
 
 

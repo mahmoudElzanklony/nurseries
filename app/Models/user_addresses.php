@@ -10,7 +10,7 @@ class user_addresses extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['user_id','area_id','address','default_address'];
+    protected $fillable = ['user_id','longitude','latitude','address','default_address'];
 
     public function area(){
         return $this->belongsTo(areas::class,'area_id');

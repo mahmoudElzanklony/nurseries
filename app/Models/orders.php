@@ -30,4 +30,8 @@ class orders extends Model
     public function items(){
         return $this->hasMany(orders_items::class,'order_id');
     }
+
+    public function item(){
+        return $this->hasOne(orders_items::class,'order_id');
+    }
 }

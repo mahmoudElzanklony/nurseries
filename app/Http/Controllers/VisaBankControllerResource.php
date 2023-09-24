@@ -24,10 +24,10 @@ class VisaBankControllerResource extends Controller
     {
         //
         $data = users_visa::query()
-            ->with('orders.paymentable.items.product')
+            ->with('orders.paymentable.item.product')
             ->orderBy('id','DESC')
             ->get();
-        return $data;
+
         return VisaBankResource::collection($data);
     }
 

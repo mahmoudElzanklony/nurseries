@@ -46,4 +46,6 @@ class SellerInfoController extends Controller
         ],$data);
         return messages::success_output(trans('messages.saved_successfully'),$output);
     }
+
+
 }

@@ -18,11 +18,13 @@ class SellerRateAVG
             $total_rate_per_services += $d->rate->rate_product_services;
             $total_rate_per_delivery += $d->rate->rate_product_delivery;
         }
-        $avg_services = $total_rate_per_services / sizeof($data);
-        $avg_delivery = $total_rate_per_delivery / sizeof($data);
+        if((sizeof($data))){
+            $avg_services = $total_rate_per_services / sizeof($data);
+            $avg_delivery = $total_rate_per_delivery / sizeof($data);
+        }
         return [
-          'avg_services'=>$avg_services,
-          'avg_delivery'=>$avg_delivery,
+          'avg_services'=>$avg_services ?? 0,
+          'avg_delivery'=>$avg_delivery ?? 0,
         ];
     }
 }

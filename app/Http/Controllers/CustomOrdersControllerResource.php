@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\cityFormRequest;
-use App\Http\Resources\CityResource;
-use App\Http\traits\messages;
-use App\Models\cities;
 use Illuminate\Http\Request;
 
-class CitiesControllerResource extends Controller
+class CustomOrdersControllerResource extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,17 +14,7 @@ class CitiesControllerResource extends Controller
     public function index()
     {
         //
-        $data = cities::query()->when(request()->has('country_id'),function($e){
-            $e->where('country_id','=',request('country_id'));
-        })->orderBy('id','DESC')->get();
-        return CityResource::collection($data);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
 
     /**
      * Store a newly created resource in storage.
@@ -36,14 +22,9 @@ class CitiesControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, cityFormRequest $formRequest)
+    public function store(Request $request)
     {
         //
-        $data = $formRequest->validated();
-        $city = cities::query()->updateOrCreate([
-            'id'=>$data['id'] ?? null
-        ],$data);
-        return messages::success_output(trans('messages.saved_successfully'),$city);
     }
 
     /**

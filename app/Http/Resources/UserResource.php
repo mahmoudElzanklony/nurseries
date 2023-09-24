@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\SellerRateAVG;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -14,12 +15,18 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        if($this->role->name == 'seller') {
+            $seller_avg_rate = SellerRateAVG::get($this->id);
+        }
+
         return [
           'id'=>$this->id,
           'username'=>$this->username,
           'email'=>$this->email,
           'phone'=>$this->phone,
           'role'=>$this->whenLoaded('role'),
+          'avg_rates'=>isset($seller_avg_rate)  ?
+                       round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
           'image'=>$this->image ?? 'users/default.png',
           'created_at'=>$this->created_at->format('Y m d, h:i A'),
         ];

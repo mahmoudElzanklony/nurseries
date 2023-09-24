@@ -24,6 +24,12 @@ return [
     'cancelled'=>'Cancelled',
     // ----------------------end of  orders- ---------------------
 
+    // ----------------------start of  custom orders----------------------
+    'address'=>'Address',
+    'sellers'=>'Sellers',
+    // ----------------------end of  custom orders----------------------
+
+
 
     // ----------------------start Seller info inputs ---------------------
     'name'=>'Name',

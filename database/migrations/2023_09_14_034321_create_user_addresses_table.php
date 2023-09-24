@@ -16,7 +16,8 @@ class CreateUserAddressesTable extends Migration
         Schema::create('user_addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('area_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('longitude');
+            $table->string('latitude');
             $table->string('address');
             $table->tinyInteger('default_address')->default(0);
             $table->softDeletes();
