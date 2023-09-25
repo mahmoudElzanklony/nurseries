@@ -22,7 +22,7 @@ class ProductCareResource extends JsonResource
           'time_number'=>$this->time_number,
           'time_type'=>$this->time_type,
           'type'=>$this->type,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

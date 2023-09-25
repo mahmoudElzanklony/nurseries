@@ -24,7 +24,7 @@ class ProductResource extends JsonResource
             'description'=>$this->{app()->getLocale().'_description'},
             'quantity'=>$this->quantity,
             'main_price'=>$this->main_price,
-            'created_at'=>$this->created_at->format('Y m d, h:i A'),
+            'created_at'=>$this->created_at,
             'images'=>ImagesResource::collection($this->whenLoaded('images')),
             'favourite'=>FavouriteResource::make($this->favourite),
             'seen'=>$this->seen->count ?? 0,

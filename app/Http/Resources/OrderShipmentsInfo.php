@@ -17,7 +17,7 @@ class OrderShipmentsInfo extends JsonResource
         return [
           'id'=>$this->id,
           'content'=>trans('keywords'.$this->content),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

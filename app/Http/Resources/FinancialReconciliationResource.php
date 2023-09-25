@@ -21,7 +21,7 @@ class FinancialReconciliationResource extends JsonResource
           'user'=>UserResource::make($this->whenLoaded('user')),
           'orders'=>OrderResource::collection($this->whenLoaded('orders')),
           'image'=>ImagesResource::make($this->whenLoaded('image')),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

@@ -23,7 +23,7 @@ class ArticleResource extends JsonResource
           'likes_count'=>$this->likes_count,
           'images'=>ImagesResource::collection($this->whenLoaded('images')),
           'comments'=>CommentResource::collection($this->whenLoaded('comments')),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at
 
         ];
     }

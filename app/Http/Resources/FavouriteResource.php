@@ -17,7 +17,7 @@ class FavouriteResource extends JsonResource
         return [
           'id'=>$this->id,
           'product_id'=>$this->product_id,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

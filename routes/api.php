@@ -146,10 +146,17 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
     // ---------------------end of orders actions --------------------
 
-    // ---------------------start of custome orders actions --------------------
+    // ---------------------start of custom orders actions --------------------
     Route::group(['prefix'=>'/sellers','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
+        Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'seller_reply']);
+    });
+    // ---------------------end of custom orders actions --------------------
 
+    // ---------------------start of custom orders actions --------------------
+    Route::group(['prefix'=>'/clients','middleware'=>'CheckApiAuth'],function (){
+        Route::get('/',[AllSellersDataController::class,'index']);
+        Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'client_reply']);
     });
     // ---------------------end of custom orders actions --------------------
 

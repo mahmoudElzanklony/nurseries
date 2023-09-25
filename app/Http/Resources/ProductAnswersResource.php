@@ -18,7 +18,7 @@ class ProductAnswersResource extends JsonResource
           'id'=>$this->id,
           'category_heading_questions_data_id'=>$this->category_heading_questions_data_id,
           'answer'=>$this->{app()->getLocale().'_answer'},
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
           'question'=>ProductQuestionResource::make($this->whenLoaded('question')),
 
         ];

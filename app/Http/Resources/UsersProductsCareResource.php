@@ -18,7 +18,7 @@ class UsersProductsCareResource extends JsonResource
           'id'=>$this->id,
           'product_id'=>$this->product_id,
           'cares'=>ProductCareResource::collection($this->cares),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

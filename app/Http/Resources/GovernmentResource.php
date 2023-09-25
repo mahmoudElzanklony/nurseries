@@ -17,7 +17,7 @@ class GovernmentResource extends JsonResource
         return [
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
-          'created_at'=>$this->created_at->format('Y h d,h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

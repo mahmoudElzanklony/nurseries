@@ -19,7 +19,7 @@ class ProductFeaturesResource extends JsonResource
           'category_feature_id'=>$this->category_feature_id,
           'price'=>$this->price,
           'note'=>$this->note,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
           'feature'=>ProductFeatureResource::make($this->whenLoaded('feature')),
 
         ];

@@ -20,7 +20,7 @@ class CountryResource extends JsonResource
           'code'=>$this->code,
           'map_code'=>$this->map_code,
           'icon'=>ImagesResource::make($this->whenLoaded('image')),
-          'created_at'=>$this->created_at->format('Y h d,h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

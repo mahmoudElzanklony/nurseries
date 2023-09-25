@@ -18,7 +18,7 @@ class ProductFeatureResource extends JsonResource
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
           'image'=>ImagesResource::make($this->image),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

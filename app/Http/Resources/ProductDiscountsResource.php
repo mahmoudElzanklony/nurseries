@@ -19,7 +19,7 @@ class ProductDiscountsResource extends JsonResource
           'discount'=>$this->discount,
           'start_date'=>$this->start_date,
           'end_date'=>$this->end_date,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

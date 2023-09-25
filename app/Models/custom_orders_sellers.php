@@ -16,6 +16,6 @@ class custom_orders_sellers extends Model
     }
 
     public function reply(){
-        return $this->hasOne(custom_orders_sellers_reply::class,'custom_orders_sellers_reply');
+        return $this->hasOne(custom_orders_sellers_reply::class,'custom_orders_seller_id');
     }
 }

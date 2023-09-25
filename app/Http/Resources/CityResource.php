@@ -18,7 +18,7 @@ class CityResource extends JsonResource
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
           'country'=>CountryResource::make($this->whenLoaded('country')),
-          'created_at'=>$this->created_at->format('Y h d,h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

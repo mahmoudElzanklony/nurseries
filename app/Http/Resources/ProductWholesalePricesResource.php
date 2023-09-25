@@ -18,7 +18,7 @@ class ProductWholesalePricesResource extends JsonResource
           'id'=>$this->id,
           'min_quantity'=>$this->min_quantity,
           'price'=>$this->price,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

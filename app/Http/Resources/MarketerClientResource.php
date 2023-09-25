@@ -18,7 +18,7 @@ class MarketerClientResource extends JsonResource
           'id'=>$this->id,
           'username'=>$this->username,
           'image'=>$this->image,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }

@@ -4,6 +4,7 @@
 namespace App\Repositories;
 
 
+use App\Actions\DefaultAddress;
 use App\Actions\ImageModalSave;
 use App\Actions\SendNotification;
 use App\Models\custom_orders;
@@ -24,6 +25,8 @@ class CustomOrdersRepository
 
     public function init_order($images){
         // create custom order
+        $this->data['user_id'] = auth()->id();
+        $this->data['address_id'] = DefaultAddress::get()->id;
         $this->order = custom_orders::query()->updateOrCreate([
             'id'=>$this->data['id'] ?? null
         ],$this->data);
@@ -53,12 +56,11 @@ class CustomOrdersRepository
     public function send_alerts_to_sellers(){
 
         foreach($this->sellers as $seller){
-            $seller['custom_order_id'] = $this->order->id;
-            custom_orders_sellers::query()->updateOrCreate([
-               'id'=>$seller['id'] ?? null
-            ],$seller);
+            $da['custom_order_id'] = $this->order->id;
+            $da['seller_id'] = $seller;
+            custom_orders_sellers::query()->create($da);
             $another_user_info = [
-                'receiver_id'=>$seller['seller_id'],
+                'receiver_id'=>$da['seller_id'],
                 'info'=>[
                     'ar'=>'هناك طلب جديد من العميل '.auth()->user()->username.' وقام بارسال لك طلب بالرد علية اذا كان المنتج متوفر لديك ',
                     'en'=>'New custom order has been made by '.auth()->user()->username.'and send alert to you to reply to this order',

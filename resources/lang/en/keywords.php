@@ -27,6 +27,8 @@ return [
     // ----------------------start of  custom orders----------------------
     'address'=>'Address',
     'sellers'=>'Sellers',
+    'days_delivery'=>'Number days of delivery',
+    'delivery_price'=>'Delivery price',
     // ----------------------end of  custom orders----------------------
 
 

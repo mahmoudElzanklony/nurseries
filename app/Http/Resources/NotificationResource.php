@@ -20,7 +20,7 @@ class NotificationResource extends JsonResource
           'content'=>$this->{app()->getLocale().'_content'},
           'url'=>$this->url,
           'seen'=>$this->seen,
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
         ];
     }
 }
