@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class VisaBankResource extends JsonResource
+class PaymentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,13 +16,8 @@ class VisaBankResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>$this->name,
-          'user'=>UserResource::make($this->whenLoaded('user')),
-          'card_number'=>$this->card_number,
-          'end_date'=>$this->end_date,
-          'cvv'=>$this->cvv,
-          'orders'=>VisaBankOrdersResource::collection($this->whenLoaded('orders')),
-          'created_at'=>$this->created_at,
+          'money'=>$this->money,
+          'visa'=>VisaBankResource::make($this->visa)
         ];
     }
 }

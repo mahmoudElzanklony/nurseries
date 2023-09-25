@@ -24,9 +24,10 @@ class OrderResource extends JsonResource
           'address'=>$this->address,
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
+          'payment'=>PaymentResource::make($this->whenLoaded('payment')),
           'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

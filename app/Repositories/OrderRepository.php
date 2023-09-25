@@ -27,6 +27,7 @@ class OrderRepository
     public $default_address;
     private $payment_data;
     private $deliveries_arr = [];
+    private $order_total_price = 0;
 
     public function __construct($default_address)
     {
@@ -94,7 +95,6 @@ class OrderRepository
         $err_quantity = 0;
         $total_price_delivery = 0;
         $total_days_delivery = 0;
-        $order_total_price = 0;
         foreach($items as $key => $item){
             $product = products::query()->with(['wholesale_prices','discounts'=>function($e){
                 $e->where('start_date','<=',date('Y-m-d'))
@@ -110,7 +110,7 @@ class OrderRepository
                     $discount = $this->discount_per_product($product);
                     // handle final price
                     $final_price = $this->handle_final_price($product,$whole_price,$discount);
-                    $order_total_price += $final_price;
+                    $this->order_total_price += $final_price;
                     $order_item = orders_items::query()->create([
                         'order_id' => $this->order->id,
                         'product_id' => $item['product_id'],
@@ -137,7 +137,7 @@ class OrderRepository
             return messages::error_output($msg ?? 'error in quantity');
         }
         // add payment of this order
-        PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$order_total_price);
+        PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$this->order_total_price);
         // add address and delivery for this order
         $this->order_address(round($total_days_delivery/sizeof($items)),$total_price_delivery);
 
@@ -156,6 +156,7 @@ class OrderRepository
                     'product_feature_id'=>$feature['id'],
                     'price'=>$price
                 ]);
+                $this->order_total_price += $price;
             }
         }
     }

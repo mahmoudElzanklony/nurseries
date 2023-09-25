@@ -14,4 +14,8 @@ class payments extends Model
     public function paymentable(){
         return $this->morphTo();
     }
+
+    public function visa(){
+        return $this->belongsTo(users_visa::class,'visa_id');
+    }
 }

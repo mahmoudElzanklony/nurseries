@@ -15,6 +15,10 @@ class orders extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
+    public function payment(){
+        return $this->morphOne(payments::class,'paymentable');
+    }
+
     public function products(){
         return $this->hasManyThrough(products::class,orders_items::class,'order_id','id');
     }
