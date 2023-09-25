@@ -18,9 +18,10 @@ class UserAddressesResource extends JsonResource
           'id'=>$this->id,
           'user_id'=>$this->id,
           'address'=>$this->address,
+          'longitude'=>$this->longitude,
+          'latitude'=>$this->latitude,
           'default_address'=>$this->default_address,
-          'area'=>AreaResource::make($this->whenLoaded('area')),
-          'created_at'=>$this->created_at->format('Y m d, h:i A'),
+          'created_at'=>$this->created_at,
 
         ];
     }

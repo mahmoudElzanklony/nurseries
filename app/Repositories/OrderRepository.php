@@ -4,9 +4,11 @@
 namespace App\Repositories;
 
 
+use App\Actions\CheckPlaceMapLocation;
 use App\Actions\CheckProductSupportDeliveryToUserAddress;
 use App\Actions\DefaultAddress;
 use App\Actions\DeliveryOfOrder;
+use App\Actions\PaymentModalSave;
 use App\Actions\SendNotification;
 use App\Http\Controllers\classes\payment\VisaPayment;
 use App\Http\traits\messages;
@@ -23,6 +25,8 @@ class OrderRepository
 {
     public $order;
     public $default_address;
+    private $payment_data;
+    private $deliveries_arr = [];
 
     public function __construct($default_address)
     {
@@ -32,10 +36,14 @@ class OrderRepository
     public  function check_delivery_products($products){
         $err = 0;
         foreach($products as $product){
-            if(CheckProductSupportDeliveryToUserAddress::check($product['product_id'],$this->default_address) == false){
+          //  if(CheckProductSupportDeliveryToUserAddress::check($product['product_id'],$this->default_address) == false){
+            $delivery = CheckPlaceMapLocation::check_delivery($product['product_id'],$this->default_address);
+            if($delivery == false){
                 $err++;
                 $product = products::query()->select(app()->getLocale().'_name as name')->find($product['product_id']);
                 break;
+            }else{
+                array_push($this->deliveries_arr,$delivery);
             }
         }
         return [
@@ -50,6 +58,7 @@ class OrderRepository
     }
 
     public function init_order($data){
+        $this->payment_data = $data['payment_data'];
         $order = orders::query()->create([
            'user_id'=>auth()->id(),
            'seller_id'=>$data['seller_id'],
@@ -85,7 +94,8 @@ class OrderRepository
         $err_quantity = 0;
         $total_price_delivery = 0;
         $total_days_delivery = 0;
-        foreach($items as $item){
+        $order_total_price = 0;
+        foreach($items as $key => $item){
             $product = products::query()->with(['wholesale_prices','discounts'=>function($e){
                 $e->where('start_date','<=',date('Y-m-d'))
                    ->where('end_date','>=',date('Y-m-d'));
@@ -100,6 +110,7 @@ class OrderRepository
                     $discount = $this->discount_per_product($product);
                     // handle final price
                     $final_price = $this->handle_final_price($product,$whole_price,$discount);
+                    $order_total_price += $final_price;
                     $order_item = orders_items::query()->create([
                         'order_id' => $this->order->id,
                         'product_id' => $item['product_id'],
@@ -107,9 +118,9 @@ class OrderRepository
                         'price' => $final_price,
                     ]);
                     // get price of delivery , get days of delivery
-                    $price_days_delivery = DeliveryOfOrder::get($this->default_address,$item['product_id']);
-                    $total_price_delivery += ($price_days_delivery->price ?? 0);
-                    $total_days_delivery += ($price_days_delivery->days_delivery ?? 0);
+
+                    $total_price_delivery += ($this->deliveries_arr[$key]->price ?? 0);
+                    $total_days_delivery +=  ($this->deliveries_arr[$key]->days_delivery ?? 0);
 
                     // remove from product stock the amount of quantity client take
                     $this->remove_from_stock($product,$item['quantity']);
@@ -125,7 +136,10 @@ class OrderRepository
         if($err_quantity > 0){
             return messages::error_output($msg ?? 'error in quantity');
         }
-        $this->order_address($total_price_delivery,round($total_days_delivery/sizeof($items)));
+        // add payment of this order
+        PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$order_total_price);
+        // add address and delivery for this order
+        $this->order_address(round($total_days_delivery/sizeof($items)),$total_price_delivery);
 
     }
 

@@ -10,7 +10,7 @@ class cities extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['government_id','ar_name','en_name'];
+    protected $fillable = ['country_id','ar_name','en_name','map_code'];
 
     public function country(){
         return $this->belongsTo(countries::class,'country_id');

@@ -26,7 +26,8 @@ class addressesFormRequest extends FormRequest
         return [
             //
             'id'=>'filled',
-            'area_id'=>'required|exists:areas,id',
+            'longitude'=>'required',
+            'latitude'=>'required',
             'address'=>'required',
             'default_address'=>'required',
         ];

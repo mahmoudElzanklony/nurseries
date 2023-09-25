@@ -21,7 +21,7 @@ class UsersAddressControllerResource extends Controller
     public function index()
     {
         //
-        $data = user_addresses::query()->with('area')->orderBy('id','DESC')->get();
+        $data = user_addresses::query()->orderBy('id','DESC')->get();
         return UserAddressesResource::collection($data);
     }
 

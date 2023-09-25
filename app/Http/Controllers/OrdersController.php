@@ -40,7 +40,7 @@ class OrdersController extends Controller
         if($check_err_delivery['error'] > 0){
             return messages::error_output($check_err_delivery['product_name'].trans('errors.product_doesnt_support_delivery'));
         }
-        if($order_repo->validate_payment_info($data)['status'] == true){
+        if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
             // the visa is okay now
             $result = $order_repo->init_order($data)->order_items($data['items']);
             if($result != null) {
