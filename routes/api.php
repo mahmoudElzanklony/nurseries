@@ -203,11 +203,10 @@ Route::group(['middleware'=>'changeLang'],function (){
        Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
        });
-       Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
-           Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);
-           Route::post('/cats',[DashboardController::class,'get_tickets_cats']);
-       });
-
+    });
+    Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
+        Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);
+        Route::get('/cats',[DashboardController::class,'get_tickets_cats']);
     });
     //----------------------- end of dashboard------------------
 
@@ -215,6 +214,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     //=========================start of tickets==================
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
         Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);
+        Route::get('/all',[DashboardController::class,'all_tickets']);
         Route::post('/make',[DashboardController::class,'make_ticket']);
         Route::post('/reply',[DashboardController::class,'reply_ticket']);
         Route::post('/messages',[DashboardController::class,'messages']);

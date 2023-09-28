@@ -7,6 +7,7 @@ namespace App\Http\traits\helpers_requests_api;
 use App\Http\Requests\ticketsFormRequest;
 use App\Http\Requests\ticketsReplyFormRequest;
 use App\Http\Resources\TicketCategoryResource;
+use App\Http\Resources\TicketResource;
 use App\Http\traits\messages;
 use App\Models\reports;
 use App\Models\tickets;
@@ -29,20 +30,26 @@ trait TicketsHelperApi
     }
 
 
+    public function all_tickets(){
+        $data = tickets::query()->with('ticket_cat')->orderBy('id','DESC')->get();
+        return TicketResource::collection($data);
+    }
+
+
 
     public function make_ticket(ticketsFormRequest $ticketsFormRequest){
         $data = $ticketsFormRequest->validated();
         $data['user_id'] = auth()->id();
-        tickets::query()->updateOrCreate([
+        $ticket = tickets::query()->updateOrCreate([
             'id'=>request()->has('id') ? request('id') : null,
         ],$data);
         // create report
-        reports::query()->create([
+        /*reports::query()->create([
            'user_id'=>auth()->id(),
            'info'=>trans('keywords.make_ticket_from').auth()->user()->username,
            'type'=>'tickets(make)',
-        ]);
-        return messages::success_output(trans('messages.saved_successfully'));
+        ]);*/
+        return messages::success_output(trans('messages.saved_successfully'),$ticket);
 
     }
 
