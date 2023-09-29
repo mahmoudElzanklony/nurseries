@@ -43,7 +43,7 @@ class UsersAddressControllerResource extends Controller
         $output = user_addresses::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
-        return messages::success_output(trans('messages.saved_successfully'),$output);
+        return messages::success_output(trans('messages.saved_successfully'),UserAddressesResource::make($output));
     }
 
     public function set_to_default(){
