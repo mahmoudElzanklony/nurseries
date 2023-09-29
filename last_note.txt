@@ -53,3 +53,23 @@ api notes
 2- feature image icon of product info (( svg ))
 
 3- product has discount true or false in product info 
+
+
+___________________________________________--
+
+1- rate at product details will not send order_id it will send product_id 
+and at profile page when rate send in this case order_id
+
+2- when login return image of this user
+
+3- product by id return is following this seller or not
+
+4-return number of rate number of people rate 1 star , 2 star , 3 star ===> this rate star per product info
+
+5-product deliveries when there is no address for client return message that user must create address to calculate days of delivery
+
+6- favourite and like and follow action response from api boolean is_like or is_favourite with true or false
+
+7- likes of product return image and usernmae of user that make like for this product
+
+8-create or update visa bank return orders is empty array and all visa banks delete updated_at

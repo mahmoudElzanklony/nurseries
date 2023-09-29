@@ -15,8 +15,16 @@ class products extends Model
         return $this->morphMany(images::class,'imageable');
     }
 
+    public function image(){
+        return $this->morphOne(images::class,'imageable');
+    }
+
     public function likes(){
         return $this->hasMany(likes::class,'item_id');
+    }
+
+    public function last_four_likes(){
+        return $this->hasManyThrough(User::class,likes::class,'user_id','id')->orderBy('id','DESC')->limit(4);
     }
 
     public function seen(){
@@ -62,5 +70,9 @@ class products extends Model
 
     public function orders_items(){
         return $this->hasMany(orders_items::class,'product_id');
+    }
+
+    public function deliveries(){
+        return $this->hasMany(products_delivery::class,'product_id');
     }
 }

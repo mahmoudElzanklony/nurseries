@@ -10,4 +10,8 @@ class likes extends Model
     use HasFactory;
 
     protected $fillable = ['user_id','item_id','type'];
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

@@ -27,7 +27,7 @@ class UserResource extends JsonResource
           'role'=>$this->whenLoaded('role'),
           'avg_rates'=>isset($seller_avg_rate)  ?
                        round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
-          'image'=>$this->image ?? 'users/default.png',
+          'image'=>$this->image ?? ['name'=>'users/default.png'],
           'created_at'=>$this->created_at,
         ];
     }

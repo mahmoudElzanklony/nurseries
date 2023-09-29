@@ -29,6 +29,8 @@ return [
     'sellers'=>'Sellers',
     'days_delivery'=>'Number days of delivery',
     'delivery_price'=>'Delivery price',
+    'not_support_delivery'=>'This product not support delivery',
+
     // ----------------------end of  custom orders----------------------
 
 

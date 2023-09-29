@@ -17,6 +17,7 @@ class ProductQuestionResource extends JsonResource
         return [
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
+          'image'=>ProductQuestionResource::make($this->whenLoaded('image')),
           'created_at'=>$this->created_at,
 
         ];

@@ -42,10 +42,10 @@ class VisaBankControllerResource extends Controller
         //
         $data = $request->validated();
         $data['user_id'] = auth()->id();
-        $output = users_visa::query()->updateOrCreate([
+        $output = users_visa::query()->with('orders')->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
-        return messages::success_output(trans('messages.saved_successfully'),$output);
+        return messages::success_output(trans('messages.saved_successfully'),VisaBankResource::make($output));
     }
 
     /**

@@ -91,6 +91,7 @@ return [
     'sellers'=>'البائعين',
     'days_delivery'=>'عدد الايام المستغرقة للتوصيل',
     'delivery_price'=>'سعر التوصيل',
+    'not_support_delivery'=>'هذا المنتج لا يدعم التوصيل لمكانك',
     // ----------------------end of  custom orders----------------------
 
 

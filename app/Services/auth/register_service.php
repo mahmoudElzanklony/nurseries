@@ -4,6 +4,7 @@
 namespace App\Services\auth;
 
 
+use App\Actions\ImageModalSave;
 use App\Actions\SendOTP;
 use App\Models\countries;
 use App\Models\marketer_clients;
@@ -49,6 +50,7 @@ class register_service
                     $user_info['register_by'] = $req['register_by'];
                     // create new user
                     $user = User::query()->create($user_info);
+                    ImageModalSave::make($user->id,'User','users/default.png');
                     SendOTP::send($user);
 
 

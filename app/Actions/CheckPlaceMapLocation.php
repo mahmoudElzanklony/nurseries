@@ -15,8 +15,6 @@ class CheckPlaceMapLocation
         if(sizeof($deliveries) == 0){
             return false;
         }
-
-        $default_address = DefaultAddress::get();
         if($default_address == null){
             return false;
         }
@@ -24,7 +22,6 @@ class CheckPlaceMapLocation
 
         $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='.$default_address->latitude.','.$default_address->longitude.'&key='.env('GOOGLE_MAPS_API_KEY');
         $client_request = $client->get($apiUrl);
-
         // Parse the response
         $response = json_decode($client_request->getBody(), true);
         $place_id = null;
@@ -48,5 +45,6 @@ class CheckPlaceMapLocation
                 break;
             }
         }
+        return false;
     }
 }

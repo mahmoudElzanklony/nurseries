@@ -39,7 +39,6 @@ class RateController extends Controller
                 $e->where('user_id',auth()->id());
             })
             ->where('product_id','=',$data['product_id'])->first();
-
         if($order_item != null){
             unset($data['product_id']);
             $data['user_id'] = auth()->id();

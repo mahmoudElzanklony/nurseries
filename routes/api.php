@@ -62,6 +62,11 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::post('/validate-user',[AuthControllerApi::class,'validate_user']);
     Route::get('/user',[AuthControllerApi::class,'user'])->middleware('CheckApiAuth');
 
+    // ---------------------start of followers actions --------------------
+    Route::group(['prefix'=>'/addresses','middleware'=>'CheckApiAuth'],function (){
+        Route::post('/set-to-default',[UsersAddressControllerResource::class,'set_to_default']);
+    });
+    // ---------------------end of followers actions --------------------
 
 
     Route::resources([
@@ -94,6 +99,8 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     });
     // ---------------------end of followers actions --------------------
+
+
 
 
 

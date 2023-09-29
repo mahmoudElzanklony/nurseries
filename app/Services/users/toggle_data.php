@@ -18,14 +18,16 @@ class toggle_data
         if($fav != null){
             $fav->delete();
             $msg = trans('messages.removed_from_fav_successfully');
+            $status = 0;
         }else{
             favourites::query()->create([
                'user_id'=>auth()->id(),
                'product_id'=>$product_id
             ]);
+            $status = 1;
             $msg = trans('messages.added_to_fav_successfully');
         }
-        return messages::success_output([$msg]);
+        return messages::success_output($msg,['status'=>$status]);
     }
 
 
@@ -37,6 +39,7 @@ class toggle_data
         if($like != null){
             $like->delete();
             $msg = trans('messages.removed_like_successfully');
+            $status = 0;
         }else{
             likes::query()->create([
                 'user_id'=>auth()->id(),
@@ -44,8 +47,9 @@ class toggle_data
                 'type'=>$table,
             ]);
             $msg = trans('messages.added_like_successfully');
+            $status = 1;
         }
-        return messages::success_output([$msg]);
+        return messages::success_output($msg,['status'=>$status]);
     }
 
     public static function toggle_following($user_id){
@@ -54,14 +58,16 @@ class toggle_data
         if($follow_obj != null){
             $follow_obj->delete();
             $msg = trans('messages.removed_from_following_successfully');
+            $status = 0;
         }else{
             followers::query()->create([
                 'user_id'=>auth()->id(),
                 'following_id'=>$user_id
             ]);
             $msg = trans('messages.added_to_following_successfully');
+            $status = 1;
         }
-        return messages::success_output([$msg]);
+        return messages::success_output($msg,['status'=>$status]);
     }
 
 }

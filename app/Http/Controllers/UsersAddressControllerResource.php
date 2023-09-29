@@ -46,6 +46,25 @@ class UsersAddressControllerResource extends Controller
         return messages::success_output(trans('messages.saved_successfully'),$output);
     }
 
+    public function set_to_default(){
+        if(request()->has('id')){
+            user_addresses::query()->where('user_id','=',auth()->id())->update([
+                'default_address'=>0
+            ]);
+            try {
+                $output = user_addresses::query()
+                    ->where('user_id',auth()->id())
+                    ->find(request('id'));
+                $output->default_address = 1;
+                $output->save();
+                return messages::success_output(trans('messages.saved_successfully'),UserAddressesResource::make($output));
+            }catch (\Throwable $e){
+                return messages::error_output($e->getMessage());
+            }
+
+        }
+    }
+
     /**
      * Display the specified resource.
      *

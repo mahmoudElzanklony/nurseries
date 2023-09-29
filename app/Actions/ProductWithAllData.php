@@ -14,15 +14,13 @@ class ProductWithAllData
                 $e->with('favourite');
             })
             ->withCount('likes')
-            ->with(['category','user','seen',
+            ->with(['category','user','seen','last_four_likes',
                 'cares'=>function($e){
                     $e->with('care');
                 },'images','rates.user','wholesale_prices','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
                 }
-                ,'features'=>function($f){
-                    $f->with('feature');
-                },'answers'=>function($e){
+                ,'features.feature.image','answers'=>function($e){
                     $e->with('question');
                 }]);
         return $data;

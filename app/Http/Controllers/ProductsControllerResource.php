@@ -46,7 +46,15 @@ class ProductsControllerResource extends Controller
     public function index()
     {
         //
-        $data = ProductWithAllData::get();
+        $data = products::query()
+            ->when(GetAuthenticatedUser::get_info() != null , function ($e){
+                $e->with('favourite');
+            })
+            ->withCount('likes')
+            ->with(['category','image','rates','discounts'=>function($e){
+                    $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
+                }
+                ,'features.feature.image','answers.question.image']);
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
