@@ -20,6 +20,7 @@ class RateResource extends JsonResource
           'rate_product_info'=>$this->rate_product_info,
           'rate_product_services'=>$this->rate_product_services,
           'rate_product_delivery'=>$this->rate_product_delivery,
+          'created_at'=>$this->created_at,
           'user'=>UserResource::make($this->whenLoaded('user')),
         ];
     }
