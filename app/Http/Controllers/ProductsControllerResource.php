@@ -51,7 +51,7 @@ class ProductsControllerResource extends Controller
                 $e->with('favourite');
             })
             ->withCount('likes')
-            ->with(['category','image','rates','discounts'=>function($e){
+            ->with(['category','image','user','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
                 }
                 ,'features.feature.image','answers.question.image']);
