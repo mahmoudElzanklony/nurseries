@@ -45,13 +45,14 @@ class ProductsControllerResource extends Controller
      */
     public function index()
     {
-        //
+        // all products data info
+
         $data = products::query()
             ->when(GetAuthenticatedUser::get_info() != null , function ($e){
                 $e->with('favourite');
             })
             ->withCount('likes')
-            ->with(['category','image','user','discounts'=>function($e){
+            ->with(['category','images','user','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
                 }
                 ,'features.feature.image','answers.question.image']);
