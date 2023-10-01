@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\productRateFormRequest;
+use App\Http\Resources\RateResource;
 use App\Http\traits\messages;
 use App\Models\orders_items;
 use App\Models\orders_items_rates;
@@ -43,10 +44,10 @@ class RateController extends Controller
             unset($data['product_id']);
             $data['user_id'] = auth()->id();
             $data['order_item_id'] = $order_item->id;
-            orders_items_rates::query()->updateOrCreate([
+            $rate =  orders_items_rates::query()->with('user')->updateOrCreate([
                 'id'=>$data['id'] ?? null,
             ],$data);
-            return messages::success_output(trans('messages.rated_successfully'),$data);
+            return messages::success_output(trans('messages.rated_successfully'),RateResource::make($rate));
         }else{
             return messages::error_output(trans('errors.please_order_this_product_to_rate_it'));
         }
