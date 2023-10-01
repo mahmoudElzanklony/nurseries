@@ -44,10 +44,10 @@ class RateController extends Controller
             unset($data['product_id']);
             $data['user_id'] = auth()->id();
             $data['order_item_id'] = $order_item->id;
-            $rate =  orders_items_rates::query()->with('user')->updateOrCreate([
+            $rate =  orders_items_rates::query()->updateOrCreate([
                 'id'=>$data['id'] ?? null,
             ],$data);
-            return $rate;
+            $rate = orders_items_rates::query()->with('user')->find($rate->id);
             return messages::success_output(trans('messages.rated_successfully'),RateResource::make($rate));
         }else{
             return messages::error_output(trans('errors.please_order_this_product_to_rate_it'));
