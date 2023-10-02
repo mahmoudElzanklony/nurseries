@@ -40,7 +40,7 @@ class ProductResource extends JsonResource
             'quantity'=>$this->quantity,
             'main_price'=>$this->main_price,
             'created_at'=>$this->created_at,
-            'category'=>ImagesResource::make($this->whenLoaded('category')),
+            'category'=>CategoriesResource::make($this->whenLoaded('category')),
             'images'=>ImagesResource::collection($this->whenLoaded('images')),
             'image'=>ImagesResource::make($this->whenLoaded('image')),
             'favourite'=>$this->favourite != null ? true:false,
