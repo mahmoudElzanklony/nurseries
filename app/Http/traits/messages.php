@@ -11,7 +11,7 @@ trait messages {
     }
 
 
-    static function error_output($errors , $status = 500 , $code = 0){
+    static function error_output($errors , $status = 501 , $code = 0){
         return response()->json(['errors'=>$errors,'status'=>$status,'code'=>$code]);
     }
 
