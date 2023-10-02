@@ -35,7 +35,7 @@ class RateController extends Controller
 
     public function rate_product_per_product($data){
         $order_item = orders_items::query()
-            ->whereDoesntHave('rate')
+           // ->whereDoesntHave('rate')
             ->whereHas('order',function($e){
                 $e->where('user_id',auth()->id());
             })
