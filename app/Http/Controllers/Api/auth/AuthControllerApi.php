@@ -59,7 +59,7 @@ class AuthControllerApi extends AuthServicesClass
 
             $credential = request()->only(['phone', 'activation_code']);
             $user = User::query()->with('image',function($e){
-                $e->select('id','name as image');
+                $e->select('id','name');
             })->where($credential)->first();
             if($user == null){
                 return messages::error_output(trans('errors.wrong_otp'));
