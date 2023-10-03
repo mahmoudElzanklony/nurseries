@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\auth;
 use App\Http\Controllers\classes\auth\AuthServicesClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\usersFormRequest;
+use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\cities;
 use App\Models\countries;
@@ -79,7 +80,7 @@ class AuthControllerApi extends AuthServicesClass
                     unset($user['image']['created_at']);
                     unset($user['image']['updated_at']);
                 }
-                return messages::success_output('',$user);
+                return messages::success_output('',UserResource::make($user));
             }
         }else{
             return messages::error_output($data->errors());

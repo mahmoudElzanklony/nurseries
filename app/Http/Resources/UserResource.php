@@ -28,7 +28,7 @@ class UserResource extends JsonResource
           'token'=>isset($this->token) ? $this->token : null,
           'avg_rates'=>isset($seller_avg_rate)  ?
                        round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
-          'image'=>$this->image != null ? ImagesResource::make($this->image) : ['name'=>'users/default.png'],
+          'image'=>$this->image != null ? ImagesResource::make($this->image) : ['image'=>'users/default.png'],
           'created_at'=>$this->created_at,
         ];
     }
