@@ -76,6 +76,8 @@ class AuthControllerApi extends AuthServicesClass
                     unset($user['image']['name']);
                     unset($user['image']['imageable_id']);
                     unset($user['image']['imageable_type']);
+                    unset($user['image']['created_at']);
+                    unset($user['image']['updated_at']);
                 }
                 return messages::success_output('',$user);
             }
