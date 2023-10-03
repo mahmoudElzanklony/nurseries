@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\packages_orders;
 use App\Models\projects;
+use App\Models\roles;
 use App\Models\transactions;
 use App\Models\User;
 use App\Services\DB_connections;
@@ -33,6 +34,7 @@ class UsersController extends Controller
         User::query()->where('id',auth()->id())->update($data);
         $output = User::query()->with('image')->find(auth()->id());
         $output['token'] = JWTAuth::fromUser($output);
+        $output['role'] = roles::query()->find(auth()->user()->role_id);
         return messages::success_output(trans('messages.updated_successfully'),UserResource::make($output));
     }
 
