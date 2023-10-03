@@ -24,6 +24,7 @@ class UserResource extends JsonResource
           'username'=>$this->username,
           'email'=>$this->email,
           'phone'=>$this->phone,
+          'new_user'=>$this->new_user ?? false,
           'role'=>$this->whenLoaded('role'),
           'token'=>isset($this->token) ? $this->token : null,
           'avg_rates'=>isset($seller_avg_rate)  ?
