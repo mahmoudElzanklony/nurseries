@@ -34,7 +34,6 @@ class UsersController extends Controller
         User::query()->where('id',auth()->id())->update($data);
         $output = User::query()->with('image')->find(auth()->id());
         $output['token'] = JWTAuth::fromUser($output);
-        $output['role'] = roles::query()->find(auth()->user()->role_id);
         return messages::success_output(trans('messages.updated_successfully'),UserResource::make($output));
     }
 

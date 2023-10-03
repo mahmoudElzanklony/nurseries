@@ -80,7 +80,9 @@ class AuthControllerApi extends AuthServicesClass
                     unset($user['image']['created_at']);
                     unset($user['image']['updated_at']);
                 }
-                return messages::success_output('',UserResource::make($user));
+                return messages::success_output('',UserResource::make($user),[
+                    'new_user'=>$user['new_user']
+                ]);
             }
         }else{
             return messages::error_output($data->errors());
