@@ -12,7 +12,9 @@ class FavouriteController extends Controller
 {
     //
     public function index(){
-        $fav = favourites::query()->where('user_id','=',auth()->id())
+        $fav = favourites::query()
+            ->where('user_id','=',auth()->id())
+            ->where('type','=','product')
             ->orderBy('id','DESC')->paginate(15);
         $ids = $fav->getCollection()->map(function ($e) {
             return $e->product_id;

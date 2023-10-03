@@ -12,7 +12,7 @@ class custom_orders_sellers_reply extends Model
     protected $fillable = ['custom_orders_seller_id','info','product_price','days_delivery','delivery_price','client_reply'];
 
     public function images(){
-        return $this->morphMany(images::class,'imagable');
+        return $this->morphMany(images::class,'imageable');
     }
 
     public function custom_order_seller(){

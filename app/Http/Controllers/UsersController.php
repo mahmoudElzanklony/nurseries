@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\ImageModalSave;
 use App\Http\Requests\usersFormRequest;
+use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\packages_orders;
 use App\Models\projects;
@@ -16,6 +17,8 @@ use Illuminate\Http\Request;
 use App\Http\traits\helpers_requests_api\QuickReportUserHelperApi;
 use App\Http\traits\helpers_requests_api\MarketerProfitHelperApi;
 use App\Http\traits\upload_image;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 class UsersController extends Controller
 {
     //
@@ -28,8 +31,13 @@ class UsersController extends Controller
             ImageModalSave::make(auth()->id(),'users','users/'.$image);
         }
         User::query()->where('id',auth()->id())->update($data);
-        $output = User::query()->find(auth()->id());
-        return messages::success_output(trans('messages.updated_successfully'),$output);
+        $output = User::query()->with('image')->find(auth()->id());
+        $output['token'] = JWTAuth::fromUser($output);
+        return messages::success_output(trans('messages.updated_successfully'),UserResource::make($output));
+    }
+
+    public function visit_seller(){
+
     }
 
     public function update_password(usersFormRequest $usersFormRequest){

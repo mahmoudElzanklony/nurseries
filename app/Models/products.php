@@ -44,7 +44,8 @@ class products extends Model
     }
 
     public function favourite(){
-        return $this->hasOne(favourites::class,'product_id')
+        return $this->hasOne(favourites::class,'item_id')
+            ->where('type','=','product')
             ->where('user_id',auth()->id());
     }
 

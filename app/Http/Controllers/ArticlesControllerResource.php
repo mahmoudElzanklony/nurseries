@@ -18,6 +18,7 @@ use App\Http\traits\messages;
 use App\Models\articles;
 use App\Models\articles_comments;
 use App\Models\likes;
+use App\Models\products;
 use App\Services\users\toggle_data;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
@@ -54,6 +55,13 @@ class ArticlesControllerResource extends Controller
         return ArticleResource::collection($output);
     }
 
+    public function toggle_fav(){
+        $article = articles::query()->find(request('article_id'));
+        if($article != null){
+            return toggle_data::toggle_fav($article->id,'article');
+        }
+        return messages::error_output('article id not found');
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -4,8 +4,12 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Actions\ArticlesWithAllData;
 use App\Actions\MyCurrentPoints;
+use App\Actions\ProductWithAllData;
+use App\Http\Resources\ArticleResource;
 use App\Http\Resources\MarketerClientResource;
+use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
 use App\Models\followers;
 use App\Models\marketer_clients;
@@ -41,6 +45,8 @@ trait QuickReportUserHelperApi
         $result = [
             'orders'=>orders::query()->where('user_id','=',auth()->id())->count(),
             'following'=>followers::query()->where('user_id','=',auth()->id())->count(),
+            'products_fav'=>ProductResource::collection(ProductWithAllData::get()->has('favourite')->get()),
+            'articles_fav'=>ArticleResource::collection(ArticlesWithAllData::get()->has('favourite')->get()),
         ];
         return $result;
 

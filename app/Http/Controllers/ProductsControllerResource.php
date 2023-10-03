@@ -117,7 +117,7 @@ class ProductsControllerResource extends Controller
     public function toggle_fav(){
         $product = products::query()->find(request('product_id'));
         if($product != null){
-            return toggle_data::toggle_fav($product->id);
+            return toggle_data::toggle_fav($product->id,'product');
         }
         return messages::error_output('product id not found');
     }

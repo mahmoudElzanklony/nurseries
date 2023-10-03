@@ -30,6 +30,10 @@ return [
     'days_delivery'=>'Number days of delivery',
     'delivery_price'=>'Delivery price',
     'not_support_delivery'=>'This product not support delivery',
+    'pending'=>'Pending',
+    'accepted'=>'Accepted',
+    'rejected'=>'Rejected',
+    'visa'=>'Visa card',
 
     // ----------------------end of  custom orders----------------------
 

@@ -2,20 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\CustomOrdersWithAllData;
 use App\Actions\DefaultAddress;
 use App\Actions\ImageModalSave;
+use App\Actions\PaymentModalSave;
+use App\Actions\SendNotification;
+use App\Filters\EndDateFilter;
+use App\Filters\marketer\StatusFilter;
+use App\Filters\NameFilter;
+use App\Filters\products\SellerNameFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\TitleFilter;
+use App\Http\Controllers\classes\payment\VisaPayment;
+use App\Http\Requests\customOrderClientReplyFormRequest;
 use App\Http\Requests\customOrderFormRequest;
 use App\Http\Requests\sellerReplyCustomOrderFormRequest;
+use App\Http\Resources\CustomOrderResource;
+use App\Http\Resources\CustomOrderSellerReplyResource;
 use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\custom_orders;
 use App\Models\custom_orders_sellers;
 use App\Models\custom_orders_sellers_reply;
+use App\Models\payments;
 use App\Models\User;
 use App\Repositories\CustomOrdersRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\traits\upload_image;
+use Illuminate\Pipeline\Pipeline;
+
 class CustomerOrdersControllerResource extends Controller
 {
     use upload_image;
@@ -30,21 +46,32 @@ class CustomerOrdersControllerResource extends Controller
     public function index()
     {
         //
-        $data = custom_orders::query()->with(['images','sellers_alerts'=>function($e){
-            $e->with(['seller','reply'=>function($e){
-                $e->with('images');
-            }]);
-        }])->orderBy('id','DESC')->paginate(10);
-        return $data;
+
+        $data = CustomOrdersWithAllData::get();
+        $output = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                StatusFilter::class,
+                NameFilter::class,
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+        return CustomOrderResource::collection($output);
+
     }
 
     public function seller_reply(sellerReplyCustomOrderFormRequest $request){
         DB::beginTransaction();
-        $custom_order_to_seller = custom_orders_sellers::query()
+        $custom_order_to_seller = custom_orders_sellers::query()->with('order')
             ->where('seller_id','=',auth()->id())
             ->where('custom_order_id','=',request('custom_order_id'))->first();
         if($custom_order_to_seller == null){
             return messages::error_output(trans('errors.no_data'));
+        }
+        if($custom_order_to_seller->order->status != 'pending'){
+            return messages::error_output(trans('errors.cant_reply_to_this_order'));
         }
         $data = $request->validated();
         $data['custom_orders_seller_id'] = $custom_order_to_seller->id;
@@ -61,32 +88,60 @@ class CustomerOrdersControllerResource extends Controller
         ],$data);
         // save images related to  order
         foreach($images as $image){
-            ImageModalSave::make($order->id,'custom_orders','custom_orders/'.$image);
+            ImageModalSave::make($order->id,'custom_orders_sellers_reply','custom_orders/'.$image);
         }
         DB::commit();
-        return messages::success_output(trans('saved_successfully'),$order);
+        return messages::success_output(trans('messages.saved_successfully'),$order);
     }
 
-    public function client_reply(){
+    public function client_reply(customOrderClientReplyFormRequest $request){
+
         if(request()->has('custom_orders_seller_id')){
-            $data = custom_orders_sellers_reply::query()->with('custom_order_seller')
+            $data = custom_orders_sellers_reply::query()->with('images')->with('custom_order_seller.order.images')
                 ->where('custom_orders_seller_id','=',request('custom_orders_seller_id'))->first();
             if($data == null){
                 return messages::error_output(trans('errors.no_data'));
+            }
+            // it must be pending , active ==> this mean it in progress now
+            if($data->custom_order_seller->order->status != 'pending'){
+                return messages::error_output(trans('errors.cant_select_seller_to_this_order'));
             }
             // get all sellers and reject them
             $sellers_replies = custom_orders_sellers::query()->with('reply')
                 ->where('custom_order_id','=',$data->custom_order_seller->custom_order_id)
                 ->get();
-            foreach($sellers_replies as $sellers_reply){
-                custom_orders_sellers_reply::query()->find( $sellers_reply->reply->id)->update([
-                    'client_reply' => 'rejected'
-                ]);
+            // handle visa payment
+            $payment_status = $this->handle_payment(request('visa_id'),$data->custom_order_seller->order->id,$data->product_price + $data->delivery_price);
+            if($payment_status == true){
+                // reject orders
+                foreach($sellers_replies as $sellers_reply){
+                    custom_orders_sellers_reply::query()->find( $sellers_reply->reply->id)->update([
+                        'client_reply' => 'rejected'
+                    ]);
+                }
+                // accept only one
+                $data->client_reply = 'accepted';
+                $data->save();
+
+                // active order
+                $this->make_order_active($data->custom_order_seller->order->id);
+
+                // send notification to accepted seller
+                $order_name = $data->custom_order_seller->order->name;
+                $info_noti = [
+                    'ar'=>'تم قبول عرضك المقدم بنجاح الخاص بطلب '.$order_name,
+                    'en'=>'Your offer has been accepted successfully to order '.$order_name,
+                ];
+                SendNotification::to_any_one_else_admin
+                ($data->custom_order_seller->seller_id,$info_noti,'/profile/custom-orders');
+                return messages::success_output(trans('messages.saved_successfully')
+                    ,CustomOrderSellerReplyResource::make($data));
+            }else{
+                return messages::error_output($payment_status);
             }
-            // accept only one
-            $data->client_reply = 'accepted';
-            $data->save();
-            return messages::success_output(trans('messages.saved_successfully'));
+
+
+
         }
     }
 
@@ -122,6 +177,22 @@ class CustomerOrdersControllerResource extends Controller
 
     }
 
+    public function handle_payment($visa_id,$order_id,$money){
+        $visa_obj = new VisaPayment();
+        if($visa_obj->handle(['id'=>$visa_id]) == true){
+            PaymentModalSave::make($order_id,'custom_orders',$visa_id,$money);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function make_order_active($order_id){
+        custom_orders::query()->find($order_id)->update([
+            'status'=>'active'
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -131,7 +202,8 @@ class CustomerOrdersControllerResource extends Controller
     public function show($id)
     {
         //
-        dd('show id');
+        $data = CustomOrdersWithAllData::get()->find($id);
+        return CustomOrderResource::make($data);
     }
 
     /**

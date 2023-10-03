@@ -30,4 +30,10 @@ class articles extends Model
     public function comments(){
         return $this->hasMany(articles_comments::class,'article_id');
     }
+
+    public function favourite(){
+        return $this->hasOne(favourites::class,'item_id')
+            ->where('type','=','article')
+            ->where('user_id',auth()->id());
+    }
 }

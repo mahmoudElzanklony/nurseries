@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\DB;
 
 class toggle_data
 {
-    public static function toggle_fav($product_id){
+    public static function toggle_fav($product_id, $type = 'product'){
         $fav = favourites::query()->where('user_id','=',auth()->id())
-            ->where('product_id','=',$product_id)->first();
+            ->where('type','=',$type)
+            ->where('item_id','=',$product_id)->first();
         if($fav != null){
             $fav->delete();
             $msg = trans('messages.removed_from_fav_successfully');
@@ -22,7 +23,8 @@ class toggle_data
         }else{
             favourites::query()->create([
                'user_id'=>auth()->id(),
-               'product_id'=>$product_id
+               'item_id'=>$product_id,
+               'type'=>$type
             ]);
             $status = true;
             $msg = trans('messages.added_to_fav_successfully');

@@ -68,22 +68,6 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
     // ---------------------end of followers actions --------------------
 
-
-    Route::resources([
-        'products'=>ProductsControllerResource::class,
-        'categories'=>CategoriesControllerResource::class,
-        'articles'=>ArticlesControllerResource::class,
-        'addresses'=>UsersAddressControllerResource::class,
-        'countries'=>CountriesControllerResource::class,
-        'governments'=>GovermentsControllerResource::class,
-        'cities'=>CitiesControllerResource::class,
-        'areas'=>AreasControllerResource::class,
-        'financial'=>FinancialReconciliationsControllerResource::class,
-        'care'=>CareControllerResource::class,
-        'online-payment'=>VisaBankControllerResource::class,
-        'custom-orders'=>CustomerOrdersControllerResource::class
-    ]);
-
     // ---------------------start of categories actions --------------------
     Route::group(['prefix'=>'/categories-data','middleware'=>'CheckApiAuth'],function (){
         Route::get('/cat-questions-features',[CategoriesControllerResource::class,'cat_questions_features']);
@@ -181,6 +165,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/articles','middleware'=>'CheckApiAuth'],function (){
         Route::post('/save-comment',[ArticlesControllerResource::class,'save_comment']);
         Route::post('/save-like',[ArticlesControllerResource::class,'save_like']);
+        Route::post('/toggle-fav',[ArticlesControllerResource::class,'toggle_fav']);
 
     });
     // ---------------------end of articles actions --------------------
@@ -190,6 +175,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of users actions --------------------
     Route::group(['prefix'=>'/profile','middleware'=>'CheckApiAuth'],function (){
         Route::post('/update-personal-info',[UsersController::class,'update_personal_info']);
+        Route::post('/visit-seller',[UsersController::class,'visit_seller']);
         Route::post('/report',[UsersController::class,'quick_report']);
     });
     // ---------------------end of users actions --------------------
@@ -230,6 +216,23 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     // delete item
     Route::post('/delete-item',[GeneralServiceController::class,'delete_item']);
+
+
+
+    Route::resources([
+        'products'=>ProductsControllerResource::class,
+        'categories'=>CategoriesControllerResource::class,
+        'articles'=>ArticlesControllerResource::class,
+        'addresses'=>UsersAddressControllerResource::class,
+        'countries'=>CountriesControllerResource::class,
+        'governments'=>GovermentsControllerResource::class,
+        'cities'=>CitiesControllerResource::class,
+        'areas'=>AreasControllerResource::class,
+        'financial'=>FinancialReconciliationsControllerResource::class,
+        'care'=>CareControllerResource::class,
+        'online-payment'=>VisaBankControllerResource::class,
+        'custom-orders'=>CustomerOrdersControllerResource::class
+    ]);
 
 
 
