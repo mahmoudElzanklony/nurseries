@@ -19,6 +19,12 @@ class articles extends Model
         return $this->hasMany(likes::class,'item_id');
     }
 
+    public function like(){
+        return $this->hasOne(likes::class,'item_id')
+            ->where('type','=','article')
+            ->where('user_id',auth()->id());
+    }
+
     public function seen(){
         return $this->hasOne(seen::class,'item_id');
     }

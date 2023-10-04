@@ -21,6 +21,7 @@ class ArticleResource extends JsonResource
           'user'=>UserResource::make($this->whenLoaded('user')),
           'seen'=>$this->seen->count ?? 0,
           'likes_count'=>$this->likes_count,
+          'like'=>$this->like != null ? true:false,
           'images'=>ImagesResource::collection($this->whenLoaded('images')),
           'comments'=>CommentResource::collection($this->whenLoaded('comments')),
           'created_at'=>$this->created_at
