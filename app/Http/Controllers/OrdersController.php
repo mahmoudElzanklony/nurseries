@@ -68,7 +68,7 @@ class OrdersController extends Controller
             ])
             ->thenReturn()
             ->orderBy('id','DESC')
-            ->get();
+            ->paginate(10);
         return OrderResource::collection($data);
     }
 

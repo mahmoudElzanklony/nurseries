@@ -14,6 +14,7 @@ use App\Filters\StartDateFilter;
 use App\Filters\TitleFilter;
 use App\Http\Requests\articleFormRequest;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\CommentResource;
 use App\Http\traits\messages;
 use App\Models\articles;
 use App\Models\articles_comments;
@@ -119,7 +120,7 @@ class ArticlesControllerResource extends Controller
         $art = articles_comments::query()->updateOrCreate([
             'id' => request('id') ?? null
         ], $data);
-        return messages::success_output(trans('messages.operation_saved_successfully'),$art);
+        return messages::success_output(trans('messages.operation_saved_successfully'),CommentResource::make($art));
     }
 
     public function save_like(articleFormRequest $request){

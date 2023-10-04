@@ -6,9 +6,11 @@ use App\Actions\CheckPlaceMapLocation;
 use App\Actions\CheckProductSupportDeliveryToUserAddress;
 use App\Actions\DefaultAddress;
 use App\Actions\DeliveryOfOrder;
+use App\Actions\ProductStatisticsForSeller;
 use App\Actions\SellerRateAVG;
 use App\Actions\WantToBeRated;
 use App\Models\followers;
+use App\Models\orders_items;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -54,6 +56,9 @@ class ProductResource extends JsonResource
             'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
             'is_following'=>auth()->check() && followers::query()->where('user_id',auth()->id())->where('following_id',$this->user_id)->first() != null ? true:false,
             'user'=>UserResource::make($this->whenLoaded('user')),
+            'statistics'=>$this->when(auth()->user()->role->name == 'seller',function (){
+                return ProductStatisticsForSeller::get($this->id);
+            }),
             'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
