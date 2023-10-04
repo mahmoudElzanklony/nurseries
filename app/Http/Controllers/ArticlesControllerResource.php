@@ -120,7 +120,7 @@ class ArticlesControllerResource extends Controller
         $art = articles_comments::query()->updateOrCreate([
             'id' => request('id') ?? null
         ], $data);
-        $art['user'] = auth()->user();
+        $art = articles_comments::query()->with('user')->find($art->id);
         return messages::success_output(trans('messages.operation_saved_successfully'),CommentResource::make($art));
     }
 
