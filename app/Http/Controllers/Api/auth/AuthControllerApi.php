@@ -72,14 +72,7 @@ class AuthControllerApi extends AuthServicesClass
                     $user['new_user'] = false;
                 }
                 $user['token'] =  $token;
-                if($user['image'] != null){
-                    $user['image']['image'] = $user['image']['name'];
-                    unset($user['image']['name']);
-                    unset($user['image']['imageable_id']);
-                    unset($user['image']['imageable_type']);
-                    unset($user['image']['created_at']);
-                    unset($user['image']['updated_at']);
-                }
+
                 return messages::success_output('',UserResource::make($user),[
                     'new_user'=>$user['new_user']
                 ]);
