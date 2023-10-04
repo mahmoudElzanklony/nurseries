@@ -9,6 +9,10 @@ class orders_items extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'price' => 'double',
+    ];
+
     protected $fillable = ['order_id','product_id','quantity','price'];
 
     public function order(){
