@@ -117,9 +117,10 @@ class ArticlesControllerResource extends Controller
     public function save_comment(articleFormRequest $request){
         $data = $request->validated();
         $data['user_id'] = auth()->id();
-        $art = articles_comments::query()->with('user')->updateOrCreate([
+        $art = articles_comments::query()->updateOrCreate([
             'id' => request('id') ?? null
         ], $data);
+        $art['user'] = auth()->user();
         return messages::success_output(trans('messages.operation_saved_successfully'),CommentResource::make($art));
     }
 
