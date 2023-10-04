@@ -10,7 +10,7 @@ class orders_items extends Model
     use HasFactory;
 
     protected $casts = [
-        'price' => 'double',
+        'price' => 'float',
     ];
 
     protected $fillable = ['order_id','product_id','quantity','price'];
