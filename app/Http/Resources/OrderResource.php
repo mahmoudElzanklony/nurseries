@@ -20,7 +20,7 @@ class OrderResource extends JsonResource
           'payment_method'=>$this->payment_method,
           'has_coupon'=>$this->has_coupon == 0 ? false:true,
           'seller_profit'=>$this->seller_profit == 0 ? false:true,
-          'items_price'=>$this->total_items,
+          'items_price'=>doubleval($this->total_items),
           'address'=>$this->address,
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
