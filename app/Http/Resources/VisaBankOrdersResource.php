@@ -18,7 +18,12 @@ class VisaBankOrdersResource extends JsonResource
           'id'=>$this->id,
           'visa_id'=>$this->visa_id,
           'money'=> $this->money,
-          'item'=>OrderItemsResource::make($this->paymentable->item),
+          'items'=>$this->when(isset($this->paymentable->items) && sizeof($this->paymentable->items) > 0 ,function (){
+              return SmallProduct::collection($this->paymentable->items);
+          }),
+          'name' => $this->when(isset($this->paymentable->name) && $this->paymentable->name != null, function () {
+                return $this->paymentable->name;
+          }),
         ];
     }
 }

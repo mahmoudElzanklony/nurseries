@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ImagesResource extends JsonResource
+class SmallProduct extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class ImagesResource extends JsonResource
     public function toArray($request)
     {
         return [
-          'id'=>$this->id ?? '',
-          'image'=>$this->name
+          'id'=>$this->product->id,
+          'name'=>$this->product->{app()->getLocale().'_name'},
         ];
     }
 }

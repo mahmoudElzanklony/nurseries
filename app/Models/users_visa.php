@@ -15,6 +15,12 @@ class users_visa extends Model
     protected $fillable = ['user_id','name','card_number','end_date','cvv'];
 
     public function orders(){
-        return $this->hasMany(payments::class,'visa_id');
+        return $this->hasMany(payments::class,'visa_id')
+            ->where('paymentable_type','=','App\Models\orders');
+    }
+
+    public function custom_orders(){
+        return $this->hasMany(payments::class,'visa_id')
+            ->where('paymentable_type','=','App\Models\custom_orders');
     }
 }

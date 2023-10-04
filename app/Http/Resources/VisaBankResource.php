@@ -22,6 +22,7 @@ class VisaBankResource extends JsonResource
           'end_date'=>$this->end_date,
           'cvv'=>$this->cvv,
           'orders'=>VisaBankOrdersResource::collection($this->orders) ?? [],
+          'custom_orders'=>VisaBankOrdersResource::collection($this->custom_orders) ?? [],
           'created_at'=>$this->created_at,
         ];
     }
