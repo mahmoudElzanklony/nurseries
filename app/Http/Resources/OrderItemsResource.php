@@ -19,7 +19,7 @@ class OrderItemsResource extends JsonResource
           'product'=>ProductResource::make($this->whenLoaded('product')),
           'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
           'quantity'=>$this->quantity,
-          'price'=>$this->price,
+          'price'=>doubleval($this->price),
           'created_at'=>$this->created_at,
 
         ];
