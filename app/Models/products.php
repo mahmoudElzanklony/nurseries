@@ -36,7 +36,7 @@ class products extends Model
     }
 
     public function user_care(){
-        $this->hasOne(users_products_cares::class,'product_id');
+        return $this->hasOne(users_products_cares::class,'product_id');
     }
 
     public function user(){
