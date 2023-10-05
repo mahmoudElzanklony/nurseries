@@ -25,7 +25,7 @@ class GeneralServiceController extends Controller
                 DB::table($table)->delete($id);
             }
         }
-        return messages::success_output([trans('messages.deleted_successfully')]);
+        return messages::success_output(trans('messages.deleted_successfully'));
 
     }
 
