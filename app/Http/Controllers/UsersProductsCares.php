@@ -22,7 +22,9 @@ class UsersProductsCares extends Controller
     //
 
     public function get_products_cares(){
-        $data =  ProductWithAllData::get()->has('user_care')->paginate(10);
+        $data =  ProductWithAllData::get()->whereHas('user_care',function($e){
+            $e->where('user_id','=',auth()->id());
+        })->paginate(10);
             /*->whereHas('cares',function ($e){
                 $e->whereRaw('(type = "seller" OR user_id = '.auth()->id().')');
             })*/
