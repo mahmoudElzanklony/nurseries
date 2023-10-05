@@ -16,7 +16,7 @@ class OrderShipmentsInfo extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'content'=>trans('keywords'.$this->content),
+          'content'=>trans('keywords.'.$this->content),
           'created_at'=>$this->created_at,
         ];
     }
