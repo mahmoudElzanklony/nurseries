@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\packages_orders;
 use App\Models\projects;
+use App\Models\reports;
 use App\Models\roles;
 use App\Models\transactions;
 use App\Models\User;
@@ -38,10 +39,12 @@ class UsersController extends Controller
     }
 
     public function visit_seller(){
-
+        $id = request('id');
+        return $this->seller_report($id);
     }
 
     public function update_password(usersFormRequest $usersFormRequest){
+        // validate password
         $data = $usersFormRequest->validated();
     }
 

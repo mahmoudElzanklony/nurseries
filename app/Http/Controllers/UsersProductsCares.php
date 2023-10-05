@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ManageTimeAlert;
+use App\Actions\ProductWithAllData;
 use App\Http\Requests\productsCareFormRequest;
 use App\Http\Resources\CareResource;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\UsersProductsCareResource;
 use App\Http\traits\messages;
 use App\Models\care;
@@ -20,17 +22,17 @@ class UsersProductsCares extends Controller
     //
 
     public function get_products_cares(){
-        $data =  users_products_cares::query()
+        $data =  ProductWithAllData::get()->has('user_care')->paginate(10);
             /*->whereHas('cares',function ($e){
                 $e->whereRaw('(type = "seller" OR user_id = '.auth()->id().')');
             })*/
-            ->where('user_id','=',auth()->id())->get();
-            foreach($data as $datum){
+           // ->where('user_id','=',auth()->id())->get();
+            /*foreach($data as $datum){
                 $datum['cares'] = products_care::query()->with('care')
                     ->where('product_id','=',$datum->product_id)
                     ->whereRaw('(user_id = '.auth()->id().' OR type = "seller")')->get();
-            }
-        return UsersProductsCareResource::collection($data);
+            }*/
+        return ProductResource::collection($data);
     }
 
     public function check_before_add_product_to_care($product_id){

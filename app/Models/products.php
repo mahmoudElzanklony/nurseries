@@ -35,6 +35,10 @@ class products extends Model
         return $this->hasMany(products_care::class,'product_id');
     }
 
+    public function user_care(){
+        $this->hasOne(users_products_cares::class,'product_id')->where('user_id','=',auth()->id());
+    }
+
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }

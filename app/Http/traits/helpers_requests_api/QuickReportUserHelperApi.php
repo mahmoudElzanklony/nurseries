@@ -11,6 +11,7 @@ use App\Http\Resources\ArticleResource;
 use App\Http\Resources\MarketerClientResource;
 use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
+use App\Models\articles;
 use App\Models\followers;
 use App\Models\marketer_clients;
 use App\Models\orders;
@@ -53,10 +54,14 @@ trait QuickReportUserHelperApi
     }
 
     public function seller_report($id){
+        $products = ProductWithAllData::get()->where('user_id','=',auth()->id())->paginate(10);
+        $articles = ArticlesWithAllData::get()->where('user_id','=',auth()->id())->paginate(10);
         $result = [
-            'products'=>products::query()->where('user_id','=',$id)->count(),
-            'followers'=>followers::query()->where('following_id',$id)->count(),
-            'orders'=>orders::query()->where('seller_id','=',$id)->count(),
+            'products_count'=>products::query()->where('user_id','=',$id)->count(),
+            'followers_count'=>followers::query()->where('following_id',$id)->count(),
+            'articles_count'=>articles::query()->where('user_id','=',$id)->count(),
+            'products'=>ProductResource::collection($products),
+            'articles'=>ArticleResource::collection($articles),
         ];
         return $result;
     }
