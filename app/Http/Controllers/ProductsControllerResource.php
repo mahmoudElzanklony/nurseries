@@ -51,6 +51,9 @@ class ProductsControllerResource extends Controller
             ->when(GetAuthenticatedUser::get_info() != null , function ($e){
                 $e->with('favourite');
             })
+            ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' , function ($e){
+                $e->where('user_id','=',auth()->id());
+            })
             ->withCount('likes')
             ->with(['category','images','user','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
@@ -138,7 +141,9 @@ class ProductsControllerResource extends Controller
      */
     public function show($id)
     {
-        $data = ProductWithAllData::get()->findOrFail($id);
+        $data = ProductWithAllData::get()->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' , function ($e){
+            $e->where('user_id','=',auth()->id());
+        })->findOrFail($id);
         if($data != null){
             SeenItem::add($data->id,'products');
         }

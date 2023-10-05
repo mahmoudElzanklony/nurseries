@@ -10,6 +10,7 @@ use App\Filters\StartDateFilter;
 use App\Filters\EndDateFilter;
 use App\Http\Requests\ordersFormRequest;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderShipmentsInfo;
 use App\Http\traits\messages;
 use App\Models\orders;
 use App\Models\orders_items;
@@ -77,12 +78,12 @@ class OrdersController extends Controller
         if($order != null){
             $status = request('status');
             if($this->validate_update_order($status) == true) {
-                orders_shipment_info::query()->create([
+                $shipment = orders_shipment_info::query()->create([
                     'user_id' => auth()->id(),
                     'order_id' => $order->id,
                     'content' => $status
                 ]);
-                return messages::success_output(messages::success_output('messages.operation_saved_successfully'));
+                return messages::success_output(messages::success_output('messages.operation_saved_successfully'),OrderShipmentsInfo::make($shipment));
             }else{
                 return messages::error_output('error in status value you sent  of this order');
             }
