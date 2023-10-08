@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\ManageTimeAlert;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductCareResource extends JsonResource
@@ -18,10 +19,17 @@ class ProductCareResource extends JsonResource
           'id'=>$this->id,
           'product_id'=>$this->product_id,
           'user_id'=>$this->user_id,
-          'care'=>CareResource::make($this->whenLoaded('care')),
+          'care'=>CareResource::make($this->care),
           'time_number'=>$this->time_number,
           'time_type'=>$this->time_type,
           'type'=>$this->type,
+          'current_time'=>now(),
+          'next_time_alert'=>$this->when($this->next_time != null, function (){
+              return $this->next_time->next_alert;
+          }),
+          'remaining_time'=>$this->when($this->next_time != null, function (){
+              return ManageTimeAlert::difference_between_two_times(now(),$this->next_time->next_alert,$this->time_type);
+          }),
           'created_at'=>$this->created_at,
         ];
     }

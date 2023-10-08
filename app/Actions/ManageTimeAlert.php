@@ -5,6 +5,7 @@ namespace App\Actions;
 
 
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class ManageTimeAlert
 {
@@ -39,5 +40,13 @@ class ManageTimeAlert
         }else{
             return false;
         }
+    }
+
+    public static function difference_between_two_times($current_time,$alert_time,$time_type){
+        $current_time = Carbon::create($current_time);
+        $alert_time = Carbon::create($alert_time);
+        $time_type= Str::ucfirst($time_type);
+        $time_type = 'diffIn'.$time_type.'s';
+        return  $alert_time->{$time_type}($current_time);
     }
 }

@@ -164,9 +164,9 @@ class CustomerOrdersControllerResource extends Controller
             return messages::error_output(trans('errors.no_default_address'));
         }
         $images = [];
-        if(request()->hasFile('images')){
-            foreach(request()->file('images') as $img){
-                $name = $this->upload($img,'custom_orders');
+        if(request()->has('images')){
+            foreach(request('images') as $img){
+                $name = $this->download_and_save($img,'custom_orders');
                 array_push($images,$name);
             }
         }

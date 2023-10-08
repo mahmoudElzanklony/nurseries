@@ -73,3 +73,14 @@ and at profile page when rate send in this case order_id
 7- likes of product return image and usernmae of user that make like for this product
 
 8-create or update visa bank return orders is empty array and all visa banks delete updated_at
+
+_______________________________________________________________________________
+1- save care products-care/add-to-care return product object 
+
+2- return from products-care next_alert time and current time now
+
+3- next_alert input when add cutom care 
+
+4- add new custom care return object of care 
+
+5 -  product by id cares custom by user check to be returned

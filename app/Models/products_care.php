@@ -18,4 +18,8 @@ class products_care extends Model
     public function product(){
         return $this->belongsTo(products::class,'product_id');
     }
+
+    public function next_time(){
+        return $this->hasOne(users_products_care_alerts::class,'product_care_id');
+    }
 }

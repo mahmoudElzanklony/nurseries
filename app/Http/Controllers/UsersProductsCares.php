@@ -6,6 +6,7 @@ use App\Actions\ManageTimeAlert;
 use App\Actions\ProductWithAllData;
 use App\Http\Requests\productsCareFormRequest;
 use App\Http\Resources\CareResource;
+use App\Http\Resources\ProductCareResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\UsersProductsCareResource;
 use App\Http\traits\messages;
@@ -80,7 +81,7 @@ class UsersProductsCares extends Controller
             // make  alerts for every product care to this user
             $this->send_care_alerts(request('product_id'));
             DB::commit();
-            return messages::success_output(trans('messages.saved_successfully'),$output);
+            return messages::success_output(trans('messages.saved_successfully'),ProductResource::make(ProductWithAllData::get()->find($output->product_id)));
         }else{
             return messages::error_output(trans('errors.item_exist_at_care_list'));
         }
@@ -123,14 +124,22 @@ class UsersProductsCares extends Controller
             if($product_care_to_user_check == null){
                 return messages::error_output(trans('errors.item_doesnt_exist_at_care_list'));
             }
-            $care_obj = products_care::query()->create($data);
+            $care_obj = products_care::query()->with(['care','next_time'=>function($e){
+                $e->where('user_id','=',auth()->id());
+            }])->updateOrCreate([
+                'id'=>request('id') ?? null
+            ],$data);
             // make alert for this care
-            users_products_care_alerts::query()->create([
+            users_products_care_alerts::query()->updateOrCreate([
                 'user_id'=>auth()->id(),
                 'product_care_id'=>$care_obj->id,
-                'next_alert'=>ManageTimeAlert::manage($data['time_number'],$data['time_type'],null)
+            ],[
+                'user_id'=>auth()->id(),
+                'product_care_id'=>$care_obj->id,
+                'next_alert'=>request('next_alert') ?? ManageTimeAlert::manage($data['time_number'],$data['time_type'],null)
             ]);
-            return messages::success_output(trans('messages.saved_successfully'),$care_obj);
+            $output = ProductCareResource::make($care_obj);
+            return messages::success_output(trans('messages.saved_successfully'),$output);
         }else{
             return messages::error_output('لا تستيطع اضافة عملية رعاية خاصه لهذا المنتج');
         }

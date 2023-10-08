@@ -38,6 +38,7 @@ use App\Http\Controllers\BestController;
 use App\Http\Controllers\VisaBankControllerResource;
 use App\Http\Controllers\CustomerOrdersControllerResource;
 use App\Http\Controllers\AllSellersDataController;
+use App\Http\Controllers\AIController;
 
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -148,6 +149,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/clients','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'client_reply']);
+        Route::post('/ai-images',[AIController::class,'index']);
     });
     // ---------------------end of custom orders actions --------------------
 

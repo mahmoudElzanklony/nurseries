@@ -32,7 +32,12 @@ class products extends Model
     }
 
     public function cares(){
-        return $this->hasMany(products_care::class,'product_id');
+        return $this->hasMany(products_care::class,'product_id')
+            ->whereRaw('(type = "seller" '.(auth()->check() == true ? ' OR user_id =  '.auth()->id():'').' ) ');
+    }
+
+    public function time_alert(){
+        return $this->hasOneThrough(users_products_care_alerts::class,products_care::class,'product_id','product_care_id');
     }
 
     public function user_care(){
