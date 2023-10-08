@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('alerts:manage')
-               ->everyFiveMinutes()
+               ->everyMinute()
                ->withoutOverlapping()
                ->runInBackground();
 
