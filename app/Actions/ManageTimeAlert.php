@@ -35,7 +35,7 @@ class ManageTimeAlert
     public static function check_send_alert($time){
         $time = Carbon::create($time);
         $now = Carbon::now();
-        if ($now->diffInMinutes($time) <= 1) {
+        if ($now->diffInMinutes($time) <= 0) {
             return true;
         }else{
             return false;
