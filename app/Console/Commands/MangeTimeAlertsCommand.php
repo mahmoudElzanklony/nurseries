@@ -51,8 +51,11 @@ class MangeTimeAlertsCommand extends Command
             $check = ManageTimeAlert::check_send_alert($alert->next_alert);
             if($check == true){
                 // send Notification
-                $info = 'تنبيه !! موعد '.$alert->product_care->care ?? ''.' الخاصه ب'
-                    .$alert->product_care->product->{app()->getLocale().'_name'};
+                $name = $alert->product_care->product->{app()->getLocale().'_name'};
+                $info = [
+                    'ar'=> 'تنبيه !! موعد '.$alert->product_care->care ?? ''.' الخاصه ب' .$name,
+                    'en'=> 'Alert !! '.$alert->product_care->care ?? ''.'Related to ' .$name
+                ];
                 SendNotification::to_any_one_else_admin($alert->user_id,$info,'/profile/alerts');
                 $alert->update([
                     'next_alert'=>ManageTimeAlert::manage($alert->product_care->time_number,$alert->product_care->time_type,$alert->next_alert)
