@@ -149,7 +149,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/clients','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'client_reply']);
-        Route::post('/ai-images',[AIController::class,'index'])->withoutMiddleware('CheckApiAuth');
+        Route::post('/ai-images',[AIController::class,'index']);
     });
     // ---------------------end of custom orders actions --------------------
 
