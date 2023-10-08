@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\traits\messages;
 use App\Models\advertising_points_price;
 use App\Models\listings_info;
+use App\Models\products_care;
 use App\Services\notifications\pagiante_notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +16,17 @@ class GeneralServiceController extends Controller
     //
     public function delete_item(){
         $table = request('table');
+        if($table == 'users_products_cares'){
+            try {
+                $info = DB::table($table)->find(request('id'));
+                products_care::query()
+                    ->where('product_id', '=', $info->product_id)
+                    ->where('user_id', '=', $info->user_id)
+                    ->where('type', '=', 'client')->delete();
+            }catch (\Throwable $e){
 
+            }
+        }
         try {
             $model = app("App\Models\\".$table);
             $model->where('id',request('id'))->delete();

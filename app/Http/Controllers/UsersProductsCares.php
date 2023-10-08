@@ -38,6 +38,13 @@ class UsersProductsCares extends Controller
         return ProductResource::collection($data);
     }
 
+    public function find($id){
+        $data =  ProductWithAllData::get()->whereHas('user_care',function($e){
+            $e->where('user_id','=',auth()->id());
+        })->paginate(10);
+        return ProductResource::collection($data);
+    }
+
     public function check_before_add_product_to_care($product_id){
         return users_products_cares::query()
             ->where('user_id','=',auth()->id())

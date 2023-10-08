@@ -107,6 +107,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of products cares actions --------------------
     Route::group(['prefix'=>'/products-care','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[UsersProductsCares::class,'get_products_cares']);
+        Route::get('/{id}',[UsersProductsCares::class,'find']);
         Route::get('/questions-of-product-care',[UsersProductsCares::class,'questions']);
         Route::post('/add-to-care',[UsersProductsCares::class,'add']);
         Route::post('/custom-care',[UsersProductsCares::class,'make_custom_product_care']);

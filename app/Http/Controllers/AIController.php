@@ -16,18 +16,25 @@ class AIController extends Controller
         // Create a new OpenAI client.
         $client = new OpenAi(env('openai'));
 
-       /* // Load the input image using Intervention Image
+        // Load the input image using Intervention Image
         $file = request()->file('image');
         $name = rand(0,999999).'.png';
 
-        $mask = Image::make($file)
-            ->save(public_path('images/ai/').$name);// invert it to use as a mask
+        $mask = request()->file('mask');
+        $mask_name = rand(0,999999).'.png';
 
-*/
+        Image::make($file)
+            ->save(public_path('images/ai/').$name);
 
-        $response = $client->image([
-            //"image" => curl_file_create(public_path('images/ai/'.$name)),
-            "prompt" => "room plants",
+        Image::make($mask)
+            ->save(public_path('images/ai/').$mask_name);
+
+
+
+        $response = $client->imageEdit([
+            "image" => curl_file_create(public_path('images/ai/'.$name)),
+            "mask" => curl_file_create(public_path('images/ai/'.$mask_name)),
+            "prompt" => "add a variety of lush and vibrant plants, each with unique colors, shapes, and sizes. Ensure that the plants are seamlessly integrated into the scene and appear natural in their placement. The overall composition should evoke a sense of tranquility and aesthetics. Please include a diverse selection of plants to offer the client a range of options. The lighting should be soft and natural, complementing the overall ambiance. The final image should be of the highest quality, suitable for presentation to the client for their selection. Be sure to pay attention to detail and realism",
             "n" => 8,
             "size" => "1024x1024",
         ]);
