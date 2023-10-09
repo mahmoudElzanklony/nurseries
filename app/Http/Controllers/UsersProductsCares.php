@@ -160,6 +160,7 @@ class UsersProductsCares extends Controller
         if($item_check == null){
             return messages::error_output(trans('errors.item_doesnt_exist_at_care_list'));
         }
+        dd('aaaaaaa');
         // get product cares added from seller or by user custom
         $cares = products_care::query()
             ->where('product_id','=',$product_id)
@@ -171,7 +172,7 @@ class UsersProductsCares extends Controller
             });
         }
         $data = care::query()->whereNotIn('id',$cares)->get();
-        dd('aaaaaaa');
+
         return CareResource::collection($data);
     }
 
