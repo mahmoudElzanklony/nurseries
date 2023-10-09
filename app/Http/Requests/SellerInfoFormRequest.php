@@ -34,7 +34,7 @@ class SellerInfoFormRequest extends FormRequest
 
     public function save_commercial_data(){
         return [
-            'commercial_register'=>'required',
+            'commercial_register'=>'nullable',
             'tax_card'=>'required',
             'images'=>'required|array',
             'images.*'=>'required|image|mimes:png,jpg,jpeg,gif',
