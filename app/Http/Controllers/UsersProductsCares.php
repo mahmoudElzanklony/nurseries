@@ -171,7 +171,6 @@ class UsersProductsCares extends Controller
             });
         }
         $data = care::query()->whereNotIn('id',$cares)->get();
-        dd($data);
         return CareResource::collection($data);
     }
 
