@@ -153,7 +153,7 @@ class UsersProductsCares extends Controller
     }
 
     public function questions(){
-        dd('abc');
+        dd('aaaaaaaaaaaaaaaa');
         $product_id = request('product_id');
         $item_check = users_products_cares::query()
             ->where('user_id','=',auth()->id())
@@ -161,7 +161,6 @@ class UsersProductsCares extends Controller
         if($item_check == null){
             return messages::error_output(trans('errors.item_doesnt_exist_at_care_list'));
         }
-        dd('aaaaaaa');
         // get product cares added from seller or by user custom
         $cares = products_care::query()
             ->where('product_id','=',$product_id)
