@@ -153,6 +153,7 @@ class UsersProductsCares extends Controller
     }
 
     public function questions(){
+        dd('abc');
         $product_id = request('product_id');
         $item_check = users_products_cares::query()
             ->where('user_id','=',auth()->id())
