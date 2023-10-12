@@ -18,6 +18,7 @@ class CreateCustomOrdersSellersTable extends Migration
             $table->foreignId('custom_order_id')->constrained('custom_orders')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('seller_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

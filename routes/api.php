@@ -142,13 +142,14 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of custom orders actions --------------------
     Route::group(['prefix'=>'/sellers','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
+        Route::get('/replies',[AllSellersDataController::class,'replies_custom_orders']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'seller_reply']);
+        Route::post('/send-request',[CustomerOrdersControllerResource::class,'send_request']);
     });
     // ---------------------end of custom orders actions --------------------
 
     // ---------------------start of custom orders actions --------------------
     Route::group(['prefix'=>'/clients','middleware'=>'CheckApiAuth'],function (){
-        Route::get('/',[AllSellersDataController::class,'index']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'client_reply']);
         Route::post('/ai-images',[AIController::class,'index'])->withoutMiddleware('CheckApiAuth');
     });

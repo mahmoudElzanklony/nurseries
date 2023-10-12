@@ -84,3 +84,14 @@ _______________________________________________________________________________
 4- add new custom care return object of care 
 
 5 -  product by id cares custom by user check to be returned
+
+
+
+____________________________________________________________________________
+1- api to get sellers at custom order ai
+
+2- list of accepted , list of rejected from sellers to custom order
+
+3- api to get all replies of sellers with filter
+
+4 - prdocut details in_care mean user addded this product to his care list or not and its boolean

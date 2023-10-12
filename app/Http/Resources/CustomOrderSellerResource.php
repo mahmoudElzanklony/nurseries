@@ -19,6 +19,7 @@ class CustomOrderSellerResource extends JsonResource
           'seller'=>UserResource::make($this->seller),
           'order'=>CustomOrderResource::make($this->whenLoaded('order')),
           'reply'=>CustomOrderSellerReplyResource::make($this->whenLoaded('reply')),
+          'status'=>trans('keywords.'.$this->status),
           'created_at'=>$this->created_at,
         ];
     }

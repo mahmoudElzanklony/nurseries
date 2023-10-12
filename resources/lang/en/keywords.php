@@ -31,6 +31,8 @@ return [
     'delivery_price'=>'Delivery price',
     'not_support_delivery'=>'This product not support delivery',
     'pending'=>'Pending',
+    'active'=>'Active',
+
     'accepted'=>'Accepted',
     'rejected'=>'Rejected',
     'visa'=>'Visa card',

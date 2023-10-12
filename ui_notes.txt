@@ -1,0 +1,13 @@
+articles categories 
+
+tax for admin  to be added
+
+add images or videos for article 
+
+upload file word and parsing content as text article
+
+seller coupons 
+
+banners of home page
+
+update history of price at table

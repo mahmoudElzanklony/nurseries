@@ -7,10 +7,10 @@ use App\Actions\DefaultAddress;
 use App\Actions\ImageModalSave;
 use App\Actions\PaymentModalSave;
 use App\Actions\SendNotification;
+use App\Filters\custom_orders\SellerNameFilter;
 use App\Filters\EndDateFilter;
 use App\Filters\marketer\StatusFilter;
 use App\Filters\NameFilter;
-use App\Filters\products\SellerNameFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\TitleFilter;
 use App\Http\Controllers\classes\payment\VisaPayment;
@@ -52,7 +52,7 @@ class CustomerOrdersControllerResource extends Controller
             ->send($data)
             ->through([
                 StatusFilter::class,
-                NameFilter::class,
+                SellerNameFilter::class,
                 StartDateFilter::class,
                 EndDateFilter::class,
             ])
@@ -75,6 +75,9 @@ class CustomerOrdersControllerResource extends Controller
         }
         $data = $request->validated();
         $data['custom_orders_seller_id'] = $custom_order_to_seller->id;
+        // change status of seller to accepted
+        $custom_order_to_seller->status = 'accepted';
+        $custom_order_to_seller->save();
         $images = [];
         if(request()->hasFile('images')){
             foreach(request()->file('images') as $img){
@@ -145,6 +148,14 @@ class CustomerOrdersControllerResource extends Controller
         }
     }
 
+
+    public function send_request(){
+        $obj = custom_orders_sellers::query()->create([
+            'custom_order_id'=>request('order_id'),
+            'seller_id'=>request('seller_id'),
+        ]);
+        return messages::success_output(trans('messages.saved_successfully'),$obj);
+    }
 
 
     /**

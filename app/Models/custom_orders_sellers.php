@@ -9,7 +9,7 @@ class custom_orders_sellers extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['custom_order_id','seller_id'];
+    protected $fillable = ['custom_order_id','seller_id','status'];
 
     public function seller(){
         return $this->belongsTo(User::class,'seller_id');
