@@ -34,6 +34,7 @@ class articleFormRequest extends FormRequest
                 'id'=>'filled',
                 'title' => 'required',
                 'description' => 'required',
+                'category_id'=>'required|exists:categories,id'
             ];
         }
     }
@@ -43,6 +44,7 @@ class articleFormRequest extends FormRequest
         return [
           'title'=>trans('keywords.name'),
           'description'=>trans('keywords.info'),
+          'category_id'=>trans('keywords.categories'),
         ];
     }
 }

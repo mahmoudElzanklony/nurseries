@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductQuestionResource;
 use App\Http\traits\messages;
+use App\Models\ai_questions;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Orhanerday\OpenAi\OpenAi;
@@ -42,5 +44,10 @@ class AIController extends Controller
 
 
         return messages::success_output('',json_decode($response));
+    }
+
+    public function ai_questions(){
+        $data =  ai_questions::query()->with('options')->get();
+        return ProductQuestionResource::collection($data);
     }
 }

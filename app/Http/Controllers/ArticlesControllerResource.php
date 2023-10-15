@@ -21,6 +21,7 @@ use App\Models\articles_comments;
 use App\Models\likes;
 use App\Models\products;
 use App\Services\users\toggle_data;
+use TonchikTm\PdfToHtml\Pdf;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
 use Illuminate\Pipeline\Pipeline;
@@ -83,6 +84,19 @@ class ArticlesControllerResource extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->id();
+
+        if(request()->hasFile('file')){
+            $file = $request->file('file');
+            $fileType = request()->file('file')->extension();
+            $content = '';
+            if ($fileType === 'pdf') {
+                $pdf = new Pdf($file->getPathname());
+                $htmlContent = $pdf->getHtml();
+            }
+
+            return $content;
+        }
+
         $article = articles::query()->updateOrCreate([
             'id'=>request('id') ?? null
         ],$data);
