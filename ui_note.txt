@@ -11,3 +11,7 @@
 6- remove dislike button
 
 7-control panel one page only ? and this statistics is not clickable to pages ?!
+
+8-products related to products names center contain name and info 
+info will be ( questions , answers , features ) as json 
+it will be good when seller will add new product with the same name  

@@ -22,6 +22,8 @@ return [
     'shipped'=>'Shipped',
     'delivered'=>'Delivered',
     'cancelled'=>'Cancelled',
+    'preparing'=>'Preparing',
+    'completed'=>'Completed',
     // ----------------------end of  orders- ---------------------
 
     // ----------------------start of  custom orders----------------------

@@ -11,3 +11,5 @@ seller coupons
 banners of home page
 
 update history of price at table
+
+admin decide which seller to add article

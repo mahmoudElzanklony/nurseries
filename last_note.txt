@@ -95,3 +95,15 @@ ____________________________________________________________________________
 3- api to get all replies of sellers with filter
 
 4 - prdocut details in_care mean user addded this product to his care list or not and its boolean
+
+
+______________________________-
+1- all replies seller add fiter name 
+
+2- status of seller reply send field the same value of database
+
+3- product details if i request this product in order return status of order
+
+4 - remaing time of product care at care product page
+
+5- api for tax 
