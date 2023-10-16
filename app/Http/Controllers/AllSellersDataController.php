@@ -31,7 +31,7 @@ class AllSellersDataController extends Controller
             ->thenReturn()
             ->paginate(10);
 
-        return UserResource::collection($users);
+        return UserResource::collection($output);
 
     }
 
