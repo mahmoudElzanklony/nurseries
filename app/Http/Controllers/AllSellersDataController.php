@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\CustomOrdersWithAllData;
 use App\Actions\RepliesSellersWithAllData;
 use App\Filters\custom_orders\SellerNameFilter;
-use App\Filters\EndDateFilter;
-use App\Filters\marketer\StatusFilter;
+
+use App\Filters\UserNameFilter;
 use App\Filters\StartDateFilter;
 use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerResource;
@@ -21,7 +21,16 @@ class AllSellersDataController extends Controller
     public function index(){
         $users = User::query()->whereHas('role',function($e){
             $e->where('name','=','seller');
-        })->orderBy('id','DESC')->paginate(10);
+        })->orderBy('id','DESC');
+
+        $output = app(Pipeline::class)
+            ->send($users)
+            ->through([
+               UsernameFilter::class
+            ])
+            ->thenReturn()
+            ->paginate(10);
+
         return UserResource::collection($users);
 
     }
