@@ -6,7 +6,7 @@ use App\Actions\CustomOrdersWithAllData;
 use App\Actions\RepliesSellersWithAllData;
 use App\Filters\custom_orders\SellerNameFilter;
 
-use App\Filters\UserNameFilter;
+use App\Filters\UsernameFilter;
 use App\Filters\StartDateFilter;
 use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerResource;
