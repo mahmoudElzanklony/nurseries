@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Actions\ManageTimeAlert;
 use App\Actions\ProductWithAllData;
+use App\Filters\custom_orders\SellerNameFilter;
+use App\Filters\EndDateFilter;
+use App\Filters\marketer\StatusFilter;
+use App\Filters\NameFilter;
+use App\Filters\StartDateFilter;
 use App\Http\Requests\productsCareFormRequest;
 use App\Http\Resources\CareResource;
 use App\Http\Resources\ProductCareResource;
@@ -16,6 +21,7 @@ use App\Models\products_care;
 use App\Models\users_products_care_alerts;
 use App\Models\users_products_cares;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 
 class UsersProductsCares extends Controller
@@ -25,17 +31,18 @@ class UsersProductsCares extends Controller
     public function get_products_cares(){
         $data =  ProductWithAllData::get()->whereHas('user_care',function($e){
             $e->where('user_id','=',auth()->id());
-        })->paginate(10);
-            /*->whereHas('cares',function ($e){
-                $e->whereRaw('(type = "seller" OR user_id = '.auth()->id().')');
-            })*/
-           // ->where('user_id','=',auth()->id())->get();
-            /*foreach($data as $datum){
-                $datum['cares'] = products_care::query()->with('care')
-                    ->where('product_id','=',$datum->product_id)
-                    ->whereRaw('(user_id = '.auth()->id().' OR type = "seller")')->get();
-            }*/
-        return ProductResource::collection($data);
+        });
+        $output = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                NameFilter::class,
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+
+        return ProductResource::collection($output);
     }
 
     public function find($id){
