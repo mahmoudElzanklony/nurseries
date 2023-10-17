@@ -60,6 +60,19 @@ class ProductResource extends JsonResource
                 return ProductStatisticsForSeller::get($this->id);
             }),
             'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),
+            'order_check_created_at'=>$this->when(isset($this->last_order_item) &&
+                $this->last_order_item != null &&
+                $this->last_order_item->order != null
+                ,function (){
+                    return $this->last_order_item->order->created_at;
+            }),
+            'shipments'=>$this->when(isset($this->last_order_item) &&
+                                        $this->last_order_item != null &&
+                                        $this->last_order_item->order != null
+                                       ,function (){
+                return OrderShipmentsInfo::collection($this->last_order_item->order->shipments_info);
+            }),
+
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
             'delivery'=>auth()->check() && $delivery != false ? $delivery :trans('errors.product_doesnt_support_delivery'),

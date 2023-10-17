@@ -15,6 +15,10 @@ class ProductCareResource extends JsonResource
      */
     public function toArray($request)
     {
+        $next_time = $this->when($this->next_time != null, function (){
+            return $this->next_time->next_alert;
+        });
+
         return [
           'id'=>$this->id,
           'product_id'=>$this->product_id,
@@ -24,9 +28,7 @@ class ProductCareResource extends JsonResource
           'time_type'=>$this->time_type,
           'type'=>$this->type,
           'current_time'=>now(),
-          'next_time_alert'=>$this->when($this->next_time != null, function (){
-              return $this->next_time->next_alert;
-          }),
+          'next_time_alert'=>$next_time,
           'remaining_time'=>$this->when($this->next_time != null, function (){
               return ManageTimeAlert::difference_between_two_times(now(),$this->next_time->next_alert,$this->time_type);
           }),

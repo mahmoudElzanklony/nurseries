@@ -31,6 +31,7 @@ use App\Http\Controllers\GovermentsControllerResource;
 use App\Http\Controllers\SearchesController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\RateController;
+use App\Http\Controllers\TaxesController;
 use App\Http\Controllers\CareControllerResource;
 use App\Http\Controllers\ProductsCaresAlerts;
 use App\Http\Controllers\UsersProductsCares;
@@ -43,6 +44,7 @@ use App\Http\Controllers\AIController;
 
 Route::group(['middleware'=>'changeLang'],function (){
     Route::get('/test',[AuthControllerApi::class,'test']);
+    Route::get('/tax',[TaxesController::class,'index']);
 
 
     Route::group(['prefix'=>'/auth'],function(){

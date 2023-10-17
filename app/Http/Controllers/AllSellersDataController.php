@@ -6,6 +6,8 @@ use App\Actions\CustomOrdersWithAllData;
 use App\Actions\RepliesSellersWithAllData;
 use App\Filters\custom_orders\SellerNameFilter;
 
+use App\Filters\EndDateFilter;
+use App\Filters\marketer\StatusFilter;
 use App\Filters\UsernameFilter;
 use App\Filters\StartDateFilter;
 use App\Http\Resources\CustomOrderResource;
@@ -42,6 +44,7 @@ class AllSellersDataController extends Controller
             ->send($data)
             ->through([
                 StatusFilter::class,
+                \App\Filters\custom_orders\UsernameFilter::class,
                 StartDateFilter::class,
                 EndDateFilter::class,
             ])

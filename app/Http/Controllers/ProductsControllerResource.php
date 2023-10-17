@@ -141,9 +141,18 @@ class ProductsControllerResource extends Controller
      */
     public function show($id)
     {
-        $data = ProductWithAllData::get()->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' , function ($e){
-            $e->where('user_id','=',auth()->id());
-        })->findOrFail($id);
+        $data = ProductWithAllData::get()
+
+            ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' ,
+                function ($e){
+                    $e->where('user_id','=',auth()->id());
+                })
+            ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name != 'seller',
+                function($we){
+                    $we->with('last_order_item.order',function($query){
+                        $query->where('user_id','=',auth()->id())->with('shipments_info');
+                    });
+                })->findOrFail($id);
         if($data != null){
             SeenItem::add($data->id,'products');
         }

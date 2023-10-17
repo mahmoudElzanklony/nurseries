@@ -82,6 +82,10 @@ class products extends Model
         return $this->hasMany(orders_items::class,'product_id');
     }
 
+    public function last_order_item(){
+        return $this->hasOne(orders_items::class,'product_id')->orderBy('id','DESC');
+    }
+
     public function deliveries(){
         return $this->hasMany(products_delivery::class,'product_id');
     }
