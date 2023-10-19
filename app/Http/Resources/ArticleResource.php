@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Actions\GetAuthenticatedUser;
 use App\Models\favourites;
 use Illuminate\Http\Resources\Json\JsonResource;
+use function OpenAI\ValueObjects\Transporter\data;
 
 class ArticleResource extends JsonResource
 {
@@ -32,6 +33,7 @@ class ArticleResource extends JsonResource
                       ->where('user_id','=',$authentication->id)
                       ->where('item_id','=',$this->id)
                       ->where('type','=','article')->first();
+                  dd($check != null);
                   if($check != null){
                       return true;
                   }else {
