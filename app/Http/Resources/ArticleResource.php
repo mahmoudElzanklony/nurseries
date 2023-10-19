@@ -33,7 +33,6 @@ class ArticleResource extends JsonResource
                       ->where('user_id','=',$authentication->id)
                       ->where('item_id','=',$this->id)
                       ->where('type','=','article')->first();
-                  dd($check != null);
                   if($check != null){
                       return true;
                   }else {
