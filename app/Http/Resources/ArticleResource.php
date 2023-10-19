@@ -31,7 +31,7 @@ class ArticleResource extends JsonResource
                   $check = favourites::query()
                       ->where('user_id','=',$authentication->id)
                       ->where('item_id','=',$this->id)
-                      ->where('type','=','favourite')->first();
+                      ->where('type','=','article')->first();
                   if($check != null){
                       return true;
                   }else {
