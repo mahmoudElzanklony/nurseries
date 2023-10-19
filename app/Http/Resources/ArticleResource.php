@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\GetAuthenticatedUser;
+use App\Models\favourites;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ArticleResource extends JsonResource
@@ -23,6 +25,21 @@ class ArticleResource extends JsonResource
           'likes_count'=>$this->likes_count,
           'like'=>$this->like != null ? true:false,
           'images'=>ImagesResource::collection($this->whenLoaded('images')),
+          'favourite'=>$this->when(true,function (){
+              $authentication = GetAuthenticatedUser::get_info();
+              if($authentication != null){
+                  $check = favourites::query()
+                      ->where('user_id','=',$authentication->id)
+                      ->where('item_id','=',$this->id)
+                      ->where('type','=','favourite')->first();
+                  if($check == null){
+                      return true;
+                  }
+                  return false;
+              }else{
+                  return false;
+              }
+          }),
           'comments'=>CommentResource::collection($this->whenLoaded('comments')),
           'created_at'=>$this->created_at
 
