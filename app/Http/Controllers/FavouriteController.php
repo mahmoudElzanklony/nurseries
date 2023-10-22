@@ -17,7 +17,7 @@ class FavouriteController extends Controller
             ->where('type','=','product')
             ->orderBy('id','DESC')->paginate(15);
         $ids = $fav->getCollection()->map(function ($e) {
-            return $e->product_id;
+            return $e->item_id;
         });
         $output = ProductWithAllData::get()->whereIn('id', $ids)->paginate(15);
         return ProductResource::collection($output);
