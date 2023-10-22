@@ -18,6 +18,7 @@ class VisaBankOrdersResource extends JsonResource
           'id'=>$this->id,
           'visa_id'=>$this->visa_id,
           'money'=> $this->money,
+            // i will show price of product only
           'items'=>$this->when(isset($this->paymentable->items) && sizeof($this->paymentable->items) > 0 ,function (){
               return SmallProduct::collection($this->paymentable->items);
           }),
