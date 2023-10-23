@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\auth;
 
+use App\Actions\DefaultAddress;
 use App\Http\Controllers\classes\auth\AuthServicesClass;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\usersFormRequest;
@@ -72,7 +73,7 @@ class AuthControllerApi extends AuthServicesClass
                     $user['new_user'] = false;
                 }
                 $user['token'] =  $token;
-
+                $user['default_address'] = DefaultAddress::get($user->id);
                 return messages::success_output('',UserResource::make($user),[
                     'new_user'=>$user['new_user']
                 ]);
@@ -83,10 +84,23 @@ class AuthControllerApi extends AuthServicesClass
     }
 
     public function logout_api(){
-        session()->forget('type');
-        auth()->logout();
-        JWTAuth::getToken(); // Ensures token is already loaded.
-        JWTAuth::invalidate(true);
+        // Get the JWT token from the request header.
+        if(request()->hasHeader('token')) {
+            $token = request()->header('token');
+            request()->headers->set('token', (string)$token, true);
+            request()->headers->set('Authorization', 'Bearer ' . $token, true);
+            try {
+                $token = JWTAuth::parseToken();
+                $user = $token->authenticate();
+                if ($user == false) {
+                    return messages::error_output(['invalid credential']);
+                }
+            } catch (\Exception $e) {
+                return messages::error_output([$e->getMessage()]);
+            }
+            JWTAuth::invalidate($token);
+        }
+
         return messages::success_output('logout successfully');
 
     }

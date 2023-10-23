@@ -192,6 +192,7 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
     Route::post('/notifications',[NotificationsController::class,'index'])->middleware('CheckApiAuth');
+    Route::get('/notifications/statistics',[NotificationsController::class,'statistics'])->middleware('CheckApiAuth');
 
     //----------------------- start of orders------------------
 
