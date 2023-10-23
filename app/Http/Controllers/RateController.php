@@ -19,8 +19,8 @@ class RateController extends Controller
             ->whereHas('order',function($e) use ($data){
                 $e->where('user_id',auth()->id())->where('id',$data['order_id']);
             })->get();
-
-        if(sizeof($order_items) > 0){
+        // TODO in future
+        if(true){
             foreach($order_items as $item){
                 $data['user_id'] = auth()->id();
                 $data['order_item_id'] = $item->id;
@@ -40,6 +40,7 @@ class RateController extends Controller
                 $e->where('user_id',auth()->id());
             })
             ->where('product_id','=',$data['product_id'])->first();
+        // TODO in future
         if(true){
         //if($order_item != null){
             unset($data['product_id']);
