@@ -26,11 +26,9 @@ class packagesFormRequest extends FormRequest
         return [
             'id'=>'filled',
             'name'=>'required',
-            'info'=>'required',
-            'no_points'=>'required',
+            'description'=>'required',
             'price'=>'required',
-            'expire_date'=>'required|integer',
-            'image'=>'filled|image',
+            'type'=>'required',
         ];
     }
 
@@ -38,11 +36,10 @@ class packagesFormRequest extends FormRequest
     {
         return [
           'name'=>trans('keywords.name'),
-          'info'=>trans('keywords.info'),
+          'description'=>trans('keywords.info'),
           'no_points'=>trans('keywords.no_points'),
           'price'=>trans('keywords.price'),
-          'expire_date'=>trans('keywords.expire_date'),
-          'image'=>trans('keywords.image'),
+          'type'=>trans('keywords.type'),
         ];
     }
 }

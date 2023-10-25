@@ -56,7 +56,7 @@ class ProductResource extends JsonResource
             'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
             'is_following'=>auth()->check() && followers::query()->where('user_id',auth()->id())->where('following_id',$this->user_id)->first() != null ? true:false,
             'user'=>UserResource::make($this->whenLoaded('user')),
-            'statistics'=>$this->when(auth()->user()->role->name == 'seller',function (){
+            'statistics'=>$this->when(auth()->check() && auth()->user()->role->name == 'seller',function (){
                 return ProductStatisticsForSeller::get($this->id);
             }),
             'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),

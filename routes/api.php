@@ -189,8 +189,6 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
 
-
-
     Route::post('/notifications',[NotificationsController::class,'index'])->middleware('CheckApiAuth');
     Route::get('/notifications/statistics',[NotificationsController::class,'statistics'])->middleware('CheckApiAuth');
 
@@ -198,11 +196,22 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     //----------------------- end of orders------------------
 
+    //----------------------- start of packages------------------
+
+    Route::group(['prefix'=>'/packages','middleware'=>['CheckApiAuth']],function(){
+        Route::get('/',[PackagesController::class,'index']);
+        Route::get('/my-package',[PackagesController::class,'my_package']);
+        Route::post('/make-order',[PackagesController::class,'make_order']);
+
+    });
+    //----------------------- end of packages------------------
+
     //----------------------- start of dashboard------------------
     Route::group(['prefix'=>'/dashboard','middleware'=>['CheckApiAuth']],function(){
         Route::post('/users',[DashboardController::class,'get_users']);
        Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
+          Route::post('/features/save',[DashboardController::class,'save_package_features']);
        });
     });
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){

@@ -16,6 +16,7 @@ class VisaPayment implements IPayment
         $status = $this->check_payment_related_to_user($data);
         $output = [
           'status'=>$status,
+          'message'=>'',
         ];
         return  $output;
     }

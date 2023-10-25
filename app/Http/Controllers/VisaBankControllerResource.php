@@ -26,6 +26,7 @@ class VisaBankControllerResource extends Controller
         $data = users_visa::query()
             ->with('orders.paymentable.items.product')
             ->with('custom_orders.paymentable')
+            ->with('packages.paymentable')
             ->orderBy('id','DESC')
             ->get();
         return VisaBankResource::collection($data);

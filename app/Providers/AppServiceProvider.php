@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Http\traits\messages;
 use App\Models\chats;
 use App\Models\favourites;
 use App\Models\listings_notes;
 use App\Models\notifications;
 use App\Models\User;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -103,5 +105,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Schema::defaultStringLength(191);
+
     }
 }

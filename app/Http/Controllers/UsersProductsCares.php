@@ -155,7 +155,7 @@ class UsersProductsCares extends Controller
             $output = ProductCareResource::make($care_obj);
             return messages::success_output(trans('messages.saved_successfully'),$output);
         }else{
-            return messages::error_output('لا تستيطع اضافة عملية رعاية خاصه لهذا المنتج');
+            return messages::error_output('لا تستيطع اضافة عملية رعاية خاصه لهذا المنتج',401);
         }
     }
 

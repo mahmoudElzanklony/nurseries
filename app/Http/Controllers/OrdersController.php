@@ -39,7 +39,7 @@ class OrdersController extends Controller
         // check if this of any these products any one that has no delivery way to default client address
         $check_err_delivery = $order_repo->check_delivery_products($data['items']);
         if($check_err_delivery['error'] > 0){
-            return messages::error_output($check_err_delivery['product_name'].trans('errors.product_doesnt_support_delivery'));
+            return messages::error_output($check_err_delivery['product_name'].trans('errors.product_doesnt_support_delivery'),401);
         }
         if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
             // the visa is okay now

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PackageResource extends JsonResource
+class PackageFeaturesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,11 +17,6 @@ class PackageResource extends JsonResource
         return [
           'id'=>$this->id,
           'name'=>$this->name,
-          'description'=>$this->description,
-          'price'=>$this->price,
-          'type'=>$this->type,
-          'features'=>PackageFeaturesResource::collection($this->whenLoaded('features')),
-          'created_at'=>$this->created_at,
         ];
     }
 }

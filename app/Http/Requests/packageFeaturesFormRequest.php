@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Services\DB_connections;
 use Illuminate\Foundation\Http\FormRequest;
 
-class packagesOrdersFormRequest extends FormRequest
+class packageFeaturesFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,16 +24,10 @@ class packagesOrdersFormRequest extends FormRequest
     public function rules()
     {
         return [
+            //
             'package_id'=>'required|exists:packages,id',
-            'visa_id'=>'required|exists:users_visa,id',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'package_id'=>trans('keywords.package'),
-            'visa_id'=>trans('keywords.visa'),
+            'items'=>'required|array',
+            'items.*'=>'required'
         ];
     }
 }

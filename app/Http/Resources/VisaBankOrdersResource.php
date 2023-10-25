@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\packages;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class VisaBankOrdersResource extends JsonResource
@@ -24,6 +25,9 @@ class VisaBankOrdersResource extends JsonResource
           }),
           'name' => $this->when(isset($this->paymentable->name) && $this->paymentable->name != null, function () {
                 return $this->paymentable->name;
+          }),
+          'package' => $this->when(isset($this->paymentable->package_id) && $this->paymentable->package_id != null, function () {
+                return PackageResource::make(packages::query()->find($this->paymentable->package_id));
           }),
         ];
     }

@@ -23,4 +23,9 @@ class users_visa extends Model
         return $this->hasMany(payments::class,'visa_id')
             ->where('paymentable_type','=','App\Models\custom_orders');
     }
+
+    public function packages(){
+        return $this->hasMany(payments::class,'visa_id')
+            ->where('paymentable_type','=','App\Models\users_packages');
+    }
 }

@@ -20,7 +20,7 @@ class ProductAnswersResource extends JsonResource
           'answer'=>$this->{app()->getLocale().'_answer'},
           'image'=>ImagesResource::make($this->question->image),
           'created_at'=>$this->created_at,
-         // 'question'=>ProductQuestionResource::make($this->whenLoaded('question')),
+          'question'=>ProductQuestionResource::make($this->whenLoaded('question')),
 
         ];
     }

@@ -62,7 +62,7 @@ class AuthControllerApi extends AuthServicesClass
             $credential = request()->only(['phone', 'activation_code']);
             $user = User::query()->with('image')->where($credential)->first();
             if($user == null){
-                return messages::error_output(trans('errors.wrong_otp'));
+                return messages::error_output(trans('errors.wrong_otp'),401);
             }else {
                 $token = Auth::guard('api')->login($user);
                 $role = roles::query()->find($user->role_id);
@@ -116,7 +116,7 @@ class AuthControllerApi extends AuthServicesClass
             $user->save();
             return messages::success_output(trans('messages.activation_done'),$user);
         }else{
-            return messages::error_output(trans('errors.incorrect_otp'));
+            return messages::error_output(trans('errors.incorrect_otp'),401);
         }
     }
 

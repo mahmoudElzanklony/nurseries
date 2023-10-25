@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PackageResource extends JsonResource
+class UserPackageOrderResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,9 @@ class PackageResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>$this->name,
-          'description'=>$this->description,
           'price'=>$this->price,
-          'type'=>$this->type,
-          'features'=>PackageFeaturesResource::collection($this->whenLoaded('features')),
+          'expiration_date'=>$this->expiration_date,
+          'package'=>PackageResource::make($this->whenLoaded('package')),
           'created_at'=>$this->created_at,
         ];
     }
