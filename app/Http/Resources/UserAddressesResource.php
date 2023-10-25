@@ -20,7 +20,7 @@ class UserAddressesResource extends JsonResource
           'address'=>$this->address,
           'longitude'=>$this->longitude,
           'latitude'=>$this->latitude,
-          'default_address'=>$this->default_address,
+          'default_address'=>$this->default_address == 1 ? true:false,
           'created_at'=>$this->created_at,
 
         ];
