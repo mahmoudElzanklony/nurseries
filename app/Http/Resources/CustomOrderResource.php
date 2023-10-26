@@ -20,7 +20,9 @@ class CustomOrderResource extends JsonResource
            'name'=>$this->name,
            'status'=>trans('keywords.'.$this->status),
            'images'=>ImagesResource::collection($this->images),
-           'sellers_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
+           'pending_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
+           'accepted_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
+           'rejected_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
            'created_at'=>$this->created_at,
         ];
     }

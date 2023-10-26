@@ -15,6 +15,19 @@ class custom_orders extends Model
         return $this->hasMany(custom_orders_sellers::class,'custom_order_id');
     }
 
+    public function pending_alerts(){
+        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->whereRaw('status = "pending" or status is null');
+    }
+
+    public function accepted_alerts(){
+        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','=','accepted');
+    }
+
+    public function rejected_alerts(){
+        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','=','rejected');
+    }
+
+
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }

@@ -17,11 +17,7 @@ class CustomOrdersWithAllData
                 ->where('seller_id',auth()->id())->with(['order','reply.images'])->orderBy('id','DESC');
         }else{
             return custom_orders::query()->where('user_id','=',auth()->id())
-                ->with(['images','sellers_alerts'=>function($e){
-                $e->with(['seller','reply'=>function($e){
-                    $e->with('images');
-                }]);
-            }])->orderBy('id','DESC');
+                ->with(['images','pending_alerts.reply.images','accepted_alerts.reply.images','rejected_alerts.reply.images','sellers_alerts'])->orderBy('id','DESC');
         }
     }
 }
