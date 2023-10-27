@@ -26,7 +26,7 @@ class visaFormRequest extends FormRequest
         return [
             'id'=>'filled',
             'name'=>'required',
-            'card_number'=>'required|numeric|digits:10',
+            'card_number'=>'required|numeric|digits:16',
             'end_date'=>'required',
             'cvv'=>'required|numeric|digits:3',
         ];
