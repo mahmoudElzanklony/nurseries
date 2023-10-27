@@ -11,6 +11,7 @@ use App\Actions\SellerRateAVG;
 use App\Actions\WantToBeRated;
 use App\Models\followers;
 use App\Models\orders_items;
+use App\Models\users_products_cares;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -60,6 +61,16 @@ class ProductResource extends JsonResource
                 return ProductStatisticsForSeller::get($this->id);
             }),
             'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),
+            'has_care'=>$this->when(auth()->check() && auth()->user()->role->name == 'client',function (){
+                $check = users_products_cares::query()
+                    ->where('user_id','=',auth()->id())
+                    ->where('product_id','=',$this->id)->first();
+                if($check != null){
+                    return true;
+                }else{
+                    return false;
+                }
+            }),
             'order_check_created_at'=>$this->when(isset($this->last_order_item) &&
                 $this->last_order_item != null &&
                 $this->last_order_item->order != null
