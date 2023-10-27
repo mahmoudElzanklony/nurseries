@@ -214,6 +214,7 @@ class CustomerOrdersControllerResource extends Controller
     {
         //
         $data = CustomOrdersWithAllData::get()->find($id);
+        $data['has_pending'] = true;
         return CustomOrderResource::make($data);
     }
 

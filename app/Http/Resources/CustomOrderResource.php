@@ -20,7 +20,7 @@ class CustomOrderResource extends JsonResource
            'name'=>$this->name,
            'status'=>trans('keywords.'.$this->status),
            'images'=>ImagesResource::collection($this->images),
-           'pending_alerts'=>$this->when(auth()->check() && auth()->user()->role->name == 'seller',function(){
+           'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){
                return CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts'));
            }),
            'accepted_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
