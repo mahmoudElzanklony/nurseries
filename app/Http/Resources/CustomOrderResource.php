@@ -22,6 +22,8 @@ class CustomOrderResource extends JsonResource
                 ->where('status', '=', 'accepted')->whereHas('reply', function ($e) {
                     $e->where('client_reply', '=', 'client_reply');
                 })->with('reply')->first();
+        }else{
+            $accepted_seller_from_client = null;
         }
         return [
            'id'=>$this->id,
@@ -29,7 +31,7 @@ class CustomOrderResource extends JsonResource
            'name'=>$this->name,
            'status'=>$this->status,
            'ar_status'=>trans('keywords.'.$this->status),
-           'accepted_date'=>$this->when($this->status == 'accepted' && isset($accepted_seller_from_client),function() use ($accepted_seller_from_client){
+           'accepted_date'=>$this->when($this->status == 'accepted' && isset($accepted_seller_from_client),function() use ($accepted_seller_from_client ){
                if($accepted_seller_from_client != null){
                     return $accepted_seller_from_client->reply->created_at;
                }else{
