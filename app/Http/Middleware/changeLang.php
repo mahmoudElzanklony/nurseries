@@ -22,7 +22,7 @@ class changeLang
         }else if(session()->has('lang')) {
             app()->setLocale(session()->get('lang'));
         }else if($request->filled('lang')){
-            if($request->get('lang') == 'ar' || $request->get('lang') == 'en' || $request->get('lang') == 'tu'){
+            if($request->get('lang') == 'ar' || $request->get('lang') == 'en' ){
                 app()->setLocale($request->get('lang'));
             }
 

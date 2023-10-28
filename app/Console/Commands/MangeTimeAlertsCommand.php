@@ -49,12 +49,12 @@ class MangeTimeAlertsCommand extends Command
         foreach($alerts as $alert){
 
             $check = ManageTimeAlert::check_send_alert($alert->next_alert);
-            if($check == true){
+            if(true){
                 // send Notification
-                $name = $alert->product_care->product->{app()->getLocale().'_name'};
+                $name = $alert->product_care->product;
                 $info = [
-                    'ar'=> 'تنبيه !! موعد '.$alert->product_care->care->{app()->getLocale().'_name'} ?? ''.' الخاصه ب' .$name,
-                    'en'=> 'Alert !! '.$alert->product_care->care->{app()->getLocale().'_name'} ?? ''.'Related to ' .$name
+                    'ar'=> 'تنبيه !! موعد '.$alert->product_care->care->ar_name ?? ''.' الخاصه ب' .$name->ar_name,
+                    'en'=> 'Alert !! '.$alert->product_care->care->{'en_name'} ?? ''.'Related to ' .$name->en_name
                 ];
                 SendNotification::to_any_one_else_admin($alert->user_id,$info,'/profile/alerts');
                 $alert->update([
