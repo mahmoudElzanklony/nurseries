@@ -53,8 +53,8 @@ class MangeTimeAlertsCommand extends Command
                 // send Notification
                 $name = $alert->product_care->product->{app()->getLocale().'_name'};
                 $info = [
-                    'ar'=> 'تنبيه !! موعد '.$alert->product_care->care ?? ''.' الخاصه ب' .$name,
-                    'en'=> 'Alert !! '.$alert->product_care->care ?? ''.'Related to ' .$name
+                    'ar'=> 'تنبيه !! موعد '.$alert->product_care->care->{app()->getLocale().'_name'} ?? ''.' الخاصه ب' .$name,
+                    'en'=> 'Alert !! '.$alert->product_care->care->{app()->getLocale().'_name'} ?? ''.'Related to ' .$name
                 ];
                 SendNotification::to_any_one_else_admin($alert->user_id,$info,'/profile/alerts');
                 $alert->update([
