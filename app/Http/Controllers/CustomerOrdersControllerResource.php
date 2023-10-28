@@ -67,7 +67,7 @@ class CustomerOrdersControllerResource extends Controller
             ->where('custom_order_id','=',request('custom_order_id'))
             ->where('seller_id','=',request('seller_id'))->first();
         if($check == null){
-            return messages::error_output('errors.no_data');
+            return messages::error_output(trans('errors.no_data'));
         }
         $check->update([
             'status'=>'rejected'
