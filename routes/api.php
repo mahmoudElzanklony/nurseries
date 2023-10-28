@@ -95,6 +95,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of products actions --------------------
     Route::group(['prefix'=>'/products','middleware'=>'CheckApiAuth'],function (){
         Route::post('/toggle-fav',[ProductsControllerResource::class,'toggle_fav']);
+        Route::post('/search-center',[ProductsControllerResource::class,'search_center']);
         Route::post('/toggle-like',[ProductsControllerResource::class,'toggle_like']);
     });
     // ---------------------end of products actions --------------------
@@ -146,6 +147,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
         Route::get('/replies',[AllSellersDataController::class,'replies_custom_orders']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'seller_reply']);
+        Route::post('/reject',[CustomerOrdersControllerResource::class,'reject']);
         Route::post('/send-request',[CustomerOrdersControllerResource::class,'send_request']);
     });
     // ---------------------end of custom orders actions --------------------

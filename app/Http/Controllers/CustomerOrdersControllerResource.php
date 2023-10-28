@@ -19,6 +19,7 @@ use App\Http\Requests\customOrderFormRequest;
 use App\Http\Requests\sellerReplyCustomOrderFormRequest;
 use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerReplyResource;
+use App\Http\Resources\CustomOrderSellerResource;
 use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\custom_orders;
@@ -61,7 +62,18 @@ class CustomerOrdersControllerResource extends Controller
         return CustomOrderResource::collection($output);
 
     }
-
+    public function reject(){
+        $check = custom_orders_sellers::query()
+            ->where('custom_order_id','=',request('custom_order_id'))
+            ->where('seller_id','=',request('seller_id'))->first();
+        if($check == null){
+            return messages::error_output('errors.no_data');
+        }
+        $check->update([
+            'status'=>'rejected'
+        ]);
+        return messages::success_output(trans('saved_successfully'),CustomOrderSellerResource::make($check));
+    }
     public function seller_reply(sellerReplyCustomOrderFormRequest $request){
         DB::beginTransaction();
         $custom_order_to_seller = custom_orders_sellers::query()->with('order')

@@ -18,6 +18,7 @@ use App\Http\Requests\ProductsFormRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
 use App\Jobs\sendNotificationsToFollowersJob;
+use App\Models\centralized_products_data;
 use App\Models\followers;
 use App\Models\products;
 use App\Repositories\ProductsRepository;
@@ -163,28 +164,10 @@ class ProductsControllerResource extends Controller
         return ProductResource::make($data);
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function search_center(){
+        if(request()->has('name')) {
+            $data = centralized_products_data::query()->whereRaw('ar_name LIKE "%' . request('name') . '%" OR en_name LIKE "%' . request('name') . '%" ')->first();
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
