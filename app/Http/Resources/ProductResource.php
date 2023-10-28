@@ -50,7 +50,9 @@ class ProductResource extends JsonResource
             'seen'=>$this->seen->count ?? 0,
             'likes_count'=>$this->likes_count,
             'last_four_likes'=>UserResource::collection($this->whenLoaded('last_four_likes')),
-            'want_rate'=>WantToBeRated::check($this->id),
+            'want_rate'=>$this->whenLoaded(auth()->check() && auth()->user()->role->name != 'seller',function(){
+                return WantToBeRated::check($this->id);
+            }),
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
             'rates_bar'=>$rate_bars ?? [],
             'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),

@@ -103,7 +103,8 @@ class ProductsControllerResource extends Controller
             ->save_product_features($data['features'] ?? [])
             ->save_product_wholesale_prices($data['wholesale_prices'] ?? [])
             ->save_product_cares($data['cares'] ?? [])
-            ->save_product_deliveries($data['deliveries'] ?? []);
+            ->save_product_deliveries($data['deliveries'] ?? [])
+            ->save_product_centralized_data();
         DB::commit();
         // get following me
         $following_data = followers::query()->where('following_id','=',auth()->id())->get();

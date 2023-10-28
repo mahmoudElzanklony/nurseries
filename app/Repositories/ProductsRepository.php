@@ -5,6 +5,8 @@ namespace App\Repositories;
 
 
 use App\Actions\ImageModalSave;
+use App\Models\centralized_products_data;
+use App\Models\product_centralized;
 use App\Models\products;
 use App\Models\products_care;
 use App\Models\products_delivery;
@@ -16,8 +18,11 @@ use App\Models\products_wholesale_prices;
 class ProductsRepository
 {
     public $product;
+    public $come_from_centralized;
     public function save_product_main_info($data,$images = []){
         $data['user_id'] = auth()->id();
+        $this->come_from_centralized = $data['come_from_centralized'];
+
         $product = products::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
@@ -98,6 +103,30 @@ class ProductsRepository
             products_delivery::query()->updateOrCreate([
                'id'=>$d['id'] ?? null
             ],$d);
+        }
+        return $this;
+    }
+
+    public function save_product_centralized_data(){
+        $product = products::query()->with(['images','features','answers','discounts'])->find($this->product->id);
+        $center_check = centralized_products_data::query()->firstOrCreate([
+            'product_id'=>$this->product->id
+        ],[
+            'ar_name'=>$this->product->ar_name,
+            'en_name'=>$this->product->en_name,
+            'ar_description'=>$this->product->ar_description,
+            'en_description'=>$this->product->en_description,
+            'data'=>json_encode($product->toArray())
+        ]);
+        if($center_check->exists()){
+            // this item alreay exist
+            product_centralized::query()->updateOrCreate([
+                'product_id'=>$this->product->id,
+                'center_id'=>$center_check->id,
+            ],[
+                'product_id'=>$this->product->id,
+                'center_id'=>$center_check->id,
+            ]);
         }
     }
 }
