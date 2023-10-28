@@ -109,23 +109,25 @@ class ProductsRepository
 
     public function save_product_centralized_data(){
         $product = products::query()->with(['images','features','answers','discounts'])->find($this->product->id);
-        $center_check = centralized_products_data::query()->firstOrCreate([
-            'product_id'=>$this->product->id
-        ],[
-            'ar_name'=>$this->product->ar_name,
-            'en_name'=>$this->product->en_name,
-            'ar_description'=>$this->product->ar_description,
-            'en_description'=>$this->product->en_description,
-            'data'=>json_encode($product->toArray())
-        ]);
-        if($center_check->exists()){
-            // this item alreay exist
+
+        if($this->come_from_centralized > 0){
+            // this item come from centralized exist
             product_centralized::query()->updateOrCreate([
                 'product_id'=>$this->product->id,
-                'center_id'=>$center_check->id,
+                'center_id'=>$this->come_from_centralized,
             ],[
                 'product_id'=>$this->product->id,
-                'center_id'=>$center_check->id,
+                'center_id'=>$this->come_from_centralized,
+            ]);
+        }else{
+            $center_check = centralized_products_data::query()->firstOrCreate([
+                'product_id'=>$this->product->id
+            ],[
+                'ar_name'=>$this->product->ar_name,
+                'en_name'=>$this->product->en_name,
+                'ar_description'=>$this->product->ar_description,
+                'en_description'=>$this->product->en_description,
+                'data'=>json_encode($product->toArray())
             ]);
         }
     }

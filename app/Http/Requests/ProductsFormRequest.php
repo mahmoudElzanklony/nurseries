@@ -35,6 +35,7 @@ class ProductsFormRequest extends FormRequest
         $another_lang = ($lang == 'ar'?'en':'ar');
         return [
             'id'=>'filled',
+            'come_from_centralized'=>'filled',
             'category_id'=>'required|exists:categories,id',
             $lang.'_name'=>'required',
             $another_lang.'_name'=>'nullable',

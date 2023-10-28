@@ -50,7 +50,7 @@ class ProductResource extends JsonResource
             'seen'=>$this->seen->count ?? 0,
             'likes_count'=>$this->likes_count,
             'last_four_likes'=>UserResource::collection($this->whenLoaded('last_four_likes')),
-            'want_rate'=>$this->whenLoaded(auth()->check() && auth()->user()->role->name != 'seller',function(){
+            'want_rate'=>$this->whenLoaded(auth()->check() ,function(){
                 return WantToBeRated::check($this->id);
             }),
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
