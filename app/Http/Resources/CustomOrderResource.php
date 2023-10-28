@@ -16,11 +16,11 @@ class CustomOrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->status == 'accepted') {
+        if($this->status == 'active') {
             $accepted_seller_from_client = custom_orders_sellers::query()
                 ->where('custom_order_id', '=', $this->id)
                 ->where('status', '=', 'accepted')->whereHas('reply', function ($e) {
-                    $e->where('client_reply', '=', 'client_reply');
+                    $e->where('client_reply', '=', 'accepted');
                 })->with('reply')->first();
         }else{
             $accepted_seller_from_client = null;
@@ -31,14 +31,15 @@ class CustomOrderResource extends JsonResource
            'name'=>$this->name,
            'status'=>$this->status,
            'ar_status'=>trans('keywords.'.$this->status),
-           'accepted_date'=>$this->when($this->status == 'accepted' && isset($accepted_seller_from_client),function() use ($accepted_seller_from_client ){
+           'accepted_date'=>$this->when($this->status == 'active',function() use ($accepted_seller_from_client ){
                if($accepted_seller_from_client != null){
                     return $accepted_seller_from_client->reply->created_at;
                }else{
                    return '';
                }
            }),
-           'delivery_date'=>$this->when($this->status == 'accepted' && isset($accepted_seller_from_client),function() use ($accepted_seller_from_client){
+           'delivery_date'=>$this->when($this->status == 'active' ,function() use ($accepted_seller_from_client){
+
                 if($accepted_seller_from_client != null){
                     return Carbon::parse($accepted_seller_from_client->reply->created_at)->addDays($accepted_seller_from_client->reply->days_delivery);
                 }else{
