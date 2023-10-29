@@ -15,7 +15,9 @@ class ProductWithAllData
                 $e->with('favourite');
             })
             ->withCount('likes')
-            ->with(['category','user','seen','last_four_likes',
+            ->with(['category','user','seen','changeable_prices'=>function($e){
+                $e->whereYear('created_at','=',date('Y'));
+            },'last_four_likes',
                 'cares'=>function($e) use ($authentication){
                     $e->with('care')->when($authentication != null , function($q){
                         $q->with('next_time',function($q){

@@ -89,4 +89,8 @@ class products extends Model
     public function deliveries(){
         return $this->hasMany(products_delivery::class,'product_id');
     }
+
+    public function changeable_prices(){
+        return $this->hasMany(products_prices::class,'product_id');
+    }
 }

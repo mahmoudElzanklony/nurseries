@@ -60,6 +60,7 @@ class ProductResource extends JsonResource
             'statistics'=>$this->when(auth()->check() && auth()->user()->role->name == 'seller',function (){
                 return ProductStatisticsForSeller::get($this->id);
             }),
+            'changeable_prices'=>ProductPriceChangeResource::collection($this->whenLoaded('changeable_prices')),
             'cares'=>ProductCareResource::collection($this->whenLoaded('cares')),
             'has_care'=>$this->when(auth()->check() && auth()->user()->role->name == 'client',function (){
                 $check = users_products_cares::query()

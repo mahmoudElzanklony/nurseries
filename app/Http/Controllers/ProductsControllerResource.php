@@ -15,12 +15,15 @@ use App\Filters\products\SellerNameFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\UserIdFilter;
 use App\Http\Requests\ProductsFormRequest;
+use App\Http\Resources\ProductCenterDataResource;
+use App\Http\Resources\ProductPriceChangeResource;
 use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
 use App\Jobs\sendNotificationsToFollowersJob;
 use App\Models\centralized_products_data;
 use App\Models\followers;
 use App\Models\products;
+use App\Models\products_prices;
 use App\Repositories\ProductsRepository;
 use App\Services\SearchesResults;
 use App\Services\users\favourite_toggle;
@@ -105,6 +108,7 @@ class ProductsControllerResource extends Controller
             ->save_product_wholesale_prices($data['wholesale_prices'] ?? [])
             ->save_product_cares($data['cares'] ?? [])
             ->save_product_deliveries($data['deliveries'] ?? [])
+            ->save_product_change_price()
             ->save_product_centralized_data();
         DB::commit();
         // get following me
@@ -166,7 +170,27 @@ class ProductsControllerResource extends Controller
 
     public function search_center(){
         if(request()->has('name')) {
-            $data = centralized_products_data::query()->whereRaw('ar_name LIKE "%' . request('name') . '%" OR en_name LIKE "%' . request('name') . '%" ')->first();
+            $data = centralized_products_data::query()
+                ->whereRaw('ar_name LIKE "%' . request('name') . '%" OR en_name LIKE "%' . request('name') . '%" ')->first();
+            return messages::success_output('',ProductCenterDataResource::make($data));
+        }else{
+            return messages::error_output('please send name parameter in your request');
+        }
+    }
+
+    public function filter_prices_change(){
+        if(request()->filled('type') && request()->filled('product_id')){
+            $output = products_prices::query()
+                ->where('product_id','=',request('product_id'))
+                ->when(request()->filled('type') && request('type') == 'month',function($e){
+                    $e->whereYear('created_at','=',date('Y'));
+                })
+                ->when(request()->filled('type') && request('type') == 'year',function($e){
+                    $e->selectRaw('SUM(price) as change_price , Year(created_at) as year')
+                       ->groupBy(DB::raw('product_id'),DB::raw('Year(created_at)'));
+                })
+               ->get();
+            return $output;
         }
     }
 

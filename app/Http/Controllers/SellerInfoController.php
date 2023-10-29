@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ImageModalSave;
+use App\Enum\OrdersDeliveryCases;
 use App\Http\Requests\SellerInfoFormRequest;
 use App\Http\traits\messages;
+use App\Models\orders;
+use App\Models\orders_shipment_info;
+use App\Models\products;
 use App\Models\users_bank_info;
 use App\Models\users_commercial_info;
 use App\Models\users_store_info;
@@ -47,5 +51,27 @@ class SellerInfoController extends Controller
         return messages::success_output(trans('messages.saved_successfully'),$output);
     }
 
+    public function my_orders(){
+        return $my_orders = orders::query()->whereHas('seller',function($e){
+            $e->where('seller_id','=',auth()->id());
+        });
+    }
+
+    public function orders_money_products(){
+
+        $output = [
+          'active_orders'=>$this->my_orders()->wherehas('shipments_info',function($e){
+              $e->where('content','=',OrdersDeliveryCases::$delivery);
+          })->count(),
+          'waiting_orders'=>$this->my_orders()->wherehas('shipments_info',function($e){
+              $e->where('content','!=',OrdersDeliveryCases::$delivery);
+          })->count(),
+          'pending_money'=>$this->my_orders()->whereRaw('financial_reconciliation_id is null')->withSum('payment','money')->get()->sum('payment_sum_money'),
+          'active_money'=>$this->my_orders()->whereRaw('financial_reconciliation_id is not null')->withSum('payment','money')->get()->sum('payment_sum_money'),
+          'products'=>products::query()->where('user_id','=',auth()->id())->count(),
+          'my_clients'=>$this->my_orders()->groupBy('user_id')->get()->count()
+        ];
+        return messages::success_output('',$output);
+    }
 
 }

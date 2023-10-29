@@ -95,6 +95,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of products actions --------------------
     Route::group(['prefix'=>'/products','middleware'=>'CheckApiAuth'],function (){
         Route::post('/toggle-fav',[ProductsControllerResource::class,'toggle_fav']);
+        Route::post('/filter-prices-change',[ProductsControllerResource::class,'filter_prices_change']);
         Route::post('/search-center',[ProductsControllerResource::class,'search_center']);
         Route::post('/toggle-like',[ProductsControllerResource::class,'toggle_like']);
     });
@@ -145,6 +146,12 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of custom orders actions --------------------
     Route::group(['prefix'=>'/sellers','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
+        Route::group(['prefix'=>'/statistics'],function (){
+            Route::get('/orders-money-products',[SellerInfoController::class,'orders_money_products']);
+            Route::post('/make',[OrdersController::class,'make_order']);
+            Route::post('/update-status',[OrdersController::class,'update_status']);
+
+        });
         Route::get('/replies',[AllSellersDataController::class,'replies_custom_orders']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'seller_reply']);
         Route::post('/send-request',[CustomerOrdersControllerResource::class,'send_request']);
