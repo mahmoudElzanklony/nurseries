@@ -26,8 +26,8 @@ class customOrderFormRequest extends FormRequest
         return [
             'id'=>'filled',
             'name'=>'required',
-            'sellers'=>'required|array',
-            'sellers.*'=>'required',
+            'sellers'=>'filled|array',
+            'sellers.*'=>'filled',
         ];
     }
     public function attributes()

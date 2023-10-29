@@ -162,7 +162,10 @@ class CustomerOrdersControllerResource extends Controller
 
 
     public function send_request(){
-        $obj = custom_orders_sellers::query()->create([
+        $obj = custom_orders_sellers::query()->firstOrCreate([
+            'custom_order_id'=>request('order_id'),
+            'seller_id'=>request('seller_id'),
+        ],[
             'custom_order_id'=>request('order_id'),
             'seller_id'=>request('seller_id'),
         ]);
@@ -179,24 +182,30 @@ class CustomerOrdersControllerResource extends Controller
     public function store(customOrderFormRequest $request)
     {
         //
-        DB::beginTransaction();
         $data = $request->validated();
-        $default_address = DefaultAddress::get();
-        // check if user has no default address for delivery order
-        if($default_address == null){
-            return messages::error_output(trans('errors.no_default_address'));
-        }
-        $images = [];
-        if(request()->has('images')){
-            foreach(request('images') as $img){
-                $name = $this->download_and_save($img,'custom_orders');
-                array_push($images,$name);
+        if(request()->has('id')){
+            $order =custom_orders::query()->find(request('id'))->update($data);
+            return messages::success_output(trans('messages.order_done_successfully'), $order);
+        }else {
+            DB::beginTransaction();
+
+            $default_address = DefaultAddress::get();
+            // check if user has no default address for delivery order
+            if ($default_address == null) {
+                return messages::error_output(trans('errors.no_default_address'));
             }
+            $images = [];
+            if (request()->has('images')) {
+                foreach (request('images') as $img) {
+                    $name = $this->download_and_save($img, 'custom_orders');
+                    array_push($images, $name);
+                }
+            }
+            $custom_order = new CustomOrdersRepository($data['sellers'], $data);
+            $custom_order->init_order($images)->send_alerts_to_sellers();
+            DB::commit();
+            return messages::success_output(trans('messages.order_done_successfully'), $custom_order->order);
         }
-        $custom_order = new CustomOrdersRepository($data['sellers'],$data);
-        $custom_order->init_order($images)->send_alerts_to_sellers();
-        DB::commit();
-        return messages::success_output(trans('messages.order_done_successfully'),$custom_order->order);
 
     }
 
