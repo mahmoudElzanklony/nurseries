@@ -162,14 +162,18 @@ class CustomerOrdersControllerResource extends Controller
 
 
     public function send_request(){
-        $obj = custom_orders_sellers::query()->firstOrCreate([
-            'custom_order_id'=>request('order_id'),
-            'seller_id'=>request('seller_id'),
-        ],[
-            'custom_order_id'=>request('order_id'),
-            'seller_id'=>request('seller_id'),
-        ]);
-        return messages::success_output(trans('messages.saved_successfully'),$obj);
+        if(request()->has('sellers')) {
+            foreach(request('sellers') as $seller) {
+                $obj = custom_orders_sellers::query()->firstOrCreate([
+                    'custom_order_id' => request('order_id'),
+                    'seller_id' => $seller,
+                ], [
+                    'custom_order_id' => request('order_id'),
+                    'seller_id' => $seller,
+                ]);
+            }
+            return messages::success_output(trans('messages.saved_successfully'));
+        }
     }
 
 
