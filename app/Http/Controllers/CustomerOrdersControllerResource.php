@@ -188,8 +188,10 @@ class CustomerOrdersControllerResource extends Controller
         //
         $data = $request->validated();
         if(request()->has('id')){
-            $order =custom_orders::query()->find(request('id'))->update($data);
-            return messages::success_output(trans('messages.saved_successfully'), $order);
+            $order =custom_orders::query()->find(request('id'));
+            $order->name = request('name');
+            $order->save();
+            return messages::success_output(trans('messages.saved_successfully'), CustomOrderResource::make($order));
         }else {
             DB::beginTransaction();
 

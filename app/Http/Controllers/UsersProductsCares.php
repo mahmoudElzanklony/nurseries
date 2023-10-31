@@ -130,6 +130,7 @@ class UsersProductsCares extends Controller
         $data['type'] = 'client';
         $data['user_id'] = auth()->id();
         $check = $this->ability_to_make_custom_care($data['product_id'],$data['care_id']);
+        DB::beginTransaction();
         if($check == true){
             // check this products already added to list care
             $product_care_to_user_check = users_products_cares::query()
@@ -150,9 +151,10 @@ class UsersProductsCares extends Controller
             ],[
                 'user_id'=>auth()->id(),
                 'product_care_id'=>$care_obj->id,
-                'next_alert'=>request('next_alert') ?? ManageTimeAlert::manage($data['time_number'],$data['time_type'],null)
+                'next_alert'=>ManageTimeAlert::manage($data['time_number'],$data['time_type'],request('next_alert') ?? null)
             ]);
             $output = ProductCareResource::make($care_obj);
+            DB::commit();
             return messages::success_output(trans('messages.saved_successfully'),$output);
         }else{
             return messages::error_output('لا تستيطع اضافة عملية رعاية خاصه لهذا المنتج',401);
