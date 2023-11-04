@@ -26,6 +26,7 @@ use App\Http\Controllers\UsersAddressControllerResource;
 use App\Http\Controllers\AreasControllerResource;
 use App\Http\Controllers\CitiesControllerResource;
 use App\Http\Controllers\FinancialReconciliationsControllerResource;
+use App\Http\Controllers\CouponsControllerResource;
 use App\Http\Controllers\CountriesControllerResource;
 use App\Http\Controllers\GovermentsControllerResource;
 use App\Http\Controllers\SearchesController;
@@ -120,7 +121,7 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
     // ---------------------start of favourite actions --------------------
-    Route::group(['prefix'=>'/favourite','middleware'=>'CheckApiAuth'],function (){
+    Route::group(['prefix'=>'/favourite','middleware'=>'CheckApdiAuth'],function (){
         Route::get('/',[FavouriteController::class,'index']);
 
     });
@@ -148,7 +149,9 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::get('/',[AllSellersDataController::class,'index']);
         Route::group(['prefix'=>'/statistics'],function (){
             Route::get('/orders-money-products',[SellerInfoController::class,'orders_money_products']);
-            Route::post('/make',[OrdersController::class,'make_order']);
+            Route::post('/profit',[SellerInfoController::class,'profit_statistics']);
+            Route::post('/cities',[SellerInfoController::class,'cities_statistics']);
+            Route::post('/clients-orders',[SellerInfoController::class,'clients_orders']);
             Route::post('/update-status',[OrdersController::class,'update_status']);
 
         });
@@ -241,6 +244,12 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
     //=========================end of tickets==================
 
+    //=========================start of coupons==================
+    Route::group(['prefix'=>'/coupons','middleware'=>['CheckApiAuth']],function(){
+        Route::post('/validate-coupon',[CouponsControllerResource::class,'validate_coupon']);
+    });
+    //=========================end of coupons==================
+
     // delete item
     Route::post('/delete-item',[GeneralServiceController::class,'delete_item']);
 
@@ -258,6 +267,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         'financial'=>FinancialReconciliationsControllerResource::class,
         'care'=>CareControllerResource::class,
         'online-payment'=>VisaBankControllerResource::class,
+        'coupons'=>CouponsControllerResource::class,
         'custom-orders'=>CustomerOrdersControllerResource::class
     ]);
 

@@ -38,4 +38,8 @@ class orders extends Model
     public function item(){
         return $this->hasOne(orders_items::class,'order_id');
     }
+
+    public function coupon(){
+        return $this->morphOne(users_coupons::class,'couponable');
+    }
 }

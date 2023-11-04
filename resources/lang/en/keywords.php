@@ -115,8 +115,13 @@ return [
     // ----------------------end  marketer - ---------------------
 
     // ----------------------start of  cities - ---------------------
-    'country'=>'الدولة'
+    'country'=>'الدولة',
     // ----------------------start en cities - ---------------------
 
+    // ----------------------start of  coupons - ---------------------
+    'value'=>'Value',
+    'number'=>'Number count',
+    'using_once'=>'Using once or not',
+    // ----------------------start en coupons - ---------------------
 
 ];

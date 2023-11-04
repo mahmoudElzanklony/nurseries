@@ -183,11 +183,12 @@ class ProductsControllerResource extends Controller
             $output = products_prices::query()
                 ->where('product_id','=',request('product_id'))
                 ->when(request()->filled('type') && request('type') == 'month',function($e){
-                    $e->whereYear('created_at','=',date('Y'));
+                    //$e->whereYear('created_at','=',date('Y'));
+                    $e->whereMonth('created_at','=',date('m'))->whereYear('created_at','=',date('Y'));
                 })
                 ->when(request()->filled('type') && request('type') == 'year',function($e){
-                    $e->selectRaw('SUM(price) as change_price , Year(created_at) as year')
-                       ->groupBy(DB::raw('product_id'),DB::raw('Year(created_at)'));
+                    $e->selectRaw('price , created_at')->whereYear('created_at',date('Y'));
+                      // ->groupBy(DB::raw('product_id'),DB::raw('Year(created_at)'));
                 })
                ->get();
             return $output;

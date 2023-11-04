@@ -12,6 +12,7 @@ use App\Filters\NameFilter;
 use App\Filters\products\SellerNameFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\TitleFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Requests\articleFormRequest;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\CommentResource;
@@ -50,7 +51,7 @@ class ArticlesControllerResource extends Controller
                 TitleFilter::class,
                 StartDateFilter::class,
                 EndDateFilter::class,
-
+                UserIdFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
