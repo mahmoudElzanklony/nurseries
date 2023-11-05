@@ -14,6 +14,8 @@ class ProductStatisticsForSeller
             ->selectRaw('(orders_items.quantity * orders_items.price) + orders_items_features.price as total_price')
             ->where('product_id','=',$id);
         $orders_no = sizeof($orders->get());
+
+
         $profit_money = $orders->whereHas('order',function($q){
             $q->where('financial_reconciliation_id','!=',null);
         })->get()->sum('total_price');

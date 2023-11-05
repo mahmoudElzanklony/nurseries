@@ -37,14 +37,17 @@ class CouponRepository
     }
 
     public function validate_exist($code , $products = []){
-        $coupon = coupons::query()->where('code','=',request('code'))
+        $coupon = coupons::query()->where('code','=',$code)
             ->first();
         if($coupon != null){
             // check date
             if(!($coupon->end_date == null || $coupon->end_date > Carbon::now())){
                 $this->error = trans('errors.expired_coupon_date');
+            }else if($coupon == 0){
+                $this->error = trans('errors.coupon_amount_end');
             }else {
                 $this->coupon = $coupon;
+
                 return $this->is_used_by_user(auth()->id(),$products);
             }
         }

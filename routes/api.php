@@ -221,7 +221,11 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     //----------------------- start of dashboard------------------
     Route::group(['prefix'=>'/dashboard','middleware'=>['CheckApiAuth']],function(){
-        Route::post('/users',[DashboardController::class,'get_users']);
+        Route::group(['prefix'=>'/users'],function(){
+            Route::post('/',[DashboardController::class,'get_users']);
+            Route::get('/sellers-statistics',[DashboardController::class,'all_statistics']);
+            Route::post('/toggle-block-account',[DashboardController::class,'toggle_block']);
+        });
        Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
           Route::post('/features/save',[DashboardController::class,'save_package_features']);

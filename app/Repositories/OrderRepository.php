@@ -10,8 +10,10 @@ use App\Actions\DefaultAddress;
 use App\Actions\DeliveryOfOrder;
 use App\Actions\PaymentModalSave;
 use App\Actions\SendNotification;
+use App\Actions\UserCouponModal;
 use App\Http\Controllers\classes\payment\VisaPayment;
 use App\Http\traits\messages;
+use App\Models\coupons;
 use App\Models\notifications;
 use App\Models\orders;
 use App\Models\orders_addresses;
@@ -20,6 +22,7 @@ use App\Models\orders_items_features;
 use App\Models\products;
 use App\Models\products_features_prices;
 use App\Models\user_addresses;
+use function OpenAI\Responses\Chat\toArray;
 
 class OrderRepository
 {
@@ -28,6 +31,8 @@ class OrderRepository
     private $payment_data;
     private $deliveries_arr = [];
     private $order_total_price = 0;
+    private $coupon;
+    private $remove_from_coupon = false;
 
     public function __construct($default_address)
     {
@@ -60,11 +65,24 @@ class OrderRepository
 
     public function init_order($data){
         $this->payment_data = $data['payment_data'];
+        // check from coupon
+
+        if($data['has_coupon'] != 0){
+            $coupon_repos = new CouponRepository();
+            $coupon_repos->validate_exist($data['has_coupon']);
+
+            if($coupon_repos->error == ''){
+                // no error
+
+                $this->coupon = $coupon_repos->coupon;
+
+            }
+        }
         $order = orders::query()->create([
            'user_id'=>auth()->id(),
            'seller_id'=>$data['seller_id'],
            'payment_method'=>$data['payment_method'] ?? 'visa',
-           'has_coupon'=>$data['has_coupon'] ?? 0,
+           'has_coupon'=>isset($this->coupon) ? 1 : 0,
            'seller_profit'=>0,
         ]);
         $this->order = $order;
@@ -89,6 +107,28 @@ class OrderRepository
             'delivery_price'=>$delivery_price,
             'days_delivery'=>$delivery_days,
         ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function validate_product_for_coupon($product_id)
+    {
+        if(isset($this->coupon)) {
+            if (sizeof($this->coupon['products']) == 0) {
+                return true;
+            } else {
+                $check = false;
+                foreach($this->coupon->products as $product){
+                    if($product->product_id == $product_id) {
+                        $check = true;
+                        break;
+                    }
+                }
+                return $check;
+            }
+        }
+        return false;
     }
 
     public function order_items($items){
@@ -117,6 +157,13 @@ class OrderRepository
                         'quantity' => $item['quantity'],
                         'price' => $final_price,
                     ]);
+                    // check for apply coupon
+                    if($this->validate_product_for_coupon($item['product_id']) == true){
+
+                         UserCouponModal::make($this->coupon->id,$order_item->id,$this->coupon->discount);
+                         $this->remove_from_coupon = true;
+                    }
+
                     // get price of delivery , get days of delivery
 
                     $total_price_delivery += ($this->deliveries_arr[$key]->price ?? 0);
@@ -126,12 +173,16 @@ class OrderRepository
                     $this->remove_from_stock($product,$item['quantity']);
                     // handle order items features
                     $this->orders_items_features($order_item->id,$product,$discount,$item['features'] ?? []);
+
                 }else{
                     $err_quantity++;
                     $msg = trans('errors.quantity_not_exists_for').' '.$product->{app()->getLocale().'_name'};
                     break;
                 }
             }
+        }
+        if($this->remove_from_coupon == true){
+            $this->remove_from_coupon_quantity();
         }
         if($err_quantity > 0){
             return messages::error_output($msg ?? 'error in quantity');
@@ -209,5 +260,12 @@ class OrderRepository
         $product->quantity = $product->quantity - $quantity;
         $product->save();
 
+    }
+
+    protected function remove_from_coupon_quantity(){
+        if($this->coupon->number > 0){
+            $this->coupon->number --;
+            $this->coupon->save();
+        }
     }
 }

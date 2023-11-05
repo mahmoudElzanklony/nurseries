@@ -70,5 +70,13 @@ class User extends Authenticatable implements JWTSubject
         return $this->morphOne(images::class,'imageable');
     }
 
+    public function products(){
+        return $this->hasMany(products::class,'user_id');
+    }
+
+    public function articles(){
+        return $this->hasMany(articles::class,'user_id');
+    }
+
 
 }

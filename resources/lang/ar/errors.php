@@ -33,4 +33,5 @@ return [
     'expired_coupon_date'=>'تم انتهاء تاريخ صلاحية الكوبون',
     'coupon_used_before'=>'تم استخدام الكوبون مسبقا',
     'coupon_doesnt_support_products'=>'هذا الكوبون لا يدعم هذه المنتجات',
+    'coupon_amount_end'=>'لقد نفذ الكوبون في الوقت الحالي',
 ];

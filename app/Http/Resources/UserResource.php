@@ -33,6 +33,15 @@ class UserResource extends JsonResource
           'avg_rates'=>isset($seller_avg_rate)  ?
                        round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
           'image'=>$this->image != null ? ImagesResource::make($this->image) : ['image'=>'users/default.png'],
+          'products'=>ProductResource::collection($this->whenLoaded('products')),
+          'products_count'=>$this->when(isset($this->products_count),function(){
+              return $this->products_count;
+          }),
+          'block'=>$this->block,
+          'articles'=>ProductResource::collection($this->whenLoaded('articles')),
+          'articles_count'=>$this->when(isset($this->articles_count),function(){
+              return $this->articles_count;
+          }),
           'created_at'=>$this->created_at,
         ];
     }

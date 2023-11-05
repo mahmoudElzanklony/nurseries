@@ -15,11 +15,13 @@ class SmallProduct extends JsonResource
      */
     public function toArray($request)
     {
+
+
         return [
           'id'=>$this->product->id,
           'name'=>$this->product->{app()->getLocale().'_name'},
           'price'=>$this->when(true,function (){
-                $price = $this->price;
+                $price = $this->product->main_price;
                 $features = orders_items_features::query()->where('order_item_id','=',$this->id)->sum('price') ?? 0;
                 return $price + $features;
           }),

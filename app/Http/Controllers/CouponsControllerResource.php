@@ -22,7 +22,7 @@ class CouponsControllerResource extends Controller
     }
     public function index()
     {
-        $data = coupons::query()
+        $data = coupons::query()->with('products.product')
             ->where('user_id','=',auth()->id())
             ->orderBy('id','DESC')
             ->withCount('users')
@@ -53,7 +53,7 @@ class CouponsControllerResource extends Controller
     public function show($id)
     {
         //
-        $coupon = coupons::query()->with('users.user')->with('order_items',function($e){
+        $coupon = coupons::query()->with('products.product')->with('users.user')->with('order_items',function($e){
             $e->with('product')->selectRaw('*,count(product_id) as products_count')->groupBy('product_id');
         })->where('user_id','=',auth()->id())->find($id);
         return CouponRessource::make($coupon);

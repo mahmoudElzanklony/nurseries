@@ -11,7 +11,9 @@ class coupons extends Model
 
     protected $fillable = ['user_id','ar_name','en_name','code','number','discount','using_once','end_date'];
 
-
+    public function products(){
+        return $this->hasMany(coupons_products::class,'coupon_id');
+    }
 
     public function order_items(){
         return $this->hasManyThrough(orders_items::class,users_coupons::class,'coupon_id','id','id','couponable_id');

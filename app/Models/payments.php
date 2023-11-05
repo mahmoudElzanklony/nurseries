@@ -18,4 +18,12 @@ class payments extends Model
     public function visa(){
         return $this->belongsTo(users_visa::class,'visa_id');
     }
+
+    public function orders(){
+        return $this->belongsTo(orders::class,'paymentable_id');
+    }
+
+    public function custom_orders(){
+        return $this->belongsTo(custom_orders::class,'paymentable_id');
+    }
 }
