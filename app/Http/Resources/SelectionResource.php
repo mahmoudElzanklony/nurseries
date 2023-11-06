@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CategoryHeadingQuestionsDataResource extends JsonResource
+class SelectionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,7 @@ class CategoryHeadingQuestionsDataResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->{app()->getLocale().'_name'},
-            'type'=>$this->type,
-            'selections'=>$this->when($this->type == 'selection',function (){
-                return SelectionResource::collection($this->selections);
-            }),
-            'image'=>ImagesResource::make($this->whenLoaded('image')),
+            'value'=>$this->{app()->getLocale().'_name'},
         ];
     }
 }

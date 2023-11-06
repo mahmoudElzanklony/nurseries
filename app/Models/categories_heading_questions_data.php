@@ -20,4 +20,8 @@ class categories_heading_questions_data extends Model
     public function image(){
         return $this->morphOne(images::class,'imageable');
     }
+
+    public function selections(){
+        return $this->morphMany(multi_selections::class,'selectionable');
+    }
 }

@@ -34,9 +34,12 @@ class CategoriesControllerResource extends Controller
     public function cat_questions_features(){
         if(request()->has('category_id')){
             $data = categories::query()->with(['features','heading_questions'=>function($e){
-                $e->with('questions_data');
+                $e->with('questions_data',function($e){
+                    $e->with('selections');
+                });
             }])
             ->find(request('category_id'));
+
             return CategoriesResource::make($data);
         }
         return messages::error_output('there is no category with this id');
