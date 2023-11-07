@@ -54,8 +54,8 @@ trait QuickReportUserHelperApi
     }
 
     public function seller_report($id){
-        $products = ProductWithAllData::get()->where('user_id','=',auth()->id())->paginate(10);
-        $articles = ArticlesWithAllData::get()->where('user_id','=',auth()->id())->paginate(10);
+        $products = ProductWithAllData::get()->where('user_id','=',$id)->paginate(10);
+        $articles = ArticlesWithAllData::get()->where('user_id','=',$id)->paginate(10);
         $result = [
             'products_count'=>products::query()->where('user_id','=',$id)->count(),
             'followers_count'=>followers::query()->where('following_id',$id)->count(),

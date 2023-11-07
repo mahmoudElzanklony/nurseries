@@ -31,6 +31,7 @@ class ordersFormRequest extends FormRequest
         }else {
             return [
                 'seller_id' => 'required|exists:users,id',
+                'address_id' => 'required|exists:user_addresses,id',
                 'items' => 'required|array',
                 'items.*' => 'required',
                 'payment_method' => 'filled',

@@ -30,12 +30,17 @@ class OrdersController extends Controller
     public function make_order(ordersFormRequest $request){
         DB::beginTransaction();
         $data = $request->validated();
-        $default_address = DefaultAddress::get();
+        /*$default_address = DefaultAddress::get();
         // check if user has no default address for delivery order
         if($default_address == null){
             return messages::error_output(trans('errors.no_default_address'));
-        }
+        }*/
+        $default_address = [
+            'default_address'=>request('address_id')
+        ];
+        $default_address = (object)$default_address;
         $order_repo = new OrderRepository($default_address);
+
         // check if this of any these products any one that has no delivery way to default client address
         $check_err_delivery = $order_repo->check_delivery_products($data['items']);
         if($check_err_delivery['error'] > 0){
