@@ -18,8 +18,8 @@ class ProductCenterDataResource extends JsonResource
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
           'description'=>$this->{app()->getLocale().'_description'},
-         // 'information'=>json_decode($this->data,true)
-          'information'=>ProductResource::make((object)(json_decode($this->data,true)))
+          //'information'=>json_decode($this->data,true),
+          'information'=>CenterProductInfoResource::make((object)(json_decode($this->data,true)))
         ];
     }
 }
