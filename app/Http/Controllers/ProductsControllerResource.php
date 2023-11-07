@@ -172,7 +172,11 @@ class ProductsControllerResource extends Controller
         if(request()->has('name')) {
             $data = centralized_products_data::query()
                 ->whereRaw('ar_name LIKE "%' . request('name') . '%" OR en_name LIKE "%' . request('name') . '%" ')->first();
-            return messages::success_output('',ProductCenterDataResource::make($data));
+            if($data != null) {
+                return messages::success_output('', ProductCenterDataResource::make($data));
+            }else{
+                return messages::error_output('لا يوجد هذا المنتج',);
+            }
         }else{
             return messages::error_output('please send name parameter in your request');
         }
