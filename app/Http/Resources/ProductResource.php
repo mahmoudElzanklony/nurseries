@@ -44,6 +44,7 @@ class ProductResource extends JsonResource
             'user_id'=>$this->user_id,
             'name'=>$this->{app()->getLocale().'_name'},
             'description'=>$this->{app()->getLocale().'_description'},
+            'plant_type'=>$this->{trans('pant_type')},
             'quantity'=>$this->quantity,
             'main_price'=>$this->main_price,
             'created_at'=>$this->created_at,

@@ -36,6 +36,7 @@ class ProductsFormRequest extends FormRequest
         return [
             'id'=>'filled',
             'come_from_centralized'=>'filled',
+            'plant_type'=>'required',
             'category_id'=>'required|exists:categories,id',
             $lang.'_name'=>'required',
             $another_lang.'_name'=>'nullable',
@@ -65,6 +66,7 @@ class ProductsFormRequest extends FormRequest
           'category'=>trans('keywords.category'),
           'ar_name'=>trans('keywords.ar_name'),
           'en_name'=>trans('keywords.en_name'),
+          'plant_type'=>trans('keywords.plant_type'),
           'ar_description'=>trans('keywords.ar_description'),
           'en_description'=>trans('keywords.en_description'),
           'quantity'=>trans('keywords.quantity'),

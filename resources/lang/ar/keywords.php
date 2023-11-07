@@ -40,6 +40,7 @@ return [
     'en_name'=>'الاسم بالانجليزي',
     'ar_description'=>'الوصف بالعبي',
     'en_description'=>'الوصف بالانجليزي',
+    'plant_type'=>'نوع النبات',
     'main_price'=>'السعر الاساسي',
     'wholesale_prices'=>'اسعار الجملة',
     'answers'=>'الاجابات',
@@ -49,6 +50,8 @@ return [
     'care'=>'الرعاية',
     'time_number'=>'عدد المرات',
     'time_type'=>'نوع الوقت',
+    'inner'=>'داخلي',
+    'outer'=>'خارجي',
     // ----------------------end products table inputs ---------------------
 
     // ----------------------start bank model payment table inputs ---------------------
