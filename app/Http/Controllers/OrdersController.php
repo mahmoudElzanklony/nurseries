@@ -17,6 +17,7 @@ use App\Models\orders_items;
 use App\Models\orders_shipment_info;
 use App\Models\reports;
 use App\Models\User;
+use App\Models\user_addresses;
 use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -35,10 +36,8 @@ class OrdersController extends Controller
         if($default_address == null){
             return messages::error_output(trans('errors.no_default_address'));
         }*/
-        $default_address = [
-            'default_address'=>request('address_id')
-        ];
-        $default_address = (object)$default_address;
+        $default_address = user_addresses::query()->find('address_id');
+        $default_address = $default_address;
         $order_repo = new OrderRepository($default_address);
         $seller = User::query()->find(request('seller_id'));
         // check if this of any these products any one that has no delivery way to default client address
