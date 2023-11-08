@@ -118,7 +118,8 @@ class ProductsControllerResource extends Controller
           'en'=>'there is a new product published from '.auth()->user()->username,
         ];
         dispatch(new sendNotificationsToFollowersJob($following_data,$msg,'/following'));
-        return messages::success_output(trans('messages.saved_successfully'),$product_reposit->product);
+        $output = ProductWithAllData::get()->find($product_reposit->product->id);
+        return messages::success_output(trans('messages.saved_successfully'),ProductResource::make($output));
 
     }
 
