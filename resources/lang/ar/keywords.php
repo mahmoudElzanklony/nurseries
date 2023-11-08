@@ -88,6 +88,8 @@ return [
     'delivered'=>'توصيل',
     'completed'=>'استلام',
     'cancelled'=>'تم الالغاء',
+    'to_default_address'=>'الي عنوانك الافتراضي',
+    'dont_support_delivery_product'=>'لا يدعم توصيل منتج ',
     // ----------------------end of  orders- ---------------------
 
     // ----------------------start of  custom orders----------------------
@@ -124,6 +126,7 @@ return [
     'value'=>'القيمة',
     'number'=>'عدد المرات',
     'using_once'=>'استخدام مره واحده ام لا',
+
     // ----------------------start en coupons - ---------------------
 
 
