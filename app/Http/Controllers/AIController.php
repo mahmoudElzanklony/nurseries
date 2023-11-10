@@ -37,7 +37,7 @@ class AIController extends Controller
             "image" => curl_file_create(public_path('images/ai/'.$name)),
             "mask" => curl_file_create(public_path('images/ai/'.$mask_name)),
             "prompt" => "add a variety of lush and vibrant plants, each with unique colors, shapes, and sizes. Ensure that the plants are seamlessly integrated into the scene and appear natural in their placement. The overall composition should evoke a sense of tranquility and aesthetics. Please include a diverse selection of plants to offer the client a range of options. The lighting should be soft and natural, complementing the overall ambiance. The final image should be of the highest quality, suitable for presentation to the client for their selection. Be sure to pay attention to detail and realism",
-            "n" => 8,
+            "n" => 3,
             "size" => "1024x1024",
         ]);
 

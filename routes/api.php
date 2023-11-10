@@ -121,7 +121,7 @@ Route::group(['middleware'=>'changeLang'],function (){
 
 
     // ---------------------start of favourite actions --------------------
-    Route::group(['prefix'=>'/favourite','middleware'=>'CheckApdiAuth'],function (){
+    Route::group(['prefix'=>'/favourite','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[FavouriteController::class,'index']);
 
     });
