@@ -94,6 +94,7 @@ return [
 
     // ----------------------start of  custom orders----------------------
     'address'=>'العنوان',
+    'seller'=>'البائع',
     'sellers'=>'البائعين',
     'days_delivery'=>'عدد الايام المستغرقة للتوصيل',
     'delivery_price'=>'سعر التوصيل',

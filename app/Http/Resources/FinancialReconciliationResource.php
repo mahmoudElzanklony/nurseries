@@ -19,7 +19,7 @@ class FinancialReconciliationResource extends JsonResource
           'total_money'=>$this->total_money,
           'admin_profit_percentage'=>$this->admin_profit_percentage,
           'user'=>UserResource::make($this->whenLoaded('user')),
-          'orders'=>OrderResource::collection($this->whenLoaded('orders')),
+          'order'=>OrderResource::make($this->whenLoaded('order')),
           'image'=>ImagesResource::make($this->whenLoaded('image')),
           'created_at'=>$this->created_at,
         ];

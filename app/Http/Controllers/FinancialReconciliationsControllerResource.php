@@ -31,6 +31,7 @@ class FinancialReconciliationsControllerResource extends Controller
     {
         //
         $data = FinancialRecociliationsWithAllData::get_data();
+
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
@@ -41,6 +42,7 @@ class FinancialReconciliationsControllerResource extends Controller
             ])
             ->thenReturn()
             ->paginate(10);
+        return $output;
         return FinancialReconciliationResource::collection($output);
     }
 
@@ -50,12 +52,15 @@ class FinancialReconciliationsControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(financialReconciliationFormRequest $request)
+    public function store()
     {
-        //
-        $data = $request->validated();
         $financil_repo = new FinancialReconciliationsRepository();
-        return $financil_repo->store_data($data);
+        $orders = $financil_repo->get_orders_to_be_financial(false);
+        if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
+
+        }
+        $financil_repo->store_data($orders);
+        return messages::success_output(trans('messages.saved_successfully'));
     }
 
     /**

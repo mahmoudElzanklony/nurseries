@@ -27,6 +27,10 @@ class orders extends Model
         return $this->hasMany(orders_shipment_info::class,'order_id');
     }
 
+    public function last_shipment_info(){
+        return $this->hasOne(orders_shipment_info::class,'order_id')->orderBy('id','DESC');
+    }
+
     public function client(){
         return $this->belongsTo(User::class,'user_id');
     }

@@ -18,7 +18,7 @@ class CreateFinancialReconciliationsTable extends Migration
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->float('total_money');
             $table->float('admin_profit_percentage');
-            $table->string('transfer_money_doc')->nullable();
+            $table->string('status');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -11,9 +11,7 @@ class SellerId
              return $next($request);
          }
          return $next($request)->whereHas('orders',function ($e){
-             $e->whereHas('products',function ($e){
-                 $e->where('user_id','=',request('seller_id'));
-             });
+             $e->where('seller_id','=',request('seller_id'));
          });
     }
 }

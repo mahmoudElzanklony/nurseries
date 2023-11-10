@@ -17,6 +17,7 @@ class PaymentResource extends JsonResource
         return [
           'id'=>$this->id,
           'money'=>$this->money,
+          'tax'=>$this->tax,
           'visa'=>VisaBankResource::make($this->visa)
         ];
     }

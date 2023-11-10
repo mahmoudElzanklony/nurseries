@@ -15,6 +15,10 @@ class custom_orders extends Model
         return $this->hasMany(custom_orders_sellers::class,'custom_order_id');
     }
 
+    public function payment(){
+        return $this->morphOne(payments::class,'paymentable');
+    }
+
     public function pending_alerts(){
         return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->whereRaw('status = "pending" or status is null');
     }
