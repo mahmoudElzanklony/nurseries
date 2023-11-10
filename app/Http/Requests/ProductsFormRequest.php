@@ -52,7 +52,7 @@ class ProductsFormRequest extends FormRequest
             'features.*'=>'required',
             'deliveries'=>'required|array',
             'deliveries.*'=>'required',
-            'discounts'=>'filled|array',
+            'discounts'=>'nullable|array',
             'discounts.*'=>'filled',
             'cares'=>'filled|required',
             'cares.*'=>'required',
