@@ -17,6 +17,7 @@ class CareResource extends JsonResource
         return [
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
+          'is_required'=>$this->is_required,
           'created_at'=>$this->created_at
         ];
     }
