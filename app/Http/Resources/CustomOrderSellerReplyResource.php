@@ -23,7 +23,7 @@ class CustomOrderSellerReplyResource extends JsonResource
             'client_reply'=>trans('keywords.'.$this->client_reply),
             'reply_status'=>$this->client_reply == 'accepted' ? true:false,
             'custom_order_seller'=>CustomOrderSellerResource::make($this->whenLoaded('custom_order_seller')),
-            'images'=>CustomOrderSellerResource::collection($this->images),
+            'images'=>ImagesResource::collection($this->images),
             'created_at'=>$this->created_at,
         ];
     }
