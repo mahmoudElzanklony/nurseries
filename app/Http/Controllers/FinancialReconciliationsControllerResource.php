@@ -67,7 +67,7 @@ class FinancialReconciliationsControllerResource extends Controller
     public function statistics(){
         $financials = financial_reconciliations::query()->whereHas('orders',function($e){
             $e->where('seller_id','=',auth()->id());
-        })->with('custom_orders.accepted_alerts')->orWhereHas('custom_orders.accepted_alerts',function ($q){
+        })->orWhereHas('custom_orders.accepted_alerts',function ($q){
             $q->where('seller_id','=',auth()->id())->whereHas('reply',function($r){
                 $r->where('client_reply','=','accepted');
             });
