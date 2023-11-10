@@ -31,6 +31,11 @@ class custom_orders extends Model
         return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','=','rejected');
     }
 
+    public function reply(){
+        return $this->hasOneThrough(custom_orders_sellers_reply::class,custom_orders_sellers::class,'custom_orders_seller_id','custom_order_id')
+            ->where('client_reply','=','accepted');
+    }
+
 
     public function user(){
         return $this->belongsTo(User::class,'user_id');

@@ -22,4 +22,9 @@ class financial_reconciliations extends Model
     public function orders(){
         return $this->hasMany(orders::class,'financial_reconciliation_id');
     }
+
+    public function custom_orders(){
+        return $this->hasMany(custom_orders::class,'financial_reconciliation_id');
+    }
+
 }

@@ -12,6 +12,7 @@ use App\Filters\UserIdFilter;
 use App\Http\Requests\financialReconciliationFormRequest;
 use App\Http\Resources\FinancialReconciliationResource;
 use App\Http\traits\messages;
+use App\Models\financial_reconciliations;
 use App\Repositories\FinancialReconciliationsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -61,6 +62,18 @@ class FinancialReconciliationsControllerResource extends Controller
         }
         $financil_repo->store_data($orders);
         return messages::success_output(trans('messages.saved_successfully'));
+    }
+
+    public function statistics(){
+        $financials = financial_reconciliations::query()->whereHas('orders',function($e){
+            $e->where('seller_id','=',auth()->id());
+        })->with('custom_orders.accepted_alerts')->orWhereHas('custom_orders.accepted_alerts',function ($q){
+            $q->where('seller_id','=',auth()->id())->whereHas('reply',function($r){
+                $r->where('client_reply','=','accepted');
+            });
+        })->get();
+        return $financials;
+        $total_money = 0;
     }
 
     /**

@@ -254,6 +254,12 @@ Route::group(['middleware'=>'changeLang'],function (){
     });
     //=========================end of coupons==================
 
+    //=========================start of coupons==================
+    Route::group(['prefix'=>'/financial','middleware'=>['CheckApiAuth']],function(){
+        Route::get('/statistics-money',[FinancialReconciliationsControllerResource::class,'statistics']);
+    });
+    //=========================end of coupons==================
+
     // delete item
     Route::post('/delete-item',[GeneralServiceController::class,'delete_item']);
 
