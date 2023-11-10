@@ -112,6 +112,7 @@ class CustomerOrdersControllerResource extends Controller
     public function client_reply(customOrderClientReplyFormRequest $request){
 
         if(request()->has('custom_orders_seller_id')){
+
             $data = custom_orders_sellers_reply::query()->with('images')->with('custom_order_seller.order.images')
                 ->where('custom_orders_seller_id','=',request('custom_orders_seller_id'))->first();
             if($data == null){
@@ -129,10 +130,13 @@ class CustomerOrdersControllerResource extends Controller
             $payment_status = $this->handle_payment(request('visa_id'),$data->custom_order_seller->order->id,$data->product_price + $data->delivery_price);
             if($payment_status == true){
                 // reject orders
+
                 foreach($sellers_replies as $sellers_reply){
-                    custom_orders_sellers_reply::query()->find( $sellers_reply->reply->id)->update([
-                        'client_reply' => 'rejected'
-                    ]);
+                    if($sellers_reply->reply != null) {
+                        custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
+                            'client_reply' => 'rejected'
+                        ]);
+                    }
                 }
                 // accept only one
                 $data->client_reply = 'accepted';
