@@ -16,6 +16,7 @@ class CreateFinancialReconciliationsTable extends Migration
         Schema::create('financial_reconciliations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('seller_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->float('total_money');
             $table->float('admin_profit_percentage');
             $table->string('status');

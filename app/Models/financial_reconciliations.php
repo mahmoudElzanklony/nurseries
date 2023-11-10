@@ -9,7 +9,7 @@ class financial_reconciliations extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','total_money','admin_profit_percentage','status'];
+    protected $fillable = ['user_id','seller_id','total_money','admin_profit_percentage','status'];
 
     public function user(){
         return $this->belongsTo(User::class,'user_id');
@@ -25,6 +25,10 @@ class financial_reconciliations extends Model
 
     public function custom_orders(){
         return $this->hasMany(custom_orders::class,'financial_reconciliation_id');
+    }
+
+    public function problem(){
+        return $this->hasOne(financialreconciliation_problems::class,'financial_reconciliation_id');
     }
 
 }

@@ -16,12 +16,10 @@ class FinancialRecociliationsWithAllData
         $data = financial_reconciliations::query()
             ->with(['user','image']);
 
-        if($user->role->name == 'admin'){
-            $data->with('orders');
+        if($user->role->name == 'seller'){
+            $data->where('seller_id','=',auth()->id());
         }else{
-            $data->with('orders')->whereHas('orders',function ($e){
-               $e->where('seller_id','=',auth()->id());
-            });
+            $data->with('orders')->with('custom_orders');
         }
         return $data->orderBy('id','DESC');
 

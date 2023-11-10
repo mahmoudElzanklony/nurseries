@@ -6,6 +6,7 @@ use App\Actions\FinancialRecociliationsWithAllData;
 use App\Filters\EndDateFilter;
 
 use App\Filters\financial\SellerId;
+use App\Filters\marketer\StatusFilter;
 use App\Filters\StartDateFilter;
 
 use App\Filters\UserIdFilter;
@@ -39,7 +40,8 @@ class FinancialReconciliationsControllerResource extends Controller
                 StartDateFilter::class,
                 EndDateFilter::class,
                 UserIdFilter::class,
-                SellerId::class
+                SellerId::class,
+                StatusFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
@@ -58,22 +60,24 @@ class FinancialReconciliationsControllerResource extends Controller
         $financil_repo = new FinancialReconciliationsRepository();
         $orders = $financil_repo->get_orders_to_be_financial(false);
         if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
-
+            $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
+            return messages::success_output(trans('messages.saved_successfully'));
         }
-        $financil_repo->store_data($orders);
-        return messages::success_output(trans('messages.saved_successfully'));
+
+
     }
 
     public function statistics(){
-        $financials = financial_reconciliations::query()->whereHas('orders',function($e){
-            $e->where('seller_id','=',auth()->id());
-        })->orWhereHas('custom_orders.accepted_alerts',function ($q){
-            $q->where('seller_id','=',auth()->id())->whereHas('reply',function($r){
-                $r->where('client_reply','=','accepted');
-            });
-        })->get();
-        return $financials;
-        $total_money = 0;
+        $financil_repo = new FinancialReconciliationsRepository();
+        $orders = $financil_repo->get_orders_to_be_financial(false);
+        $pending_money = $financil_repo->detect_total_money($orders['orders'],$orders['custom_orders']);
+        $active_profit = financial_reconciliations::query()
+            ->where('seller_id','=',auth()->id())
+            ->selectRaw('sum(total_money - ( total_money * admin_profit_percentage / 100 )) as total')->first();
+        return messages::success_output('',[
+           'pending'=>$pending_money,
+           'active'=>$active_profit->total
+        ]);
     }
 
     /**
@@ -85,6 +89,8 @@ class FinancialReconciliationsControllerResource extends Controller
     public function show($id)
     {
         //
+        $output = FinancialRecociliationsWithAllData::get_data()->with('problem')->find($id);
+        return FinancialReconciliationResource::make($output);
     }
 
     /**

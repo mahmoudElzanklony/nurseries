@@ -41,6 +41,20 @@ class FinancialReconciliationsRepository
         ];
     }
 
+    public function detect_total_money($orders,$custom){
+        $total_money = 0;
+        foreach($orders as $order){
+            if($order->payment != null) {
+                $total_money += $order->payment->money;
+            }
+        }
+        foreach($custom as $order){
+            if($order->payment != null) {
+                $total_money += $order->payment->money;
+            }
+        }
+        return $total_money;
+    }
 
     public function store_data($orders,$custom){
 
@@ -59,6 +73,7 @@ class FinancialReconciliationsRepository
 
         $finan_obj = financial_reconciliations::query()->create([
            'user_id'=>auth()->id(),
+           'seller_id'=>auth()->id(),
            'total_money'=>$total_money,
            'admin_profit_percentage'=>$percentages->percentage,
            'status'=>auth()->user()->role->name == 'seller' ? 'pending':'accepted'
