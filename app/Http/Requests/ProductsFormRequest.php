@@ -54,8 +54,8 @@ class ProductsFormRequest extends FormRequest
             'deliveries.*'=>'required',
             'discounts'=>'nullable|array',
             'discounts.*'=>'filled',
-            'cares'=>'filled|required',
-            'cares.*'=>'required',
+            'cares'=>'nullable|required',
+            'cares.*'=>'filled',
 
         ];
     }
