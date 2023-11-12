@@ -50,8 +50,8 @@ class CustomOrderResource extends JsonResource
            'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){
                return CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts'));
            }),
-           'accepted_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
-           'rejected_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('sellers_alerts')),
+           'accepted_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('accepted_alerts')),
+           'rejected_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('rejected_alerts')),
            'created_at'=>$this->created_at,
         ];
     }
