@@ -81,7 +81,7 @@ class SellerInfoController extends Controller
     }
 
      public function cities_statistics(){
-        $users = countries::query()->withcount('users')->with('users',function($e){
+        $users = countries::query()->withcount('users')->whereHas('users',function($e){
             $e->whereHas('orders',function($e){
                 $e->where('seller_id','=',auth()->id());
             });
