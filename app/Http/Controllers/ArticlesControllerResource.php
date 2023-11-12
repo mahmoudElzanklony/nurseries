@@ -101,6 +101,7 @@ class ArticlesControllerResource extends Controller
         $article = articles::query()->updateOrCreate([
             'id'=>request('id') ?? null
         ],$data);
+        $article = ArticlesWithAllData::get()->find($article->id);
         if(request()->hasFile('images')){
             foreach(request('images') as $file){
                 $image = $this->upload($file,'articles');
