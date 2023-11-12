@@ -85,7 +85,7 @@ class SellerInfoController extends Controller
             $e->whereHas('orders',function($e){
                 $e->where('seller_id','=',auth()->id());
             });
-        })->selectRaw('id, '.app()->getLocale().'_name,users_count')->get();
+        })->selectRaw('id, '.app()->getLocale().'_name')->get();
         return messages::success_output('',$users);
         return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
      }
