@@ -84,8 +84,8 @@ class SellerInfoController extends Controller
         $users = countries::query()->whereHas('users',function($e){
             $e->whereHas('orders',function($e){
                 $e->where('seller_id','=',auth()->id());
-            });
-        })->withcount('users')->selectRaw('id, '.app()->getLocale().'_name')->get();
+            })->groupBy('user_id')->withcount('orders');
+        })->selectRaw('id, '.app()->getLocale().'_name')->get();
         return $users;
         return CountryResource::collection($users);
         return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
