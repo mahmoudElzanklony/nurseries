@@ -214,7 +214,7 @@ class CustomerOrdersControllerResource extends Controller
             $custom_order = new CustomOrdersRepository($data['sellers'], $data);
             $custom_order->init_order($images)->send_alerts_to_sellers();
             DB::commit();
-            return messages::success_output(trans('messages.order_done_successfully'), CustomOrderResource::make(CustomOrdersWithAllData::get()->find($order->id)));
+            return messages::success_output(trans('messages.order_done_successfully'), CustomOrderResource::make(CustomOrdersWithAllData::get()->find($custom_order->order->id)));
         }
 
     }
