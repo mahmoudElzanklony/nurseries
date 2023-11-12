@@ -24,16 +24,16 @@ class custom_orders extends Model
     }
 
     public function accepted_alerts(){
-        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','=','accepted');
+        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','accepted');
     }
 
     public function rejected_alerts(){
-        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','=','rejected');
+        return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->where('status','rejected');
     }
 
     public function reply(){
         return $this->hasOneThrough(custom_orders_sellers_reply::class,custom_orders_sellers::class,'custom_orders_seller_id','custom_order_id')
-            ->where('client_reply','=','accepted');
+            ->where('client_reply','accepted');
     }
 
 
