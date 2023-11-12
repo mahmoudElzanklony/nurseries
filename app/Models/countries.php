@@ -20,5 +20,9 @@ class countries extends Model
         return $this->morphOne(images::class,'imageable');
     }
 
+    public function users(){
+        return $this->hasMany(User::class,'country_id');
+    }
+
 
 }

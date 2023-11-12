@@ -6,7 +6,10 @@ use App\Actions\ImageModalSave;
 use App\Actions\SellerOrdersAndCustomOrdersAction;
 use App\Enum\OrdersDeliveryCases;
 use App\Http\Requests\SellerInfoFormRequest;
+use App\Http\Resources\CountryResource;
 use App\Http\traits\messages;
+use App\Models\cities;
+use App\Models\countries;
 use App\Models\orders;
 use App\Models\orders_shipment_info;
 use App\Models\payments;
@@ -78,7 +81,12 @@ class SellerInfoController extends Controller
     }
 
      public function cities_statistics(){
-
+        $users = countries::query()->with('users',function($e){
+            $e->withcount('orders')->whereHas('orders',function($e){
+                $e->where('seller_id','=',auth()->id());
+            });
+        });
+        return CountryResource::collection($users);
         return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
      }
 
