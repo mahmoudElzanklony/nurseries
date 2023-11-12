@@ -107,7 +107,7 @@ class ArticlesControllerResource extends Controller
                 ImageModalSave::make($article->id,'articles','articles/'.$image);
             }
         }
-        return messages::success_output(trans('messages.operation_saved_successfully'),$article);
+        return messages::success_output(trans('messages.operation_saved_successfully'),ArticleResource::make($article));
     }
 
     /**
