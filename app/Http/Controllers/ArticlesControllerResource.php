@@ -101,13 +101,14 @@ class ArticlesControllerResource extends Controller
         $article = articles::query()->updateOrCreate([
             'id'=>request('id') ?? null
         ],$data);
-        $article = ArticlesWithAllData::get()->find($article->id);
+
         if(request()->hasFile('images')){
             foreach(request('images') as $file){
                 $image = $this->upload($file,'articles');
                 ImageModalSave::make($article->id,'articles','articles/'.$image);
             }
         }
+        $article = ArticlesWithAllData::get()->find($article->id);
         return messages::success_output(trans('messages.operation_saved_successfully'),ArticleResource::make($article));
     }
 

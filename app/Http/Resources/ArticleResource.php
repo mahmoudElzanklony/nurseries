@@ -22,6 +22,7 @@ class ArticleResource extends JsonResource
           'title'=>$this->title,
           'description'=>$this->description,
           'user'=>UserResource::make($this->whenLoaded('user')),
+          'category'=>CategoryResource::make($this->whenLoaded('category')),
           'seen'=>$this->seen->count ?? 0,
           'likes_count'=>$this->likes_count,
           'like'=>$this->like != null ? true:false,
