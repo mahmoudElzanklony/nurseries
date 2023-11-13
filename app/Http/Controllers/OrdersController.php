@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Actions\DefaultAddress;
 use App\Actions\OrdersWithAllData;
 use App\Actions\SendNotification;
+use App\Filters\orders\MaxPriceFilter;
+use App\Filters\orders\MinPriceFilter;
 use App\Filters\orders\PaymentTypeFilter;
+use App\Filters\orders\StatusOrderFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\EndDateFilter;
 use App\Http\Requests\ordersFormRequest;
@@ -70,6 +73,9 @@ class OrdersController extends Controller
             ->through([
                 StartDateFilter::class,
                 EndDateFilter::class,
+                MinPriceFilter::class,
+                MaxPriceFilter::class,
+                StatusOrderFilter::class
             ])
             ->thenReturn()
             ->orderBy('id','DESC')
