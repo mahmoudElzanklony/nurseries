@@ -52,6 +52,7 @@ class CustomerOrdersControllerResource extends Controller
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
+                \App\Filters\custom_orders\NameFilter::class,
                 StatusFilter::class,
                 SellerNameFilter::class,
                 StartDateFilter::class,
