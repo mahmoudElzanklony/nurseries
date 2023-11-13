@@ -25,7 +25,7 @@ class articles extends Model
 
     public function like(){
         return $this->hasOne(likes::class,'item_id')
-            ->where('type','=','article')
+            ->where('type','=','articles')
             ->where('user_id',auth()->id());
     }
 
