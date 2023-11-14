@@ -10,6 +10,7 @@ use App\Actions\ProductWithAllData;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\MarketerClientResource;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\articles;
 use App\Models\followers;
@@ -62,6 +63,7 @@ trait QuickReportUserHelperApi
             'articles_count'=>articles::query()->where('user_id','=',$id)->count(),
             'products'=>ProductResource::collection($products),
             'articles'=>ArticleResource::collection($articles),
+            'user'=>UserResource::make(User::query()->find($id))
         ];
         return $result;
     }

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ImageModalSave;
+use App\Actions\SellerInfoWithAllData;
 use App\Actions\SellerOrdersAndCustomOrdersAction;
 use App\Enum\OrdersDeliveryCases;
 use App\Http\Requests\SellerInfoFormRequest;
 use App\Http\Resources\CountryResource;
+use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\cities;
 use App\Models\countries;
@@ -14,6 +16,7 @@ use App\Models\orders;
 use App\Models\orders_shipment_info;
 use App\Models\payments;
 use App\Models\products;
+use App\Models\User;
 use App\Models\users_bank_info;
 use App\Models\users_commercial_info;
 use App\Models\users_store_info;
@@ -98,6 +101,11 @@ class SellerInfoController extends Controller
         }
         return messages::success_output('',$output);
         return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
+     }
+
+     public function all_info(){
+        $data = SellerInfoWithAllData::get()->find(auth()->id());
+        return messages::success_output('',UserResource::make($data));
      }
 
 }

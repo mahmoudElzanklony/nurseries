@@ -10,4 +10,8 @@ class users_commercial_info extends Model
     use HasFactory;
 
     protected $fillable = ['user_id','commercial_register','tax_card'];
+
+    public function images(){
+        return $this->morphMany(images::class,'imageable');
+    }
 }
