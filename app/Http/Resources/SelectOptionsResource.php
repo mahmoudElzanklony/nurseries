@@ -16,7 +16,8 @@ class SelectOptionsResource extends JsonResource
     {
         return [
             'id'=>$this->id,
-            'name'=>$this->{app()->getLocale().'_name'},
+            'ar_name'=>$this->ar_name,
+            'en_name'=>$this->en_name,
             'created_at'=>$this->created_at,
         ];
     }

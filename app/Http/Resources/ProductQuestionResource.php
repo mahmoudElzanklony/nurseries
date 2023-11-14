@@ -16,7 +16,9 @@ class ProductQuestionResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'name'=>$this->{app()->getLocale().'_name'},
+          'ar_name'=>$this->ar_name,
+          'en_name'=>$this->en_name,
+         // 'name'=>$this->{app()->getLocale().'_name'},
           'type'=>$this->when(isset($this->type),function (){
              return $this->type;
           }),
