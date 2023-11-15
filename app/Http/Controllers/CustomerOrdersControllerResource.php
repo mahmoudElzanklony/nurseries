@@ -178,6 +178,7 @@ class CustomerOrdersControllerResource extends Controller
                 ]);
             }
             $order = CustomOrdersWithAllData::get()->find(request('order_id'));
+            $order->has_pending = true;
             return messages::success_output(trans('messages.saved_successfully'),CustomOrderResource::make($order));
         }
     }
