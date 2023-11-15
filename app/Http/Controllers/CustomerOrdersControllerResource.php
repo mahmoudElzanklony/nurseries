@@ -177,7 +177,7 @@ class CustomerOrdersControllerResource extends Controller
                     'seller_id' => $seller,
                 ]);
             }
-            $order = CustomOrdersWithAllData::get()->find(request('id'));
+            $order = CustomOrdersWithAllData::get()->find(request('order_id'));
             return messages::success_output(trans('messages.saved_successfully'),CustomOrderResource::make($order));
         }
     }
