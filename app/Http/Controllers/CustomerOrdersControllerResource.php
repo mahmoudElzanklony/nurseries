@@ -68,10 +68,10 @@ class CustomerOrdersControllerResource extends Controller
                 ->send($data)
                 ->through([
                     \App\Filters\custom_orders\NameFilter::class,
-                    StatusFilter::class,
+                    \App\Filters\custom_orders\sellers\StatusFilter::class,
                     SellerNameFilter::class,
-                    StartDateFilter::class,
-                    EndDateFilter::class,
+                    \App\Filters\custom_orders\sellers\StartDateFilter::class,
+                    \App\Filters\custom_orders\sellers\EndDateFilter::class
                 ])
                 ->thenReturn()
                 ->paginate(10);
