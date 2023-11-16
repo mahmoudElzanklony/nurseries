@@ -50,7 +50,7 @@ class CustomerOrdersControllerResource extends Controller
 
         $data = CustomOrdersWithAllData::get();
 
-        if(auth()->user()->role->name == 'client') {
+        if(auth()->user()->role->name != 'seller') {
             $output = app(Pipeline::class)
                 ->send($data)
                 ->through([
