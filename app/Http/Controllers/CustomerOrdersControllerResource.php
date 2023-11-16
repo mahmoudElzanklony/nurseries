@@ -126,7 +126,7 @@ class CustomerOrdersControllerResource extends Controller
         $final_data = CustomOrdersWithAllData::get()->where('seller_id','=',auth()->id())
             ->where('custom_order_id','=',request('custom_order_id'))->first();
         DB::commit();
-        return messages::success_output(trans('messages.saved_successfully'),CustomOrderSellerReplyResource::make($final_data));
+        return messages::success_output(trans('messages.saved_successfully'),CustomOrderSellerResource::make($final_data));
     }
 
     public function seller_requests(){
