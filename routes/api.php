@@ -61,6 +61,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::post('/save-store',[SellerInfoController::class,'save_store']);
         Route::post('/save-bank',[SellerInfoController::class,'save_bank']);
         Route::post('/save-commercial-infos',[SellerInfoController::class,'save_commercial_infos']);
+        Route::post('/save-all-info',[SellerInfoController::class,'save_all_info']);
         Route::get('/all-info',[SellerInfoController::class,'all_info']);
     });
 

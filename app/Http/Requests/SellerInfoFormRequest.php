@@ -50,6 +50,17 @@ class SellerInfoFormRequest extends FormRequest
         ];
     }
 
+    public function save_all_info(){
+        return [
+            'bank_info'=>'required|array',
+            'bank_info.*'=>'required',
+            'commercial_info'=>'required|array',
+            'commercial_info.*'=>'required',
+            'store_info'=>'required|array',
+            'store_info.*'=>'required',
+        ];
+    }
+
 
     public function rules()
     {
@@ -59,6 +70,10 @@ class SellerInfoFormRequest extends FormRequest
             return $this->save_commercial_data();
         }else if(str_contains($this->getRequestUri(),'/save-bank')) {
             return $this->save_bank_info_data();
+        }else if(str_contains($this->getRequestUri(),'/save-bank')) {
+            return $this->save_bank_info_data();
+        }else if(str_contains($this->getRequestUri(),'/save-all-info')) {
+            return $this->save_all_info();
         }
     }
 

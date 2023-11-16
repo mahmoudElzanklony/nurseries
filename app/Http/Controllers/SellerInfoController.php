@@ -104,6 +104,31 @@ class SellerInfoController extends Controller
         return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
      }
 
+     public function save_all_info(SellerInfoFormRequest $request){
+         $data = $request->validated();
+
+         users_store_info::query()->updateOrCreate([
+             'user_id'=>auth()->id()
+         ],$data['store_info']);
+         $output = users_commercial_info::query()->updateOrCreate([
+             'user_id'=>auth()->id()
+         ],$data['commercial_info']);
+         users_bank_info::query()->updateOrCreate([
+             'user_id'=>auth()->id()
+         ],$data['bank_info']);
+
+         if(request()->hasFile('images')){
+             foreach(request()->file('images') as $file){
+                 $image = $this->upload($file,'sellers_commercial');
+                 if($image){
+                     ImageModalSave::make($output->id,'users_commercial_info','sellers_commercial/'.$image);
+                 }
+             }
+         }
+         $data = SellerInfoWithAllData::get()->find(auth()->id());
+         return messages::success_output(trans('keywords.saved_successfully'),UserResource::make($data));
+     }
+
      public function all_info(){
         $data = SellerInfoWithAllData::get()->find(auth()->id());
         return messages::success_output('',UserResource::make($data));
