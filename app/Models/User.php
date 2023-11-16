@@ -90,5 +90,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(users_commercial_info::class,'user_id');
     }
 
+    public function store_info(){
+        return $this->hasOne(users_store_info::class,'user_id');
+    }
+
 
 }

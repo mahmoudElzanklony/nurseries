@@ -9,6 +9,7 @@ use App\Enum\OrdersDeliveryCases;
 use App\Http\Requests\SellerInfoFormRequest;
 use App\Http\Resources\CountryResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserStoreInfoResource;
 use App\Http\traits\messages;
 use App\Models\cities;
 use App\Models\countries;
@@ -34,7 +35,7 @@ class SellerInfoController extends Controller
         $output = users_store_info::query()->updateOrCreate([
             'user_id'=>auth()->id()
         ],$data);
-        return messages::success_output(trans('messages.saved_successfully'),$output);
+        return messages::success_output(trans('messages.saved_successfully'),UserStoreInfoResource::make($output));
     }
 
     public function save_commercial_infos(SellerInfoFormRequest $request){
