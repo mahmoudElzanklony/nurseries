@@ -17,11 +17,15 @@ class CustomOrderResource extends JsonResource
     public function toArray($request)
     {
         if($this->status == 'active') {
-            $accepted_seller_from_client = custom_orders_sellers::query()
-                ->where('custom_order_id', '=', $this->id)
-                ->where('status', '=', 'accepted')->whereHas('reply', function ($e) {
-                    $e->where('client_reply', '=', 'accepted');
-                })->with('reply')->first();
+            try{
+                $accepted_seller_from_client = custom_orders_sellers::query()
+                    ->where('custom_order_id', '=', $this->id)
+                    ->where('status', '=', 'accepted')->whereHas('reply', function ($e) {
+                        $e->where('client_reply', '=', 'accepted');
+                    })->with('reply')->first();
+            }catch (\Throwable $e){
+                $accepted_seller_from_client = null;
+            }
         }else{
             $accepted_seller_from_client = null;
         }

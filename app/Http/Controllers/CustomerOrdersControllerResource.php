@@ -60,7 +60,11 @@ class CustomerOrdersControllerResource extends Controller
             ])
             ->thenReturn()
             ->paginate(10);
-        return CustomOrderResource::collection($output);
+        if(auth()->user()->role->name == 'client') {
+            return CustomOrderResource::collection($output);
+        }else{
+            return CustomOrderSellerResource::collection($output);
+        }
 
     }
     public function reject(){
@@ -108,6 +112,10 @@ class CustomerOrdersControllerResource extends Controller
         }
         DB::commit();
         return messages::success_output(trans('messages.saved_successfully'),$order);
+    }
+
+    public function seller_requests(){
+        // $data = CustomOrdersWithAllData::get()->whereHas()
     }
 
     public function client_reply(customOrderClientReplyFormRequest $request){
