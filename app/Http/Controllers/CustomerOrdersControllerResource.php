@@ -49,20 +49,32 @@ class CustomerOrdersControllerResource extends Controller
         //
 
         $data = CustomOrdersWithAllData::get();
-        $output = app(Pipeline::class)
-            ->send($data)
-            ->through([
-                \App\Filters\custom_orders\NameFilter::class,
-                StatusFilter::class,
-                SellerNameFilter::class,
-                StartDateFilter::class,
-                EndDateFilter::class,
-            ])
-            ->thenReturn()
-            ->paginate(10);
+
         if(auth()->user()->role->name == 'client') {
+            $output = app(Pipeline::class)
+                ->send($data)
+                ->through([
+                    \App\Filters\custom_orders\NameFilter::class,
+                    StatusFilter::class,
+                    SellerNameFilter::class,
+                    StartDateFilter::class,
+                    EndDateFilter::class,
+                ])
+                ->thenReturn()
+                ->paginate(10);
             return CustomOrderResource::collection($output);
         }else{
+            $output = app(Pipeline::class)
+                ->send($data)
+                ->through([
+                    \App\Filters\custom_orders\NameFilter::class,
+                    StatusFilter::class,
+                    SellerNameFilter::class,
+                    StartDateFilter::class,
+                    EndDateFilter::class,
+                ])
+                ->thenReturn()
+                ->paginate(10);
             return CustomOrderSellerResource::collection($output);
         }
 
