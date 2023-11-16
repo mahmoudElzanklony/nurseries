@@ -123,7 +123,7 @@ class CustomerOrdersControllerResource extends Controller
             ImageModalSave::make($order->id,'custom_orders_sellers_reply','custom_orders/'.$image);
         }
         DB::commit();
-        $final_data = CustomOrdersWithAllData::get()->find(request('custom_order_id'));
+        $final_data = CustomOrdersWithAllData::get()->where('custom_order_id',request('custom_order_id'))->first();
         return messages::success_output(trans('messages.saved_successfully'),CustomOrderSellerReplyResource::make($final_data));
     }
 
