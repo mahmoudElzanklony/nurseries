@@ -7,10 +7,10 @@ use Closure;
 class NameFilter
 {
     public function handle($request, Closure $next){
-        if(request()->has('name') && auth()->user()->role->name != 'seller'){
+        if(request()->filled('name') && auth()->user()->role->name != 'seller'){
             return $next($request)
                 ->where('name','LIKE','%'.request('name').'%');
-        }else if(request()->has('name') && auth()->user()->role->name == 'seller'){
+        }else if(request()->filled('name') && auth()->user()->role->name == 'seller'){
             return $next($request)->whereHas('order',function($e){
                 $e->where('name','LIKE','%'.request('name').'%');
             });
