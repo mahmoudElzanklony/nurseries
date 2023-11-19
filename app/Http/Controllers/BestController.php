@@ -3,9 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ProductWithAllData;
+use App\Filters\CategoryIdFilter;
+use App\Filters\EndDateFilter;
+use App\Filters\IDsFilter;
+use App\Filters\NameFilter;
+use App\Filters\products\MaxPriceFilter;
+use App\Filters\products\MinPriceFilter;
+use App\Filters\products\SellerNameFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Resources\ProductResource;
 use App\Models\orders_items;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 
 class BestController extends Controller
 {
@@ -28,8 +38,20 @@ class BestController extends Controller
         $data = ProductWithAllData::get()->has('orders_items')
                 ->withCount('orders_items')
                 ->orderBy('orders_items_count','DESC')
-                ->paginate(10);
-        $output =  ProductResource::collection($data);
-        return $output;
+        $output = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+                CategoryIdFilter::class,
+                MinPriceFilter::class,
+                MaxPriceFilter::class,
+                UserIdFilter::class,
+                IDsFilter::class,
+                NameFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+        return ProductResource::collection($data);
     }
 }
