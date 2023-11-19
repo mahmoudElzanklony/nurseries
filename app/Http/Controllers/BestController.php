@@ -37,7 +37,7 @@ class BestController extends Controller
     public function orders(){
         $data = ProductWithAllData::get()->has('orders_items')
                 ->withCount('orders_items')
-                ->orderBy('orders_items_count','DESC')
+                ->orderBy('orders_items_count','DESC');
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
