@@ -52,6 +52,6 @@ class BestController extends Controller
             ])
             ->thenReturn()
             ->paginate(10);
-        return ProductResource::collection($data);
+        return ProductResource::collection($output);
     }
 }
