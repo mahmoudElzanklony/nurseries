@@ -19,6 +19,7 @@ use App\Http\Resources\CommentResource;
 use App\Http\traits\messages;
 use App\Models\articles;
 use App\Models\articles_comments;
+use App\Models\articles_permission;
 use App\Models\likes;
 use App\Models\products;
 use App\Services\users\toggle_data;
@@ -85,6 +86,11 @@ class ArticlesControllerResource extends Controller
     {
         $data = $request->validated();
         $data['user_id'] = auth()->id();
+
+        $article_permission = articles_permission::query()->where('user_id','=',auth()->id())->first();
+        if($article_permission == null){
+            return messages::error_output(trans('errors.seller_has_no_permission_to_write_articles'));
+        }
 
         if(request()->hasFile('file')){
             $file = $request->file('file');

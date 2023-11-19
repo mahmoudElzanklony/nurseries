@@ -9,7 +9,7 @@ class products extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $fillable = ['user_id','category_id','ar_name','ar_description','en_name','en_description','plant_type','main_price','quantity'];
+    protected $fillable = ['user_id','category_id','ar_name','ar_description','en_name','en_description','plant_type','main_price','quantity','status'];
 
     public function images(){
         return $this->morphMany(images::class,'imageable');

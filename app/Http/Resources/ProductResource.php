@@ -47,6 +47,7 @@ class ProductResource extends JsonResource
             'plant_type'=>$this->{trans('pant_type')},
             'quantity'=>$this->quantity,
             'main_price'=>$this->main_price,
+            'status'=>$this->status,
             'created_at'=>$this->created_at,
             'category'=>CategoriesResource::make($this->whenLoaded('category')),
             'images'=>ImagesResource::collection($this->whenLoaded('images')),
@@ -62,7 +63,7 @@ class ProductResource extends JsonResource
             'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
             'is_following'=>auth()->check() && followers::query()->where('user_id',auth()->id())->where('following_id',$this->user_id)->first() != null ? true:false,
             'user'=>UserResource::make($this->whenLoaded('user')),
-            'statistics'=>$this->when(auth()->check() && auth()->user()->role->name == 'seller',function (){
+            'statistics'=>$this->when(auth()->check() && (auth()->user()->role->name == 'seller' || auth()->user()->role->name == 'admin'),function (){
                 return ProductStatisticsForSeller::get($this->id);
             }),
             'changeable_prices'=>ProductPriceChangeResource::collection($this->whenLoaded('changeable_prices')),
@@ -95,6 +96,7 @@ class ProductResource extends JsonResource
             'delivery'=>auth()->check() && $delivery != false ? $delivery :trans('errors.product_doesnt_support_delivery'),
             'discounts'=>ProductDiscountsResource::collection($this->whenLoaded('discounts')),
             'wholesale_prices'=>ProductWholesalePricesResource::collection($this->whenLoaded('wholesale_prices')),
+
         ];
     }
 }

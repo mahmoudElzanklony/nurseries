@@ -5,6 +5,7 @@ namespace App\Services\sellers;
 
 
 use App\Enum\OrdersDeliveryCases;
+use App\Models\followers;
 use App\Models\orders;
 use App\Models\products;
 
@@ -31,7 +32,8 @@ class StatisticsService
             'products'=>products::query()->when($user_id != null , function($e) use ($user_id){
                 $e->where('user_id','=',$user_id);
             })->count(),
-            'my_clients'=>self::my_orders($user_id)->groupBy('user_id')->get()->count()
+            'my_clients'=>self::my_orders($user_id)->groupBy('user_id')->get()->count(),
+            'followers'=>followers::query()->where('following_id','=',$user_id)->count()
         ];
         return $output;
     }

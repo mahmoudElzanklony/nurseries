@@ -24,5 +24,6 @@ return [
     'item_doesnt_exist_at_care_list'=>'Products doesnt exist at care list please add it first',
     'cant_reply_to_this_order'=>'This order time expired you cant reply to it',
     'cant_select_seller_to_this_order'=>'you cant accept this seller for your order',
+    'your_account_is_blocked'=>'Your account is blocked at current time',
 
 ];

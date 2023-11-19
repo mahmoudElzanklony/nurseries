@@ -64,6 +64,9 @@ class AuthControllerApi extends AuthServicesClass
             if($user == null){
                 return messages::error_output(trans('errors.wrong_otp'),401);
             }else {
+                if($user->block == 1){
+                    return messages::error_output(trans('errors.your_account_is_blocked'));
+                }
                 $token = Auth::guard('api')->login($user);
                 $role = roles::query()->find($user->role_id);
                 $user['role'] = $role;

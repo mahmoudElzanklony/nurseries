@@ -58,6 +58,7 @@ class ProductsControllerResource extends Controller
             ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' , function ($e){
                 $e->where('user_id','=',auth()->id());
             })
+            ->where('status','=',1)
             ->withCount('likes')
             ->with(['category','images','user','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');

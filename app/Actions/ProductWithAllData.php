@@ -14,6 +14,10 @@ class ProductWithAllData
             ->when($authentication != null , function ($e){
                 $e->with('favourite');
             })
+            ->when($authentication != null && auth()->user()->role->name == 'seller' , function ($e){
+                $e->where('user_id','=',auth()->id());
+            })
+            ->where('status','=',1)
             ->withCount('likes')
             ->with(['category','user','seen','changeable_prices'=>function($e){
                 $e->whereYear('created_at','=',date('Y'));

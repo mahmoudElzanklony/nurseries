@@ -34,4 +34,6 @@ return [
     'coupon_used_before'=>'تم استخدام الكوبون مسبقا',
     'coupon_doesnt_support_products'=>'هذا الكوبون لا يدعم هذه المنتجات',
     'coupon_amount_end'=>'لقد نفذ الكوبون في الوقت الحالي',
+    'your_account_is_blocked'=>'تم حظر حسابك في الوقت الحالي',
+    'seller_has_no_permission_to_write_articles'=>'نعتذر لك ليس لديك صلاحية كتب المقال يرجي التواصل مع الادارة'
 ];

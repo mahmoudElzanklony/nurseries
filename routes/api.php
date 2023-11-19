@@ -1,6 +1,7 @@
 <?php
 
 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\auth\AuthControllerApi;
 use App\Http\Controllers\ProjectsController;
@@ -10,8 +11,7 @@ use App\Http\Controllers\PackagesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NotificationsController;
 use App\Http\Controllers\OrdersController;
-use App\Http\Controllers\PaymentActionsController;
-use App\Http\Controllers\CountriesController;
+
 use App\Http\Controllers\CitiesController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RemoteConnectionController;
@@ -228,6 +228,8 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::post('/',[DashboardController::class,'get_users']);
             Route::get('/sellers-statistics',[DashboardController::class,'all_statistics']);
             Route::post('/toggle-block-account',[DashboardController::class,'toggle_block']);
+            Route::post('/toggle-article-permission',[DashboardController::class,'toggle_permission']);
+            Route::post('/about-seller',[DashboardController::class,'about_seller']);
         });
        Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);

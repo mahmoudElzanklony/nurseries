@@ -5,6 +5,7 @@ namespace App\Services\users;
 
 
 use App\Http\traits\messages;
+use App\Models\articles_permission;
 use App\Models\favourites;
 use App\Models\followers;
 use App\Models\likes;
@@ -67,6 +68,23 @@ class toggle_data
                 'following_id'=>$user_id
             ]);
             $msg = trans('messages.added_to_following_successfully');
+            $status = true;
+        }
+        return messages::success_output($msg,['status'=>$status]);
+    }
+
+    public static function toggle_article_permission($user_id){
+        $obj  = articles_permission::query()->where('user_id','=',$user_id)
+            ->first();
+        if($obj != null){
+            $obj->delete();
+            $msg = trans('messages.seller_remove_permission_to_add_articles');
+            $status = false;
+        }else{
+            articles_permission::query()->create([
+                'user_id'=>$user_id,
+            ]);
+            $msg = trans('messages.seller_has_permission_to_add_articles');
             $status = true;
         }
         return messages::success_output($msg,['status'=>$status]);

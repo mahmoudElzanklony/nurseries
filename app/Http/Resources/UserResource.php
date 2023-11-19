@@ -30,6 +30,7 @@ class UserResource extends JsonResource
               return UserAddressesResource::make($this->default_address);
           }),
           'token'=>isset($this->token) ? $this->token : null,
+          'article_permission'=>isset($this->article_permission) ? true:false,
           'avg_rates'=>isset($seller_avg_rate)  ?
                        round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
           'image'=>$this->image != null ? ImagesResource::make($this->image) : ['image'=>'users/default.png'],

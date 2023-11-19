@@ -32,4 +32,9 @@ return [
   'activation_done'=>'تم التفعيل الخاص بك بنجاح',
   'order_done_successfully'=>'تمت عملية الطلب بنجاح',
   'rated_successfully'=>'تمت عملية التقييم بنجاح',
+    // ----------------------start of dashboard - ---------------------
+    'seller_has_permission_to_add_articles'=>'تم اعطاء البائع الصلاحية لنشر المقارت',
+    'seller_remove_permission_to_add_articles'=>'تم منع البائع صلاحية نشر المقارت',
+    // ----------------------start of dashboard - ---------------------
+
 ];

@@ -24,6 +24,10 @@ return [
     'order_done_successfully'=>'Order done successfully',
     'rated_successfully'=>'Rate operation done successfully',
 
+    // ----------------------start of dashboard - ---------------------
+    'seller_has_permission_to_add_articles'=>'add permission to write articles from this seller',
+    'seller_remove_permission_to_add_articles'=>'remove permission to write articles from this seller',
+    // ----------------------start of dashboard - ---------------------
 
 
 ];
