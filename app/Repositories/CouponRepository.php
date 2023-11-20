@@ -18,6 +18,7 @@ class CouponRepository
     public $error = '';
     public function init($data){
         DB::beginTransaction();
+        $data['user_id'] = auth()->id();
         $this->coupon = coupons::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);

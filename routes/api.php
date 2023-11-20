@@ -39,6 +39,7 @@ use App\Http\Controllers\UsersProductsCares;
 use App\Http\Controllers\BestController;
 use App\Http\Controllers\VisaBankControllerResource;
 use App\Http\Controllers\CustomerOrdersControllerResource;
+use App\Http\Controllers\ProductsProblemsControllerResource;
 use App\Http\Controllers\AllSellersDataController;
 use App\Http\Controllers\AIController;
 
@@ -231,10 +232,14 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::post('/toggle-article-permission',[DashboardController::class,'toggle_permission']);
             Route::post('/about-seller',[DashboardController::class,'about_seller']);
         });
-       Route::group(['prefix'=>'/packages'],function(){
+        Route::group(['prefix'=>'/products'],function(){
+            Route::post('/toggle-product-activation',[DashboardController::class,'toggle_product']);
+            Route::post('/features/save',[DashboardController::class,'save_package_features']);
+        });
+        Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
           Route::post('/features/save',[DashboardController::class,'save_package_features']);
-       });
+        });
     });
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
         Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);
@@ -283,7 +288,8 @@ Route::group(['middleware'=>'changeLang'],function (){
         'care'=>CareControllerResource::class,
         'online-payment'=>VisaBankControllerResource::class,
         'coupons'=>CouponsControllerResource::class,
-        'custom-orders'=>CustomerOrdersControllerResource::class
+        'custom-orders'=>CustomerOrdersControllerResource::class,
+        'products-problems'=>ProductsProblemsControllerResource::class,
     ]);
 
 

@@ -15,12 +15,13 @@ use App\Http\traits\helpers_requests_api\PackagesHelperApi;
 use App\Http\traits\helpers_requests_api\TicketsHelperApi;
 use App\Http\traits\helpers_requests_api\SellersStatisticsHelperApi;
 use App\Http\traits\helpers_requests_api\SellersInfoHelperApi;
+use App\Http\traits\helpers_requests_api\ProductsHelperApi;
 use Illuminate\Pipeline\Pipeline;
 
 class DashboardController extends Controller
 {
     //
-    use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi;
+    use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi,ProductsHelperApi;
 
     public function get_users(){
          $users = User::query()->with('role')
