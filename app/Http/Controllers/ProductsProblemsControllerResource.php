@@ -51,6 +51,8 @@ class ProductsProblemsControllerResource extends Controller
     {
         //
         $data = $request->validated();
+        $data['status'] = 'pending';
+        $data['user_id'] = auth()->id();
         $output = products_problems::query()->updateOrCreate([
             'id'=>request('id') ?? null
         ],$data);

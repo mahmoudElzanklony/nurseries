@@ -25,7 +25,7 @@ class productProblemFormRequest extends FormRequest
     {
         return [
             'id'=>'filled',
-            'product_id'=>'required|exists:products,id',
+            'product_id'=>'nullable|exists:products,id',
             'message'=>'required',
         ];
     }
