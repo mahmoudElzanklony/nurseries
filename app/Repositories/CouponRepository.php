@@ -30,7 +30,8 @@ class CouponRepository
             $products = collect($products)->map(function($e){
                return ['product_id'=>$e,'created_at'=>now()];
             });
-            array_merge(...$products);
+          //  $products = array_merge(...$products);
+
             $this->coupon->products()->sync($products);
         }
         DB::commit();

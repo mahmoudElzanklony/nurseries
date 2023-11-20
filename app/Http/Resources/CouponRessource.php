@@ -24,7 +24,7 @@ class CouponRessource extends JsonResource
           'end_date'=>$this->end_date,
           'created_at'=>$this->created_at,
           'statistics'=>CouponProductsResource::collection($this->whenLoaded('order_items')),
-          'products'=>SmallProduct::collection($this->whenLoaded('products')),
+          'products'=>TinyProductResource::collection($this->whenLoaded('products')),
           'users'=>CouponProductsResource::collection($this->whenLoaded('users')),
           'users_count'=>$this->when(isset($this->users_count),function(){
               return $this->users_count;
