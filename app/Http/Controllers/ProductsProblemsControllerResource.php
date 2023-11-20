@@ -67,7 +67,7 @@ class ProductsProblemsControllerResource extends Controller
             }
         }
         $final = ProductsProblemsWithAllData::get()->find($output->id);
-        return ProductProblemResource::make($final);
+        return messages::success_output(trans('messages.saved_successfully'),ProductProblemResource::make($final));
     }
 
     /**
