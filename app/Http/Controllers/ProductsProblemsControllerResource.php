@@ -19,6 +19,10 @@ use App\Http\traits\upload_image;
 class ProductsProblemsControllerResource extends Controller
 {
     use messages,upload_image;
+    public function __construct()
+    {
+        $this->middleware('CheckApiAuth');
+    }
     /**
      * Display a listing of the resource.
      *
