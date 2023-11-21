@@ -7,6 +7,7 @@ namespace App\Services\statistics;
 use App\Actions\SellerOrdersAndCustomOrdersAction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use function OpenAI\ValueObjects\Transporter\data;
 
 class Year_month_week_day
 {
@@ -25,13 +26,14 @@ class Year_month_week_day
             }else{
                 $query_data = app($model)::get();
             }
-            $output[$i] = $query_data
+            $month = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay();
+            $output[$i] = ['placeholder'=>$month , 'value'=> $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereMonth($created_at,(string)($i + 1))
                 ->whereYear($created_at,date('Y'))
-                ->{$func_name}($column_sum);
+                ->{$func_name}($column_sum)];
         }
         return $output;
     }
@@ -46,14 +48,15 @@ class Year_month_week_day
             }else{
                 $query_data = app($model)::get();
             }
-            $output[$i] = $query_data
+            $week = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay()->week($i + 1);
+            $output[$i] = ['placeholder'=>$week , 'value'=> $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereRaw(DB::raw("DAY(".$created_at.")").' >= '.(7*$i).'  && DAY('.$created_at.') < '. (7+(7*$i)))
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
-                ->{$func_name}($column_sum);
+                ->{$func_name}($column_sum) ] ;
         }
         return $output;
     }
@@ -62,29 +65,24 @@ class Year_month_week_day
 
 
         $output = [];
-        if (intval(date('d'))  <= 7 ) {
-            $current_week = 1;
-        }else if (intval(date('d')) > 7 && intval(date('d')) <= 14 ) {
-            $current_week = 2;
-        }else if ( intval(date('d')) > 14 && intval(date('d')) <= 21 ) {
-            $current_week = 3;
-        }else{
-            $current_week = 4;
-        }
-        for($i = (7 * $current_week) - 7; $i < 7 * $current_week; $i++) {
+
+        $currentDate = Carbon::now();
+        Carbon::setWeekStartsAt(Carbon::SATURDAY);
+        $currentWeek = $currentDate->startOfWeek();
+        for($i = 1; $i <= 7 ; $i++) {
             if($table != null){
                 $query_data = $table;
             }else{
                 $query_data = app($model)::get();
             }
-            $output[$i] = $query_data
+            $output[$i - 1] = ['placeholder'=>Carbon::parse($currentWeek->toDateString())->addDays($i) , 'value'=> $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereRaw(DB::raw("DAY(".$created_at.")").' = '.($i+1))
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
-                ->{$func_name}($column_sum);
+                ->{$func_name}($column_sum) ] ;
         }
         return $output;
     }
@@ -105,11 +103,13 @@ class Year_month_week_day
             ->whereYear($created_at,date('Y'))
             ->whereMonth($created_at,date('m'))
             ->first();
+
         if($output != null){
-            return $output->{$column_sum};
+            $output[0] = ['placeholder'=>Carbon::now() , 'value'=> $output->{$column_sum} ];
         }else{
-            return 0;
+            $output[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
         }
+        return $output;
     }
 
 

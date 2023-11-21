@@ -10,6 +10,7 @@ use App\Filters\marketer\StatusFilter;
 use App\Filters\StartDateFilter;
 
 use App\Filters\UserIdFilter;
+use App\Filters\users\RoleIdFilter;
 use App\Http\Requests\financialReconciliationFormRequest;
 use App\Http\Resources\FinancialReconciliationResource;
 use App\Http\traits\messages;
@@ -41,7 +42,7 @@ class FinancialReconciliationsControllerResource extends Controller
                 EndDateFilter::class,
                 UserIdFilter::class,
                 SellerId::class,
-                StatusFilter::class
+                StatusFilter::class,
             ])
             ->thenReturn()
             ->paginate(10);

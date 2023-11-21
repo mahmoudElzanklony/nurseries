@@ -7,6 +7,7 @@ use App\Actions\ProductsProblemsWithAllData;
 use App\Filters\custom_orders\SellerNameFilter;
 use App\Filters\EndDateFilter;
 use App\Filters\marketer\StatusFilter;
+use App\Filters\ProductIdFilter;
 use App\Filters\StartDateFilter;
 use App\Http\Requests\productProblemFormRequest;
 use App\Http\Resources\CustomOrderResource;
@@ -38,6 +39,7 @@ class ProductsProblemsControllerResource extends Controller
                 StatusFilter::class,
                 StartDateFilter::class,
                 EndDateFilter::class,
+                ProductIdFilter::class
             ])
             ->thenReturn()
             ->paginate(10);

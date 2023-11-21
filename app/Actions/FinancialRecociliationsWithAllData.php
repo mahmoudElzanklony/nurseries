@@ -18,8 +18,6 @@ class FinancialRecociliationsWithAllData
 
         if($user->role->name == 'seller'){
             $data->where('seller_id','=',auth()->id());
-        }else{
-            $data->with('orders')->with('custom_orders');
         }
         return $data->orderBy('id','DESC');
 

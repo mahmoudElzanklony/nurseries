@@ -240,6 +240,9 @@ Route::group(['middleware'=>'changeLang'],function (){
           Route::post('/save',[DashboardController::class,'save_package']);
           Route::post('/features/save',[DashboardController::class,'save_package_features']);
         });
+        Route::group(['prefix'=>'/problems'],function(){
+            Route::post('/update-status',[DashboardController::class,'update_product_problem_status']);
+        });
     });
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
         Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);
