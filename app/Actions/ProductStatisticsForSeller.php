@@ -30,4 +30,20 @@ class ProductStatisticsForSeller
         ];
         return $statistics;
     }
+
+    public static function get_for_company($id){
+        $orders = orders_items::query()
+            ->where('product_id','=',$id);
+        $all_orders  = $orders->count();
+        $orders_per_client = $orders->whereHas('order',function($e){
+            $e->where('user_id','=',auth()->id());
+        })->count();
+
+
+        $statistics = [
+            'all_sales'=>$all_orders,
+            'sales_per_user'=>$orders_per_client,
+        ];
+        return $statistics;
+    }
 }
