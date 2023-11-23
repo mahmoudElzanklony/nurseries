@@ -60,7 +60,7 @@ class ProductsControllerResource extends Controller
             })
             ->where('status','=',1)
             ->withCount('likes')
-            ->with(['category','images','user','discounts'=>function($e){
+            ->with(['category','wholesale_prices','images','user','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
                 }
                 ,'features.feature.image','answers.question.image']);
