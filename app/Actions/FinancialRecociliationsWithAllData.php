@@ -17,7 +17,7 @@ class FinancialRecociliationsWithAllData
             ->with(['user','image']);
 
         if($user->role->name == 'seller'){
-            $data->with(['orders','custom_orders'])->where('seller_id','=',auth()->id());
+            $data->with(['orders.payment','custom_orders.payment'])->where('seller_id','=',auth()->id());
         }
         return $data->orderBy('id','DESC');
 
