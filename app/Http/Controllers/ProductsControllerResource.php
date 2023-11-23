@@ -55,7 +55,7 @@ class ProductsControllerResource extends Controller
             ->when(GetAuthenticatedUser::get_info() != null , function ($e){
                 $e->with('favourite');
             })
-            ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' , function ($e){
+            ->when(GetAuthenticatedUser::get_info() != null &&  auth()->check() && auth()->user()->role->name == 'seller' , function ($e){
                 $e->where('user_id','=',auth()->id());
             })
             ->where('status','=',1)
