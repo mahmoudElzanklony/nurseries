@@ -73,11 +73,26 @@ class FinancialReconciliationsControllerResource extends Controller
         $orders = $financil_repo->get_orders_to_be_financial(false);
         $pending_money = $financil_repo->detect_total_money($orders['orders'],$orders['custom_orders']);
         $active_profit = financial_reconciliations::query()
+            ->where('status','=','completed')
             ->where('seller_id','=',auth()->id())
-            ->selectRaw('sum(total_money - ( total_money * admin_profit_percentage / 100 )) as total')->first();
+            ->selectRaw('sum(total_money - ( total_money * admin_profit_percentage / 100 )) as total')->get();
+        $active = 0;
+        foreach ($active_profit as $value){
+            $active += $value->total;
+        }
+
+        $pending_profit = financial_reconciliations::query()
+            ->where('status','!=','completed')
+            ->where('seller_id','=',auth()->id())
+            ->selectRaw('sum(total_money - ( total_money * admin_profit_percentage / 100 )) as total')->get();
+        $pending = 0;
+        foreach ($pending_profit as $value){
+            $pending += $value->total;
+        }
         return messages::success_output('',[
-           'pending'=>$pending_money,
-           'active'=>$active_profit->total
+           'can_be_requested'=>$pending_money,
+           'active_profit'=>$active,
+           'pending_profit'=>$pending
         ]);
     }
 
