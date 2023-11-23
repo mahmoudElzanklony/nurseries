@@ -21,6 +21,8 @@ class FinancialReconciliationResource extends JsonResource
           'seller_id'=>$this->seller_id,
           'total_money'=>$this->total_money,
           'admin_profit_percentage'=>$this->admin_profit_percentage,
+          'seller_profit'=>$this->total_money - ($this->total_money * $this->admin_profit_percentage / 100),
+          'admin_profit'=>$this->total_money * $this->admin_profit_percentage / 100,
           'ar_status'=>trans('keywords.'.$this->status),
           'status'=>$this->status,
           'user'=>UserResource::make($this->whenLoaded('user')),
