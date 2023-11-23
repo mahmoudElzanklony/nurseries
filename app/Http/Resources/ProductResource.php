@@ -56,6 +56,7 @@ class ProductResource extends JsonResource
             'seen'=>$this->seen->count ?? 0,
             'likes_count'=>$this->likes_count,
             'last_four_likes'=>UserResource::collection($this->whenLoaded('last_four_likes')),
+            'problems'=>ProductProblemResource::collection($this->whenLoaded('problems')),
             'want_rate'=>WantToBeRated::check($this->id),
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
             'rates_bar'=>$rate_bars ?? [],

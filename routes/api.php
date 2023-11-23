@@ -231,6 +231,7 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::post('/toggle-block-account',[DashboardController::class,'toggle_block']);
             Route::post('/toggle-article-permission',[DashboardController::class,'toggle_permission']);
             Route::post('/about-seller',[DashboardController::class,'about_seller']);
+            Route::post('/search-seller',[DashboardController::class,'search_seller']);
         });
         Route::group(['prefix'=>'/products'],function(){
             Route::post('/toggle-product-activation',[DashboardController::class,'toggle_product']);
@@ -242,6 +243,12 @@ Route::group(['middleware'=>'changeLang'],function (){
         });
         Route::group(['prefix'=>'/problems'],function(){
             Route::post('/update-status',[DashboardController::class,'update_product_problem_status']);
+        });
+        Route::group(['prefix'=>'/financial'],function(){
+            Route::get('/',[DashboardController::class,'financial_data']);
+            Route::get('/quick-statistics',[DashboardController::class,'quick_financial_statistics']);
+            Route::post('/details',[DashboardController::class,'financial_details']);
+            Route::post('/accept-send-money',[DashboardController::class,'accept_send_money']);
         });
     });
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){

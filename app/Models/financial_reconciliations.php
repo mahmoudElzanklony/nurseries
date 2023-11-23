@@ -9,10 +9,14 @@ class financial_reconciliations extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','seller_id','total_money','admin_profit_percentage','status'];
+    protected $fillable = ['user_id','seller_id','total_money','admin_profit_percentage','status','note'];
 
     public function user(){
         return $this->belongsTo(User::class,'user_id');
+    }
+
+    public function seller(){
+        return $this->belongsTo(User::class,'seller_id');
     }
 
     public function image(){

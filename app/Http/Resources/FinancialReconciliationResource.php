@@ -24,6 +24,7 @@ class FinancialReconciliationResource extends JsonResource
           'ar_status'=>trans('keywords.'.$this->status),
           'status'=>$this->status,
           'user'=>UserResource::make($this->whenLoaded('user')),
+          'seller'=>UserResource::make($this->whenLoaded('seller')),
           'order'=>OrderResource::make($this->whenLoaded('orders')),
           'custom_orders'=>CustomOrderResource::make($this->whenLoaded('custom_orders')),
           'image'=>ImagesResource::make($this->whenLoaded('image')),

@@ -24,4 +24,11 @@ trait SellersInfoHelperApi
             return messages::success_output('', StatisticsService::orders_money_products(request('user_id')),UserResource::make($user));
         }
     }
+
+    public function search_seller(){
+        $data = User::query()->where('username','LIKE','%'.request('username').'%')->whereHas('role',function($e){
+            $e->where('name','=','seller');
+        })->get();
+        return UserResource::collection($data);
+    }
 }

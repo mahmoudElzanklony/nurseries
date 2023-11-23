@@ -56,6 +56,7 @@ class CustomOrderResource extends JsonResource
            }),
            'accepted_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('accepted_alerts')),
            'rejected_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('rejected_alerts')),
+           'payment'=>PaymentResource::make($this->whenLoaded('payment')),
            'created_at'=>$this->created_at,
         ];
     }

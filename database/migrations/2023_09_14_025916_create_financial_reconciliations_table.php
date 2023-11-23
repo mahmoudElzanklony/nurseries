@@ -20,6 +20,7 @@ class CreateFinancialReconciliationsTable extends Migration
             $table->float('total_money');
             $table->float('admin_profit_percentage');
             $table->string('status');
+            $table->string('note')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

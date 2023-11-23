@@ -14,20 +14,35 @@ use App\Models\User;
 
 class FinancialReconciliationsRepository
 {
-
-    public function get_orders_to_be_financial($completed = true , $user_id = null){
+    public $financial_obj;
+    public function get_orders_to_be_financial($completed = true , $user_id = null , $financial_id = null){
         if($user_id == null){
             $user_id = auth()->id();
         }
-        $orders = orders::query()->where('seller_id','=',$user_id)
+        $orders = orders::query()->when($user_id != null && $user_id > 0 , function ($e) use ($user_id){
+                     $e->where('seller_id','=',$user_id);
+                  })
+                  ->when($financial_id != null , function ($f) use ($financial_id){
+                      $f->where('financial_reconciliation_id','=',$financial_id);
+                  })
                   ->whereRaw('financial_reconciliation_id is null')
                   ->when($completed == true , function($e){
                       $e->whereHas('last_shipment_info',function($q){
                           $q->where('content','=','completed');
                       });
                   })->with('payment')->get();
+
         $custom_orders = custom_orders_sellers::query()
-            ->where('seller_id',auth()->id())->with(['order.payment'])->whereHas('reply',function($q){
+            ->when($completed == true , function($e){
+                $e->where('status','=','completed');
+            })
+            ->when($user_id != null && $user_id > 0 , function ($e) use ($user_id){
+                $e->where('seller_id','=',$user_id);
+            })
+            ->when($financial_id != null , function ($f) use ($financial_id){
+                $f->where('financial_reconciliation_id','=',$financial_id);
+            })
+            ->with(['order.payment'])->whereHas('reply',function($q){
                 $q->where('client_reply','=','accepted');
             })->orderBy('id','DESC')->get();
         if(sizeof($custom_orders) > 0){
@@ -56,7 +71,7 @@ class FinancialReconciliationsRepository
         return $total_money;
     }
 
-    public function store_data($orders,$custom){
+    public function store_data($orders,$custom,$financial_id = null){
 
         $total_money = 0;
         foreach($orders as $order){
@@ -70,14 +85,20 @@ class FinancialReconciliationsRepository
             }
         }
         $percentages = financial_reconciliations_profit_percentages::query()->where('from_who','=','admin')->first();
-
-        $finan_obj = financial_reconciliations::query()->create([
-           'user_id'=>auth()->id(),
-           'seller_id'=>auth()->id(),
-           'total_money'=>$total_money,
-           'admin_profit_percentage'=>$percentages->percentage,
-           'status'=>auth()->user()->role->name == 'seller' ? 'pending':'accepted'
-        ]);
+        if($financial_id != null){
+            $finan_obj = financial_reconciliations::query()->find($financial_id);
+            $finan_obj->status = 'completed';
+            $finan_obj->save();
+        }else {
+            $finan_obj = financial_reconciliations::query()->create([
+                'user_id' => auth()->id(),
+                'seller_id' => auth()->id(),
+                'total_money' => $total_money,
+                'admin_profit_percentage' => $percentages->percentage,
+                'status' => auth()->user()->role->name == 'seller' ? 'pending' : 'completed'
+            ]);
+        }
+        $this->financial_obj = $finan_obj;
         if(sizeof($orders) > 0){
             $orders_ids = $orders->map(function($e){
                 return $e->id;
