@@ -237,6 +237,9 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::post('/toggle-product-activation',[DashboardController::class,'toggle_product']);
             Route::post('/features/save',[DashboardController::class,'save_package_features']);
         });
+        Route::group(['prefix'=>'/categories'],function(){
+            Route::post('/save',[DashboardController::class,'save_cat']);
+        });
         Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
           Route::post('/features/save',[DashboardController::class,'save_package_features']);
@@ -247,6 +250,13 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::group(['prefix'=>'/financial'],function(){
             Route::get('/',[DashboardController::class,'financial_data']);
             Route::get('/quick-statistics',[DashboardController::class,'quick_financial_statistics']);
+            Route::post('/details',[DashboardController::class,'financial_details']);
+            Route::post('/accept-send-money',[DashboardController::class,'accept_send_money']);
+        });
+        Route::group(['prefix'=>'/orders'],function(){
+            Route::get('/statistics_orders',[DashboardController::class,'statistics_orders']);
+            Route::get('/normal-orders',[DashboardController::class,'normal_orders_data']);
+            Route::get('/custom-orders',[DashboardController::class,'custom_orders_data']);
             Route::post('/details',[DashboardController::class,'financial_details']);
             Route::post('/accept-send-money',[DashboardController::class,'accept_send_money']);
         });

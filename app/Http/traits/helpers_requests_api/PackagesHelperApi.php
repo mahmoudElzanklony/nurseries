@@ -20,6 +20,14 @@ trait PackagesHelperApi
         $output = packages::query()->updateOrCreate([
             'id'=>array_key_exists('id',$data) ? $data['id']:null,
         ],$data);
+        if(request()->has('items')){
+            foreach(request('items') as $item){
+                $item['package_id'] = $output['id'];
+                packages_features::query()->updateOrCreate([
+                    'id'=>$item['id'] ?? null
+                ],$item);
+            }
+        }
         return messages::success_output(trans('messages.saved_successfully'),PackageResource::make($output));
     }
 

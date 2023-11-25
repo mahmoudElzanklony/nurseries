@@ -37,6 +37,8 @@ class OrdersWithAllData
                 $e->with('seller')->where('user_id','=',auth()->id());
             })->when($user->role->name == 'seller',function ($q){
                 $q->with('client')->where('seller_id','=',auth()->id());
+            })->when($user->role->name == 'admin',function ($q){
+                $q->with('client')->with('seller');
             });
         return $orders;
     }
