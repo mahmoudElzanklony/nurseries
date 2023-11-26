@@ -38,8 +38,10 @@ class FinancialReconciliationResource extends JsonResource
                       ->where('order_type','=','order')->select('id')->get()->map(function ($e){
                           return $e->id;
                       });
-                  dd($rej_orders);
-                  $orders = orders::query()->whereIn('id',$rej_orders)->get();
+
+                  $orders = orders::query()->with('payment')
+                      ->whereIn('id',$rej_orders)->get();
+                  dd($orders);
                   return OrderResource::collection($orders);
               }
           }),
@@ -52,7 +54,7 @@ class FinancialReconciliationResource extends JsonResource
                     ->where('order_type','=','custom_order')->select('id')->get()->map(function ($e){
                         return $e->id;
                     });
-                $orders = custom_orders::query()->whereIn('id',$rej_orders)->get();
+                $orders = custom_orders::query()->with('payment')->whereIn('id',$rej_orders)->get();
                 return CustomOrderResource::collection($orders);
             }
           }),
