@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Models\custom_orders;
+use App\Models\orders;
+use App\Models\rejected_financial_orders;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FinancialReconciliationResource extends JsonResource
@@ -27,8 +29,32 @@ class FinancialReconciliationResource extends JsonResource
           'status'=>$this->status,
           'user'=>UserResource::make($this->whenLoaded('user')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
-          'orders'=>OrderResource::collection($this->whenLoaded('orders')),
-          'custom_orders'=>CustomOrderResource::collection($this->whenLoaded('custom_orders')),
+          'orders'=>$this->when(true,function($e){
+              if($this->status != 'rejected'){
+                  return OrderResource::collection($this->whenLoaded('orders'));
+              }else{
+                  $rej_orders = rejected_financial_orders::query()
+                      ->where('financial_reconciliation_id','=',$this->id)
+                      ->where('order_type','=','order')->select('id')->get()->map(function ($e){
+                          return $e->id;
+                      });
+                  $orders = orders::query()->whereIn('id',$rej_orders)->get();
+                  return OrderResource::collection($orders);
+              }
+          }),
+          'custom_orders'=>$this->when(true,function($e){
+            if($this->status != 'rejected'){
+                return CustomOrderResource::collection($this->whenLoaded('custom_orders'));
+            }else{
+                $rej_orders = rejected_financial_orders::query()
+                    ->where('financial_reconciliation_id','=',$this->id)
+                    ->where('order_type','=','custom_order')->select('id')->get()->map(function ($e){
+                        return $e->id;
+                    });
+                $orders = custom_orders::query()->whereIn('id',$rej_orders)->get();
+                return CustomOrderResource::collection($orders);
+            }
+          }),
           'image'=>ImagesResource::make($this->whenLoaded('image')),
           'problem'=>FinancialreconciliationProblemResource::make($this->whenLoaded('problem')),
           'created_at'=>$this->created_at,

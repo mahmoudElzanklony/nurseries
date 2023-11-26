@@ -15,6 +15,7 @@ use App\Http\Requests\financialReconciliationFormRequest;
 use App\Http\Resources\FinancialReconciliationResource;
 use App\Http\traits\messages;
 use App\Models\financial_reconciliations;
+use App\Models\financial_reconciliations_profit_percentages;
 use App\Repositories\FinancialReconciliationsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -56,6 +57,10 @@ class FinancialReconciliationsControllerResource extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function percentage_per_request(){
+        $percentage = financial_reconciliations_profit_percentages::query()->where('from_who','=','seller')->first();
+        return messages::success_output('',$percentage);
+    }
     public function store()
     {
         $financil_repo = new FinancialReconciliationsRepository();

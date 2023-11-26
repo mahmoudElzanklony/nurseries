@@ -296,6 +296,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     //=========================start of coupons==================
     Route::group(['prefix'=>'/financial','middleware'=>['CheckApiAuth']],function(){
         Route::get('/statistics-money',[FinancialReconciliationsControllerResource::class,'statistics']);
+        Route::get('/percentage-per-request',[FinancialReconciliationsControllerResource::class,'percentage_per_request']);
     });
     //=========================end of coupons==================
 

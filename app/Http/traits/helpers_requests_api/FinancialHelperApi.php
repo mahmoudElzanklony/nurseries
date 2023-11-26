@@ -15,6 +15,7 @@ use App\Models\financial_reconciliations;
 use App\Models\financial_reconciliations_profit_percentages;
 use App\Models\orders;
 use App\Models\orders_items;
+use App\Models\rejected_financial_orders;
 use App\Models\User;
 use App\Repositories\FinancialReconciliationsRepository;
 
@@ -133,10 +134,31 @@ trait FinancialHelperApi
             }
         }else{
             if(request()->filled('reject') && request()->filled('financial_reconciliation_id')){
-                financial_reconciliations::query()->find('financial_reconciliation_id')->update([
-                    'status'=>'reject',
+                financial_reconciliations::query()->find(request('financial_reconciliation_id'))->update([
+                    'status'=>'rejected',
                     'note'=>request('note') ?? null
                 ]);
+                $rejected_orders = orders::query()->where('financial_reconciliation_id','=',request('financial_reconciliation_id'))->get();
+                foreach($rejected_orders as $order){
+                    rejected_financial_orders::query()->create([
+                        'financial_reconciliation_id'=>request('financial_reconciliation_id'),
+                        'order_id'=>$order->id,
+                        'order_type'=>'order',
+                    ]);
+                    $order->financial_reconciliation_id = null;
+                    $order->save();
+                }
+                $rejected_custom_orders = custom_orders::query()->where('financial_reconciliation_id','=',request('financial_reconciliation_id'))->get();
+                foreach($rejected_custom_orders as $order){
+                    rejected_financial_orders::query()->create([
+                        'financial_reconciliation_id'=>request('financial_reconciliation_id'),
+                        'order_id'=>$order->id,
+                        'order_type'=>'order',
+                    ]);
+                    $order->financial_reconciliation_id = null;
+                    $order->save();
+                }
+
             }else {
                 if (request()->filled('financial_reconciliation_id')) {
                     financial_reconciliations::query()->find(request('financial_reconciliation_id'))->update([
