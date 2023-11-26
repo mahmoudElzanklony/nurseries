@@ -242,6 +242,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         });
         Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
+          Route::get('/users',[DashboardController::class,'packages_users']);
           Route::post('/features/save',[DashboardController::class,'save_package_features']);
         });
         Route::group(['prefix'=>'/problems'],function(){
@@ -259,6 +260,14 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::get('/custom-orders',[DashboardController::class,'custom_orders_data']);
             Route::post('/details',[DashboardController::class,'financial_details']);
             Route::post('/accept-send-money',[DashboardController::class,'accept_send_money']);
+        });
+        Route::group(['prefix'=>'/notifications'],function(){
+            Route::get('/types',[DashboardController::class,'notifications_types']);
+            Route::get('/statistics',[DashboardController::class,'statistics_notifications']);
+            Route::post('/type/save',[DashboardController::class,'save_notification_type']);
+            Route::get('/templates',[DashboardController::class,'notifications_templates']);
+            Route::post('/template/save',[DashboardController::class,'save_notification_template']);
+            Route::post('/send-notification',[DashboardController::class,'send_notification']);
         });
     });
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){

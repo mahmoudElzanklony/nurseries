@@ -7,9 +7,11 @@ namespace App\Http\traits\helpers_requests_api;
 use App\Http\Requests\packageFeaturesFormRequest;
 use App\Http\Requests\packagesFormRequest;
 use App\Http\Resources\PackageResource;
+use App\Http\Resources\UserPackageResource;
 use App\Http\traits\messages;
 use App\Models\packages;
 use App\Models\packages_features;
+use App\Models\users_packages;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
 trait PackagesHelperApi
@@ -41,5 +43,10 @@ trait PackagesHelperApi
         }
         $output = packages::query()->with('features')->find($data['package_id']);
         return messages::success_output(trans('messages.saved_successfully'),PackageResource::make($output));
+    }
+
+    public function packages_users(){
+        $data = users_packages::query()->with(['user','package'])->orderBy('id','DESC')->paginate(10);
+        return UserPackageResource::collection($data);
     }
 }

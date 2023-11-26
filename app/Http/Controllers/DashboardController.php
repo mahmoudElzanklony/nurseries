@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\ImageModalSave;
 use App\Filters\EndDateFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\UsernameFilter;
@@ -25,13 +26,15 @@ use App\Http\traits\helpers_requests_api\SellersInfoHelperApi;
 use App\Http\traits\helpers_requests_api\ProductsHelperApi;
 use App\Http\traits\helpers_requests_api\FinancialHelperApi;
 use App\Http\traits\helpers_requests_api\OrdersHelperApi;
+use App\Http\traits\helpers_requests_api\NotificationsHelperApi;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\traits\upload_image;
 class DashboardController extends Controller
 {
     //
-    use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi,ProductsHelperApi,FinancialHelperApi,OrdersHelperApi;
+    use upload_image;
+    use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi,ProductsHelperApi,FinancialHelperApi,OrdersHelperApi , NotificationsHelperApi;
 
     public function get_users(){
          $users = User::query()->with('role')
@@ -98,6 +101,9 @@ class DashboardController extends Controller
                     'en_name'=>null,
                     'type'=>$q['type']
                 ]);
+                // upload image for question
+                $image = $this->upload($q['image'],'questions');
+                ImageModalSave::make($q_data->id,'categories_heading_questions_data','questions/'.$image);
                 if($q['type'] != 'text'){
                     foreach($q['options'] as $option){
                         select_options::query()->updateOrCreate([

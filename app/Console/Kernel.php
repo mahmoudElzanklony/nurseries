@@ -40,6 +40,11 @@ class Kernel extends ConsoleKernel
                ->withoutOverlapping()
                ->runInBackground();
 
+        $schedule->command('notifications:manage')
+            ->daily()
+            ->withoutOverlapping()
+            ->runInBackground();
+
     }
 
     /**

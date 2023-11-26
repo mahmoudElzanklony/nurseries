@@ -14,4 +14,8 @@ class users_packages extends Model
     public function package(){
         return $this->belongsTo(packages::class,'package_id');
     }
+
+    public function user(){
+        return $this->belongsTo(User::class,'user_id');
+    }
 }
