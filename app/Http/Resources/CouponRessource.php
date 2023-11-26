@@ -26,7 +26,7 @@ class CouponRessource extends JsonResource
           'created_at'=>$this->created_at,
           'status'=>$this->end_date == null ? true:(Carbon::parse($this->end_date) >= Carbon::now() ? true:false),
           'statistics'=>CouponProductsResource::collection($this->whenLoaded('order_items')),
-          'products'=>TinyProductResource::collection($this->whenLoaded('products')),
+          'products'=>TinyProductResource::collection($this->products),
           'users'=>CouponProductsResource::collection($this->whenLoaded('users')),
           'users_count'=>$this->when(isset($this->users_count),function(){
               return $this->users_count;
