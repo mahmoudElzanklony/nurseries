@@ -29,7 +29,7 @@ class FinancialReconciliationResource extends JsonResource
           'status'=>$this->status,
           'user'=>UserResource::make($this->whenLoaded('user')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
-          'orders'=>$this->when(true,function($e){
+          'orders'=>$this->when(true,function(){
               if($this->status != 'rejected'){
                   return OrderResource::collection($this->whenLoaded('orders'));
               }else{
@@ -42,7 +42,7 @@ class FinancialReconciliationResource extends JsonResource
                   return OrderResource::collection($orders);
               }
           }),
-          'custom_orders'=>$this->when(true,function($e){
+          'custom_orders'=>$this->when(true,function(){
             if($this->status != 'rejected'){
                 return CustomOrderResource::collection($this->whenLoaded('custom_orders'));
             }else{
