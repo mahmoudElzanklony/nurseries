@@ -21,7 +21,7 @@ class PackagesController extends Controller
     public function index(){
         $data = packages::query()->when(request()->has('type'),function ($e){
             $e->where('type','=',request('type'));
-        })->withCount('users_count')->with('features')->orderBy('id','DESC')->get();
+        })->withCount('users')->with('features')->orderBy('id','DESC')->get();
         return PackageResource::collection($data);
 
     }
