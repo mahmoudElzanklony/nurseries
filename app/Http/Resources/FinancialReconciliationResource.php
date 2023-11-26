@@ -35,13 +35,12 @@ class FinancialReconciliationResource extends JsonResource
               }else{
                   $rej_orders = rejected_financial_orders::query()
                       ->where('financial_reconciliation_id','=',$this->id)
-                      ->where('order_type','=','order')->select('id')->get()->map(function ($e){
-                          return $e->id;
+                      ->where('order_type','=','order')->select('order_id')->get()->map(function ($e){
+                          return $e->order_id;
                       });
 
                   $orders = orders::query()->with('payment')
                       ->whereIn('id',$rej_orders)->get();
-                  dd($orders);
                   return OrderResource::collection($orders);
               }
           }),
@@ -51,8 +50,8 @@ class FinancialReconciliationResource extends JsonResource
             }else{
                 $rej_orders = rejected_financial_orders::query()
                     ->where('financial_reconciliation_id','=',$this->id)
-                    ->where('order_type','=','custom_order')->select('id')->get()->map(function ($e){
-                        return $e->id;
+                    ->where('order_type','=','custom_order')->select('order_id')->get()->map(function ($e){
+                        return $e->order_id;
                     });
                 $orders = custom_orders::query()->with('payment')->whereIn('id',$rej_orders)->get();
                 return CustomOrderResource::collection($orders);
