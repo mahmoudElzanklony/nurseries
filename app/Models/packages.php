@@ -18,4 +18,8 @@ class packages extends Model
     public function payment(){
         return $this->morphOne(payments::class,'paymentable');
     }
+
+    public function users_count(){
+        return $this->hasMany(users_packages::class,'package_id');
+    }
 }

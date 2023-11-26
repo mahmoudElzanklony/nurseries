@@ -20,6 +20,7 @@ class PackageResource extends JsonResource
           'description'=>$this->description,
           'price'=>$this->price,
           'type'=>$this->type,
+          'user_count'=>$this->users_count,
           'features'=>PackageFeaturesResource::collection($this->whenLoaded('features')),
           'created_at'=>$this->created_at,
         ];
