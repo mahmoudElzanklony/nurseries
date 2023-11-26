@@ -38,6 +38,7 @@ class FinancialReconciliationResource extends JsonResource
                       ->where('order_type','=','order')->select('id')->get()->map(function ($e){
                           return $e->id;
                       });
+                  dd($rej_orders);
                   $orders = orders::query()->whereIn('id',$rej_orders)->get();
                   return OrderResource::collection($orders);
               }

@@ -17,7 +17,7 @@ class CreateRejectedFinancialOrdersTable extends Migration
             $table->id();
             $table->foreignId('financial_reconciliation_id')->constrained('financial_reconciliations')->onUpdate('cascade')->onDelete('cascade');
             $table->unsignedBigInteger('order_id');
-            $table->string('oder_type');
+            $table->string('order_type');
             $table->timestamps();
         });
     }
