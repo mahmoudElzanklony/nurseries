@@ -79,6 +79,18 @@ class CustomerOrdersControllerResource extends Controller
         }
 
     }
+    public function reject_seller(){
+        $check = custom_orders_sellers::query()
+            ->where('custom_order_id','=',request('custom_order_id'))
+            ->where('seller_id','=',auth()->id())->first();
+        if($check == null){
+            return messages::error_output(trans('errors.no_data'));
+        }
+        $check->update([
+            'status'=>'rejected'
+        ]);
+        return messages::success_output(trans('saved_successfully'),CustomOrderSellerResource::make($check));
+    }
     public function reject(){
         $check = custom_orders_sellers::query()
             ->where('custom_order_id','=',request('custom_order_id'))

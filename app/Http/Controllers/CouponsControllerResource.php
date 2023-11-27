@@ -53,7 +53,7 @@ class CouponsControllerResource extends Controller
     public function show($id)
     {
         //
-        $coupon = coupons::query()->with('products')
+        $coupon = coupons::query()->with('products')->withCount('users')
             ->with('users.user')->with('order_items',function($e){
             $e->with('product')->selectRaw('*,count(product_id) as products_count')->groupBy('product_id');
         })->where('user_id','=',auth()->id())->find($id);

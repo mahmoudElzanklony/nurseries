@@ -161,6 +161,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::get('/replies',[AllSellersDataController::class,'replies_custom_orders']);
         Route::post('/reply-custom-order',[CustomerOrdersControllerResource::class,'seller_reply']);
         Route::post('/send-request',[CustomerOrdersControllerResource::class,'send_request']);
+        Route::post('/reject',[CustomerOrdersControllerResource::class,'reject_seller']);
         Route::post('/all-custom-requests',[CustomerOrdersControllerResource::class,'seller_requests']);
     });
     // ---------------------end of custom orders actions --------------------
