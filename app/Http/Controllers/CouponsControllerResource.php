@@ -57,7 +57,10 @@ class CouponsControllerResource extends Controller
             ->withCount('users')
             ->with('users.user')->with('order_items',function($e){
             $e->with('product',function($e){
-                $e->with(['category','images','user','features.feature.image']);
+                $e->with(['category','images','user','features.feature.image'
+                    ,'answers'=>function($e){
+                    $e->with('question');
+                }]);
             })->selectRaw('*,count(product_id) as products_count')->groupBy('product_id');
         })->where('user_id','=',auth()->id())->find($id);
         return CouponRessource::make($coupon);
