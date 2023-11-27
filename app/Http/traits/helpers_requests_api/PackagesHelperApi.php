@@ -49,4 +49,14 @@ trait PackagesHelperApi
         $data = users_packages::query()->with(['user','package'])->orderBy('id','DESC')->paginate(10);
         return UserPackageResource::collection($data);
     }
+
+    public function packages_statistics(){
+        $output = [
+          'all'=>users_packages::query()->count(),
+          'expired'=>users_packages::query()
+              ->where('expiration_date','<',date('Y-m-d'))->count(),
+          'active'=>users_packages::query()
+                ->where('expiration_date','>=',date('Y-m-d'))->count(),
+        ];
+    }
 }

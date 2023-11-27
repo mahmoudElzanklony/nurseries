@@ -63,4 +63,5 @@ class PackagesController extends Controller
         $data['user_id'] = auth()->id();
         return $data;
     }
+
 }

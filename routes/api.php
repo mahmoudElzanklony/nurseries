@@ -244,6 +244,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
           Route::get('/users',[DashboardController::class,'packages_users']);
+          Route::get('/statistics',[DashboardController::class,'packages_statistics']);
           Route::post('/features/save',[DashboardController::class,'save_package_features']);
         });
         Route::group(['prefix'=>'/problems'],function(){
