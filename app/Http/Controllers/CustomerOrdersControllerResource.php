@@ -90,6 +90,7 @@ class CustomerOrdersControllerResource extends Controller
             'status'=>'rejected'
         ]);
         $output = CustomOrdersWithAllData::get()->find(request('custom_order_id'));
+        return $output;
         return messages::success_output(trans('saved_successfully'),CustomOrderResource::make($output));
     }
     public function reject(){
