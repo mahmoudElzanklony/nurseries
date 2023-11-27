@@ -26,6 +26,9 @@ class FinancialReconciliationsRepository
                       $f->where('financial_reconciliation_id','=',$financial_id);
                   })
                   ->whereRaw('financial_reconciliation_id is null')
+                  ->whereHas('last_shipment_info',function($q){
+                      $q->where('content','!=','cancelled');
+                  })
                   ->when($completed == true , function($e){
                       $e->whereHas('last_shipment_info',function($q){
                           $q->where('content','=','completed');
@@ -42,6 +45,7 @@ class FinancialReconciliationsRepository
             ->when($financial_id != null , function ($f) use ($financial_id){
                 $f->where('financial_reconciliation_id','=',$financial_id);
             })
+            ->where('status','!=','cancelled')
             ->with(['order.payment'])->whereHas('reply',function($q){
                 $q->where('client_reply','=','accepted');
             })->orderBy('id','DESC')->get();

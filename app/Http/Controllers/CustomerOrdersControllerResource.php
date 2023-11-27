@@ -91,6 +91,7 @@ class CustomerOrdersControllerResource extends Controller
         ]);
         return messages::success_output(trans('saved_successfully'),CustomOrderSellerResource::make($check));
     }
+
     public function seller_reply(sellerReplyCustomOrderFormRequest $request){
         DB::beginTransaction();
         $custom_order_to_seller = custom_orders_sellers::query()->with('order')

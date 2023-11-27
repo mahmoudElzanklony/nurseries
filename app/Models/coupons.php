@@ -20,6 +20,11 @@ class coupons extends Model
             'coupon_id','product_id');
     }
 
+    public function products_with_all_info(){
+        return $this->belongsToMany(products::class,coupons_products::class,
+            'coupon_id','product_id');
+    }
+
     public function order_items(){
         return $this->hasManyThrough(orders_items::class,users_coupons::class,'coupon_id','id','id','couponable_id');
     }

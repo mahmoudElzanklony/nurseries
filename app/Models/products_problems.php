@@ -22,4 +22,9 @@ class products_problems extends Model
     public function images(){
         return $this->morphMany(images::class,'imageable');
     }
+
+
+    public function reply(){
+        return $this->hasOne(products_problems_replies::class,'product_problem_id');
+    }
 }

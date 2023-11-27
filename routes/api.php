@@ -247,6 +247,9 @@ Route::group(['middleware'=>'changeLang'],function (){
         });
         Route::group(['prefix'=>'/problems'],function(){
             Route::post('/update-status',[DashboardController::class,'update_product_problem_status']);
+            Route::post('/statistics',[DashboardController::class,'problems_statistics']);
+            Route::get('/',[DashboardController::class,'all_problems']);
+            Route::post('/reply',[DashboardController::class,'reply_problem']);
         });
         Route::group(['prefix'=>'/financial'],function(){
             Route::get('/',[DashboardController::class,'financial_data']);

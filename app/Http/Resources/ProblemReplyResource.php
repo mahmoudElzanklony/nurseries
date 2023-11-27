@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductProblemResource extends JsonResource
+class ProblemReplyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,8 @@ class ProductProblemResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'message'=>$this->message,
-          'status'=>$this->status,
-          'user'=>UserResource::make($this->whenLoaded('user')),
-          'product'=>ProductResource::make($this->whenLoaded('product')),
-          'reply'=>ProblemReplyResource::make($this->whenLoaded('reply')),
+          'user_id'=>$this->user_id,
+          'reply'=>$this->reply,
           'created_at'=>$this->created_at
         ];
     }

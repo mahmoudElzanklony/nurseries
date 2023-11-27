@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OrderItemsResource extends JsonResource
+class CouponUserResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,15 +16,8 @@ class OrderItemsResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'product'=>ProductResource::make($this->whenLoaded('product')),
-          'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
-          'quantity'=>$this->quantity,
-          'price'=>doubleval($this->price),
-          'products_count'=>$this->when(isset($this->products_count),function(){
-              return $this->products_count;
-          }),
           'created_at'=>$this->created_at,
-
+          'user_info'=>UserResource::make($this->user)
         ];
     }
 }
