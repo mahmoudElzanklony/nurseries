@@ -58,5 +58,6 @@ trait PackagesHelperApi
           'active'=>users_packages::query()
                 ->where('expiration_date','>=',date('Y-m-d'))->count(),
         ];
+        return messages::success_output('',$output);
     }
 }
