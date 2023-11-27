@@ -89,8 +89,10 @@ class CustomerOrdersControllerResource extends Controller
         $check->update([
             'status'=>'rejected'
         ]);
-        $output = CustomOrdersWithAllData::get()->find(request('custom_order_id'));
-        return $output;
+        $output = custom_orders::query()
+            ->with(['images','pending_alerts.reply.images',
+                'accepted_alerts.reply.images','rejected_alerts.reply.images',
+                'sellers_alerts'])->find(request('custom_order_id'));
         return messages::success_output(trans('saved_successfully'),CustomOrderResource::make($output));
     }
     public function reject(){
