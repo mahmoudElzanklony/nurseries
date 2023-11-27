@@ -89,7 +89,8 @@ class CustomerOrdersControllerResource extends Controller
         $check->update([
             'status'=>'rejected'
         ]);
-        return messages::success_output(trans('saved_successfully'),CustomOrderSellerResource::make($check));
+        $output = CustomOrdersWithAllData::get()->find(request('custom_order_id'));
+        return messages::success_output(trans('saved_successfully'),CustomOrderResource::make($output));
     }
     public function reject(){
         $check = custom_orders_sellers::query()
