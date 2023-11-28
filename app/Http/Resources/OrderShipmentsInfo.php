@@ -18,6 +18,7 @@ class OrderShipmentsInfo extends JsonResource
           'id'=>$this->id,
           'ar_content'=>trans('keywords.'.$this->content),
           'content'=>$this->content,
+          'status'=>$this->content,
           'created_at'=>$this->created_at,
         ];
     }
