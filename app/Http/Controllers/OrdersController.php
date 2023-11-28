@@ -87,21 +87,21 @@ class OrdersController extends Controller
         $order = orders::query()->where('id','=',request('id'))->first();
         if($order != null){
             $status = request('status');
-            if($this->validate_update_order($status) == true) {
-                $shipment = orders_shipment_info::query()->create([
-                    'user_id' => auth()->id(),
-                    'order_id' => $order->id,
-                    'content' => $status
-                ]);
-                return messages::success_output(messages::success_output('messages.operation_saved_successfully'),OrderShipmentsInfo::make($shipment));
+            $shipment = orders_shipment_info::query()->create([
+                'user_id' => auth()->id(),
+                'order_id' => $order->id,
+                'content' => $status
+            ]);
+            return messages::success_output(messages::success_output('messages.operation_saved_successfully'),OrderShipmentsInfo::make($shipment));
+            /*if($this->validate_update_order($status) == true) {
+
             }else{
                 return messages::error_output('error in status value you sent  of this order');
-            }
+            }*/
         }
     }
 
     public function validate_update_order($status){
-        $available_statues = ['prepared','delivered','completed'];
         $available_statues = ['prepared','delivered','completed'];
         $user = User::query()->with('role')->find(auth()->id());
         if($user->role->name == 'client' && $status != 'cancelled') {
