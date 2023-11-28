@@ -92,7 +92,8 @@ class OrdersController extends Controller
                 'order_id' => $order->id,
                 'content' => $status
             ]);
-            return messages::success_output(messages::success_output('messages.operation_saved_successfully'),OrderShipmentsInfo::make($shipment));
+
+            return messages::success_output(messages::success_output(trans('messages.operation_saved_successfully')),OrderShipmentsInfo::make($shipment));
             /*if($this->validate_update_order($status) == true) {
 
             }else{
