@@ -86,6 +86,7 @@ return [
     'orders'=>'الطلبات',
     'preparing'=>'تجهيز الطلب',
     'delivered'=>'توصيل',
+    'prepared'=>'تجهيز الطلب',
     'completed'=>'استلام',
     'cancelled'=>'تم الالغاء',
     'to_default_address'=>'الي عنوانك الافتراضي',
