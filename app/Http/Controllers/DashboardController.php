@@ -23,6 +23,7 @@ use App\Http\traits\helpers_requests_api\PackagesHelperApi;
 use App\Http\traits\helpers_requests_api\TicketsHelperApi;
 use App\Http\traits\helpers_requests_api\SellersStatisticsHelperApi;
 use App\Http\traits\helpers_requests_api\SellersInfoHelperApi;
+use App\Http\traits\helpers_requests_api\ClientHelperApi;
 use App\Http\traits\helpers_requests_api\ProductsHelperApi;
 use App\Http\traits\helpers_requests_api\FinancialHelperApi;
 use App\Http\traits\helpers_requests_api\OrdersHelperApi;
@@ -34,7 +35,8 @@ class DashboardController extends Controller
 {
     //
     use upload_image;
-    use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi,ProductsHelperApi,FinancialHelperApi,OrdersHelperApi , NotificationsHelperApi;
+    use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi,
+        ProductsHelperApi,FinancialHelperApi,OrdersHelperApi , NotificationsHelperApi , ClientHelperApi;
 
     public function get_users(){
          $users = User::query()->with('role')

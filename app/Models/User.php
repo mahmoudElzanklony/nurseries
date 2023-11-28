@@ -98,5 +98,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(articles_permission::class,'user_id');
     }
 
+    public function client_visas(){
+        return $this->hasMany(users_visa::class,'user_id');
+    }
+
 
 }

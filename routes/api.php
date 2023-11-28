@@ -232,6 +232,7 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::post('/toggle-block-account',[DashboardController::class,'toggle_block']);
             Route::post('/toggle-article-permission',[DashboardController::class,'toggle_permission']);
             Route::post('/about-seller',[DashboardController::class,'about_seller']);
+            Route::post('/about-client',[DashboardController::class,'about_client']);
             Route::post('/search-seller',[DashboardController::class,'search_seller']);
         });
         Route::group(['prefix'=>'/products'],function(){
