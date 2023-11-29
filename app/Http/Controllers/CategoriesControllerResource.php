@@ -40,7 +40,7 @@ class CategoriesControllerResource extends Controller
         if(request()->has('category_id')){
             return CategoriesResource::make($data->find(request('category_id')));
         }else{
-            return CategoriesResource::make($data->get());
+            return CategoriesResource::collection($data->get());
         }
         // return messages::error_output('there is no category with this id');
     }
