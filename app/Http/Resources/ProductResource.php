@@ -45,8 +45,8 @@ class ProductResource extends JsonResource
             'name'=>$this->{app()->getLocale().'_name'},
             'description'=>$this->{app()->getLocale().'_description'},
             'plant_type'=>[
-                'ar'=>$this->plant_type == 'inner' ? 'داخلي':'خارجي',
-                'en'=>$this->plant_type,
+                'ar_name'=>$this->plant_type == 'inner' ? 'داخلي':'خارجي',
+                'en_name'=>$this->plant_type,
             ],
             'quantity'=>$this->quantity,
             'main_price'=>$this->main_price,
