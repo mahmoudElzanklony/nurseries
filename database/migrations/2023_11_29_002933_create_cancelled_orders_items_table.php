@@ -15,8 +15,8 @@ class CreateCancelledOrdersItemsTable extends Migration
     {
         Schema::create('cancelled_orders_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('order_item_id')->constrained('orders_items')->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('order_item_id');
+            $table->string('type');
             $table->text('content');
             $table->timestamps();
         });

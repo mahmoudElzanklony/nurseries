@@ -17,7 +17,8 @@ class CancelOrderItemResource extends JsonResource
         return [
           'id'=>$this->id,
           'order_item'=>OrderItemsResource::make($this->whenLoaded('order_item')),
-          'product_id'=>TinyProductResource::make($this->whenLoaded('product')),
+          'custom_order'=>OrderItemsResource::make($this->whenLoaded('custom_order')),
+          'type'=>$this->type,
           'content'=>$this->content,
           'created_at'=>$this->created_at
         ];

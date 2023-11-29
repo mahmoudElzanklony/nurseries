@@ -24,8 +24,8 @@ class cancelOrderItemFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'order_item_id'=>'required|exists:orders_items,id',
-            'product_id'=>'required|exists:products,id',
+            'order_item_id'=>'required',
+            'type'=>'required',
             'content'=>'required',
         ];
     }

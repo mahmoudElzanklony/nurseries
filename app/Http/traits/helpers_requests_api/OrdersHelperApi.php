@@ -28,6 +28,8 @@ use App\Models\User;
 use App\Services\mail\send_email;
 use Illuminate\Pipeline\Pipeline;
 use App\Http\traits\upload_image;
+use Illuminate\Support\Facades\DB;
+
 trait OrdersHelperApi
 {
     use upload_image;
@@ -84,8 +86,19 @@ trait OrdersHelperApi
 
     public function cancel_item(cancelOrderItemFormRequest $request){
         $data = $request->validated();
-        $order_item = orders_items::query()->findOrFail(request('order_item_id'));
-        $order = orders::query()->with('seller')->find($order_item->order_id);
+        DB::beginTransaction();
+        if($data['type'] == 'order') {
+            $order_item = orders_items::query()->findOrFail(request('order_item_id'));
+            $order = orders::query()->with('seller')->find($order_item->order_id);
+            // send email to seller
+            send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order_item->id.' التابعه لطلب رقم '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
+                '','اضغط هنا',$order->seller->email);
+        }else{
+            $order = custom_orders::query()->with('reply')->find($data['order_item_id']);
+            // send email to seller
+            send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
+                '','اضغط هنا',$order->seller->email);
+        }
         if($order->financial_reconciliation_id != null){
             $financial = financial_reconciliations::query()->find($order->financial_reconciliation_id);
             if($financial->status != 'completed'){
@@ -95,16 +108,17 @@ trait OrdersHelperApi
         $item = cancelled_orders_items::query()->firstOrCreate([
             'order_item_id'=>$data['order_item_id']
         ],$data);
-        // send email to seller
-        send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order_item->id.' التابعه لطلب رقم '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
-            '','اضغط هنا',$order->seller->email);
-        $item = cancelled_orders_items::query()->with('order_item')->find($item->id);
+
+
+        $output = cancelled_orders_items::query()->with(['order_item','custom_order'])->find($item->id);
+
         if(request()->hasFile('images')){
             foreach(request()->file('images') as $img){
                 $image = $this->upload($img,'cancelled_orders');
                 ImageModalSave::make($item->id,'cancelled_orders_items','cancelled_orders/'.$image);
             }
         }
-        return messages::success_output(trans('messages.saved_successfully'),CancelOrderItemResource::make($item));
+        DB::commit();
+        return messages::success_output(trans('messages.saved_successfully'),CancelOrderItemResource::make($output));
     }
 }
