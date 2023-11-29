@@ -9,7 +9,7 @@ class coupons extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','ar_name','en_name','code','number','discount','using_once','end_date'];
+    protected $fillable = ['user_id','ar_name','en_name','code','number','discount','using_once','end_date','status'];
 
     /*public function products(){
         return $this->hasMany(coupons_products::class,'coupon_id');
