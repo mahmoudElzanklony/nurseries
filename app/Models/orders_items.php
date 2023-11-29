@@ -32,7 +32,7 @@ class orders_items extends Model
     }
 
     public function cancelled(){
-        return $this->hasOne(cancelled_orders_items::class,'order_item_id');
+        return $this->hasOne(cancelled_orders_items::class,'order_item_id')->where('type','=','order');
     }
 
 }

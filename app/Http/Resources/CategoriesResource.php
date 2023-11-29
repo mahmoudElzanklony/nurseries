@@ -20,6 +20,7 @@ class CategoriesResource extends JsonResource
           'image'=>ImagesResource::make($this->whenLoaded('image')),
           'features'=>CategoryFeaturesResource::collection($this->whenLoaded('features')),
           'heading_questions'=>CategoryHeadingQuestionsResource::collection($this->whenLoaded('heading_questions')),
+          'created_at'=>$this->created_at
         ];
     }
 }

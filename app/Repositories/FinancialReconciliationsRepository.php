@@ -10,6 +10,7 @@ use App\Models\custom_orders_sellers;
 use App\Models\financial_reconciliations;
 use App\Models\financial_reconciliations_profit_percentages;
 use App\Models\orders;
+use App\Models\orders_items_features;
 use App\Models\User;
 
 class FinancialReconciliationsRepository
@@ -33,9 +34,12 @@ class FinancialReconciliationsRepository
                       $e->whereHas('last_shipment_info',function($q){
                           $q->where('content','=','completed');
                       });
-                  })->with('payment')->get();
+                  })->with('items.cancelled')->with('payment')->get();
 
         $custom_orders = custom_orders_sellers::query()
+            ->whereHas('order',function($e){
+                $e->whereDoesntHave('canceled');
+            })
             ->when($completed == true , function($e){
                 $e->where('status','=','completed');
             })
@@ -63,6 +67,13 @@ class FinancialReconciliationsRepository
     public function detect_total_money($orders,$custom){
         $total_money = 0;
         foreach($orders as $order){
+            $cancel = 0;
+            foreach($order->items as $item){
+                if($item->cancelled != null && $item->cancelled->type == 'order'){
+                    $price = $item->quantity * $item->price;
+                    $features = orders_items_features::query()->
+                }
+            }
             if($order->payment != null) {
                 $total_money += $order->payment->money;
             }

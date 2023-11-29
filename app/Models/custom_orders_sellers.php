@@ -22,4 +22,6 @@ class custom_orders_sellers extends Model
     public function order(){
         return $this->belongsTo(custom_orders::class,'custom_order_id');
     }
+
+
 }

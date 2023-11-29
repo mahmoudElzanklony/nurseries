@@ -49,4 +49,8 @@ class custom_orders extends Model
     public function images(){
         return $this->morphMany(images::class,'imageable');
     }
+
+    public function canceled(){
+        return $this->hasOne(cancelled_orders_items::class,'order_item_id')->where('type','custom_order');
+    }
 }
