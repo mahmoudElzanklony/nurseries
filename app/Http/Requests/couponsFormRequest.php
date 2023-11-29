@@ -31,6 +31,7 @@ class couponsFormRequest extends FormRequest
             'discount'=>'required',
             'number'=>'required',
             'using_once'=>'filled',
+            'status'=>'filled',
             'end_date'=>'filled',
         ];
     }

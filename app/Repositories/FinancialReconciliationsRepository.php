@@ -71,12 +71,17 @@ class FinancialReconciliationsRepository
             foreach($order->items as $item){
                 if($item->cancelled != null && $item->cancelled->type == 'order'){
                     $price = $item->quantity * $item->price;
-                    $features = orders_items_features::query();
+                    $features = orders_items_features::query()->where('order_item_id','=',$item->id)->get();
+                    foreach($features as $feature){
+                        $price += $feature->price;
+                    }
+                    $cancel += $price;
                 }
             }
             if($order->payment != null) {
                 $total_money += $order->payment->money;
             }
+            $total_money -= $cancel;
         }
         foreach($custom as $order){
             if($order->payment != null) {
@@ -90,9 +95,21 @@ class FinancialReconciliationsRepository
 
         $total_money = 0;
         foreach($orders as $order){
+            $cancel = 0;
+            foreach($order->items as $item){
+                if($item->cancelled != null && $item->cancelled->type == 'order'){
+                    $price = $item->quantity * $item->price;
+                    $features = orders_items_features::query()->where('order_item_id','=',$item->id)->get();
+                    foreach($features as $feature){
+                        $price += $feature->price;
+                    }
+                    $cancel += $price;
+                }
+            }
             if($order->payment != null) {
                 $total_money += $order->payment->money;
             }
+            $total_money -= $cancel;
         }
         foreach($custom as $order){
             if($order->payment != null) {
