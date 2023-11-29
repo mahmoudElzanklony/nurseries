@@ -41,7 +41,12 @@ class CouponsControllerResource extends Controller
         //
         $data = $request->validated();
         $coupon_repoj = new CouponRepository();
-        return $coupon_repoj->init($data)->coupons_products(request('products') ?? []);
+        $coupon_repoj->init($data)->coupons_products(request('products') ?? []);
+        $coupon_info = coupons::query()->with('products')
+            ->where('user_id','=',auth()->id())
+            ->orderBy('id','DESC')
+            ->withCount('users')->find($coupon_repoj->coupon->id);
+        return CouponRessource::make($coupon_info);
     }
 
     /**

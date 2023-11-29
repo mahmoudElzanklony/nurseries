@@ -266,6 +266,7 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::get('/custom-orders',[DashboardController::class,'custom_orders_data']);
             Route::post('/details',[DashboardController::class,'financial_details']);
             Route::post('/accept-send-money',[DashboardController::class,'accept_send_money']);
+            Route::post('/cancel-item',[DashboardController::class,'cancel_item']);
         });
         Route::group(['prefix'=>'/notifications'],function(){
             Route::get('/types',[DashboardController::class,'notifications_types']);

@@ -31,4 +31,8 @@ class orders_items extends Model
         return $this->hasOne(orders_items_rates::class,'order_item_id');
     }
 
+    public function cancelled(){
+        return $this->hasOne(cancelled_orders_items::class,'order_item_id');
+    }
+
 }
