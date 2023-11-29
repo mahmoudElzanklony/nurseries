@@ -85,7 +85,11 @@ trait OrdersHelperApi
     }
 
     public function canceled_orders(){
-
+        $data = cancelled_orders_items::query()->with(['order_item','custom_order','images']);
+        if(request()->filled('id')){
+            return CancelOrderItemResource::make($data->find(request('id')));
+        }
+        return CancelOrderItemResource::collection($data->orderBy('id','DESC')->paginate(15));
     }
 
     public function cancel_item(cancelOrderItemFormRequest $request){

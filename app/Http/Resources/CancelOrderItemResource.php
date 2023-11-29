@@ -18,6 +18,7 @@ class CancelOrderItemResource extends JsonResource
           'id'=>$this->id,
           'order_item'=>OrderItemsResource::make($this->whenLoaded('order_item')),
           'custom_order'=>OrderItemsResource::make($this->whenLoaded('custom_order')),
+          'images'=>ImagesResource::collection($this->images),
           'type'=>$this->type,
           'content'=>$this->content,
           'created_at'=>$this->created_at

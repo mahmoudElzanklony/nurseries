@@ -18,4 +18,8 @@ class cancelled_orders_items extends Model
     public function custom_order(){
         return $this->belongsTo(custom_orders::class,'order_item_id');
     }
+
+    public function images(){
+        return $this->morphMany(images::class,'imageable');
+    }
 }
