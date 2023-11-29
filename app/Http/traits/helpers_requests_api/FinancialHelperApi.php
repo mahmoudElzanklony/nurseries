@@ -15,6 +15,7 @@ use App\Models\financial_reconciliations;
 use App\Models\financial_reconciliations_profit_percentages;
 use App\Models\orders;
 use App\Models\orders_items;
+use App\Models\orders_items_features;
 use App\Models\rejected_financial_orders;
 use App\Models\User;
 use App\Repositories\FinancialReconciliationsRepository;
@@ -59,16 +60,30 @@ trait FinancialHelperApi
     public function pending_orders_data(){
         $output  = [];
         $financial_percentage = financial_reconciliations_profit_percentages::query()->where('from_who','=','admin')->first();
-        $orders = orders::query()
+        $orders = orders::query()->with('items.cancelled')
             ->whereRaw('financial_reconciliation_id is null')
             ->with('payment:paymentable_id,money')->get()->groupBy('seller_id');
         foreach($orders as $key => $order){
             $money = 0;
             foreach($order as $o){
+                $cancel = 0;
+                foreach($o->items as $item){
+                    if($item->cancelled != null && $item->cancelled->type == 'order'){
+                        $price = $item->quantity * $item->price;
+                        $features = orders_items_features::query()->where('order_item_id','=',$item->id)->get();
+                        foreach($features as $feature){
+                            $price += $feature->price;
+                        }
+                        $cancel += $price;
+                    }
+                }
                 $money += $o->payment->money;
+                $money -= $cancel;
             }
             $custom  = custom_orders_sellers::query()
-
+                ->whereHas('order',function($e){
+                    $e->whereDoesntHave('canceled');
+                })
                 ->where('seller_id',$key)->whereHas('order',function ($o){
                     $o->whereRaw('financial_reconciliation_id is null');
                 })->with(['order.payment'])->whereHas('reply',function($q){
@@ -89,12 +104,12 @@ trait FinancialHelperApi
 
     public function financial_details(){
         if(request()->filled('financial_reconciliation_id')) {
-            $products = orders_items::query()->whereHas('order', function ($e) {
+            $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
             })->with('product', function ($e) {
                 $e->with('problems');
             })->groupBy('product_id')->get();
-            $custom = custom_orders::query()->with('images')->with('payment')
+            $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
                 ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
             return [
               'orders'=>OrderItemsResource::collection($products),

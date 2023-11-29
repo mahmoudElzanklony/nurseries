@@ -81,7 +81,7 @@ class CouponsControllerResource extends Controller
      */
     public function update(Request $request, $id)
     {
-        $coupon = coupons::query()->find($id);
+        $coupon = coupons::query()->withCount('users')->find($id);
         $coupon->status = request('status');
         $coupon->save();
         return messages::success_output(trans('messages.saved_successfully'),CouponRessource::make($coupon));

@@ -38,7 +38,7 @@ class FinancialReconciliationsRepository
 
         $custom_orders = custom_orders_sellers::query()
             ->whereHas('order',function($e){
-                $e->whereDoesntHave('canceled');
+                $e->whereDoesntHave('cancelled');
             })
             ->when($completed == true , function($e){
                 $e->where('status','=','completed');
