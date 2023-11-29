@@ -71,7 +71,7 @@ class FinancialReconciliationsRepository
             foreach($order->items as $item){
                 if($item->cancelled != null && $item->cancelled->type == 'order'){
                     $price = $item->quantity * $item->price;
-                    $features = orders_items_features::query()->
+                    $features = orders_items_features::query();
                 }
             }
             if($order->payment != null) {
