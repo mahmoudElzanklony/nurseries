@@ -99,6 +99,7 @@ class ProductResource extends JsonResource
             }),
 
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
+            'deliveries'=>ProductDeliveriesResource::collection($this->whenLoaded('deliveries')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
             'delivery'=>auth()->check() && $delivery != false ? $delivery :trans('errors.product_doesnt_support_delivery'),
             'discounts'=>ProductDiscountsResource::collection($this->whenLoaded('discounts')),

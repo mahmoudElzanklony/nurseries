@@ -149,7 +149,7 @@ class ProductsControllerResource extends Controller
      */
     public function show($id)
     {
-        $data = ProductWithAllData::get()
+        $data = ProductWithAllData::get()->with('deliveries.city')
 
             ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' ,
                 function ($e){

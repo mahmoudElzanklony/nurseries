@@ -84,6 +84,10 @@ trait OrdersHelperApi
         return CustomOrderResource::collection($data);
     }
 
+    public function canceled_orders(){
+
+    }
+
     public function cancel_item(cancelOrderItemFormRequest $request){
         $data = $request->validated();
         DB::beginTransaction();
