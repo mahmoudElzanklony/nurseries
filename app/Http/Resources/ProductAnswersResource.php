@@ -19,6 +19,7 @@ class ProductAnswersResource extends JsonResource
           'category_heading_questions_data_id'=>$this->category_heading_questions_data_id,
           'answer'=>$this->{app()->getLocale().'_answer'},
           'created_at'=>$this->created_at,
+
           'question'=>$this->when(method_exists($this,'whenLoaded') && method_exists($this,'relationLoaded'),function (){
               return ProductQuestionResource::make($this->whenLoaded('question'));
           }),
@@ -26,6 +27,7 @@ class ProductAnswersResource extends JsonResource
         ];
         try{
             $arr['image'] = ImagesResource::make($this->question->image);
+            $arr['question_id'] = $this->question_id;
         }catch (\Throwable $e){
 
         }

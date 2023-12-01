@@ -85,7 +85,9 @@ trait OrdersHelperApi
     }
 
     public function canceled_orders(){
-        $data = cancelled_orders_items::query()->with(['order_item','custom_order','images']);
+        $data = cancelled_orders_items::query()->with(['order_item'=>function($e){
+            $e->with(['product','order']);
+        },'custom_order','images']);
         if(request()->filled('id')){
             return CancelOrderItemResource::make($data->find(request('id')));
         }
