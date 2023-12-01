@@ -20,14 +20,14 @@ class ProductAnswersResource extends JsonResource
           'answer'=>$this->{app()->getLocale().'_answer'},
           'created_at'=>$this->created_at,
 
-          'question'=>$this->when(method_exists($this,'whenLoaded') && method_exists($this,'relationLoaded'),function (){
+         /* 'question'=>$this->when(method_exists($this,'whenLoaded') && method_exists($this,'relationLoaded'),function (){
               return ProductQuestionResource::make($this->whenLoaded('question'));
-          }),
+          }),*/
+          'question'=>ProductQuestionResource::make($this->whenLoaded('question')),
 
         ];
         try{
             $arr['image'] = ImagesResource::make($this->question->image);
-            $arr['question_id'] = $this->question_id;
         }catch (\Throwable $e){
 
         }
