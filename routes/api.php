@@ -226,6 +226,9 @@ Route::group(['middleware'=>'changeLang'],function (){
 
     //----------------------- start of dashboard------------------
     Route::group(['prefix'=>'/dashboard','middleware'=>['CheckApiAuth']],function(){
+        Route::group(['prefix'=>'/home-statistics'],function(){
+            Route::get('/users-packages',[DashboardController::class,'get_users_statistics']);
+        });
         Route::group(['prefix'=>'/users'],function(){
             Route::post('/',[DashboardController::class,'get_users']);
             Route::get('/sellers-statistics',[DashboardController::class,'all_statistics']);
