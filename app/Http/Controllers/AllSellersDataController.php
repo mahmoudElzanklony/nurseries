@@ -25,14 +25,24 @@ class AllSellersDataController extends Controller
             $e->where('name','=','seller');
         })->orderBy('id','DESC');
 
-        $output = app(Pipeline::class)
-            ->send($users)
-            ->through([
-               UsernameFilter::class
-            ])
-            ->thenReturn()
-            ->paginate(10);
 
+
+        if(auth()->user()->user->role == 'admin') {
+            $output = app(Pipeline::class)
+                ->send($users)
+                ->through([
+                    UsernameFilter::class
+                ])
+                ->thenReturn()
+                ->get();
+        }else{
+            $output = app(Pipeline::class)
+                ->send($users)
+                ->through([
+                    UsernameFilter::class
+                ])
+                ->thenReturn()->paginate(15);
+        }
         return UserResource::collection($output);
 
     }
