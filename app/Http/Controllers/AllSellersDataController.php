@@ -27,7 +27,7 @@ class AllSellersDataController extends Controller
 
 
 
-        if(auth()->user()->user->role == 'admin') {
+        if(auth()->user()->role->name == 'admin') {
             $output = app(Pipeline::class)
                 ->send($users)
                 ->through([

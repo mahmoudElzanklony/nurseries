@@ -37,14 +37,15 @@ trait DashboardHomeStatistics
                 'sellers_profit'=>$money->seller_profit,
                 'admin_profit'=>$money->admin_profit,
             ],
-            'order_people_services'=>DB::table('users')
-                ->leftJoin('images','images.imageable_id','=','users.id')
-                ->leftJoin('products','products.user_id','=','users.id')
-                ->leftJoin('articles','articles.user_id','=','users.id')
-                ->selectRaw('users.id , users.username,images.name as image,count(articles.id) as total_articles,count(products.id) as total_products')
-                ->whereRaw('users.role_id = 3')
-                ->groupBy('users.id')
-                ->paginate()
+            'order_people_services'=>DB::select('SELECT users.id, users.username,users.email,
+       COALESCE(article_count, 0) AS article_count,
+       COALESCE(product_count, 0) AS product_count FROM users LEFT JOIN ( SELECT user_id, COUNT(DISTINCT id) AS article_count
+       FROM articles GROUP BY user_id ) AS article_counts
+           ON users.id = article_counts.user_id
+           LEFT JOIN ( SELECT user_id, COUNT(DISTINCT id) AS product_count
+           FROM products GROUP BY user_id ) AS product_counts ON users.id = product_counts.user_id
+           WHERE users.role_id = 3
+order BY product_count DESC')
         ];
         return messages::success_output('',$output);
     }
