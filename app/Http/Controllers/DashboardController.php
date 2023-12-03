@@ -105,8 +105,10 @@ class DashboardController extends Controller
                     'type'=>$q['type']
                 ]);
                 // upload image for question
-                $image = $this->upload($q['image'],'questions');
-                ImageModalSave::make($q_data->id,'categories_heading_questions_data','questions/'.$image);
+                if(isset($q['image'])) {
+                    $image = $this->upload($q['image'], 'questions');
+                    ImageModalSave::make($q_data->id, 'categories_heading_questions_data', 'questions/' . $image);
+                }
                 if($q['type'] != 'text'){
                     foreach($q['options'] as $option){
                         select_options::query()->updateOrCreate([
