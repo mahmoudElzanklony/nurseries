@@ -22,6 +22,6 @@ class categories_heading_questions_data extends Model
     }
 
     public function selections(){
-        return $this->morphMany(select_options::class,'selectionable');
+        return $this->morphMany(select_options::class,'selectable');
     }
 }
