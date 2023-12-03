@@ -17,6 +17,7 @@ class SelectionResource extends JsonResource
         return [
             'id'=>$this->id,
             'value'=>$this->{app()->getLocale().'_name'},
+            'name'=>$this->{app()->getLocale().'_name'},
         ];
     }
 }
