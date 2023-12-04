@@ -94,8 +94,9 @@ trait FinancialHelperApi
             }
             $result = [
                 'seller'=>UserResource::make(User::query()->with('bank_info')->find($key)),
-                'total_money'=>$money - ($money * $financial_percentage->percentage / 100),
-                'admin_profit_percentage'=>($money * $financial_percentage->percentage / 100)
+                'total_money'=>$money,
+                'total_money_per_seller'=>$money - ($money * $financial_percentage->percentage / 100),
+                'admin_profit_percentage'=>$financial_percentage->percentage
             ];
             array_push($output,$result);
         }
