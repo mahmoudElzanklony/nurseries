@@ -44,7 +44,7 @@ trait FinancialHelperApi
 
             return $this->pending_orders_data();
         }
-        $output =  financial_reconciliations::query()->with('seller')
+        $output =  financial_reconciliations::query()->with('seller.bank_info')
             ->when($type != '',function($q) use ($type){
                 $q->whereHas('user.role',function($e) use ($type){
                    $e->where('name','=',$type);
