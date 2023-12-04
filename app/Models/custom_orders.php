@@ -53,4 +53,8 @@ class custom_orders extends Model
     public function cancelled(){
         return $this->hasOne(cancelled_orders_items::class,'order_item_id')->where('type','custom_order');
     }
+
+    public function canceled(){
+        return $this->hasOne(cancelled_orders_items::class,'order_item_id')->where('type','custom_order');
+    }
 }
