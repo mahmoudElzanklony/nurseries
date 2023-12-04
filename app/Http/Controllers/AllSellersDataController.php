@@ -26,7 +26,6 @@ class AllSellersDataController extends Controller
         })->orderBy('id','DESC');
 
 
-
         if(auth()->user()->role->name == 'admin') {
             $output = app(Pipeline::class)
                 ->send($users)

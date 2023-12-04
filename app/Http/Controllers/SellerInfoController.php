@@ -101,7 +101,7 @@ class SellerInfoController extends Controller
             ];
         }
         return messages::success_output('',$output);
-        return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
+       // return "this api doesnt work because in ui based on cities and orders address based  geo location map so i think it will be best if its will be map ancor arrow (discussion)";
      }
 
      public function save_all_info(SellerInfoFormRequest $request){

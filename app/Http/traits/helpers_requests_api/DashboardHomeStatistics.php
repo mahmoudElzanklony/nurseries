@@ -4,6 +4,7 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Actions\ProductsStatisticsSalesAction;
 use App\Http\traits\messages;
 use App\Models\articles;
 use App\Models\financial_reconciliations;
@@ -11,11 +12,12 @@ use App\Models\payments;
 use App\Models\products;
 use App\Models\User;
 use App\Models\users_packages;
+use App\Services\statistics\Year_month_week_day;
 use Illuminate\Support\Facades\DB;
 
 trait DashboardHomeStatistics
 {
-    public function get_users_statistics(){
+    public function quick_data(){
         $money = financial_reconciliations::query()
             ->selectRaw('sum(total_money - (total_money  * admin_profit_percentage / 100)) as "seller_profit",sum(total_money  * admin_profit_percentage / 100)  as "admin_profit"')
             ->first();
@@ -45,8 +47,28 @@ trait DashboardHomeStatistics
            LEFT JOIN ( SELECT user_id, COUNT(DISTINCT id) AS product_count
            FROM products GROUP BY user_id ) AS product_counts ON users.id = product_counts.user_id
            WHERE users.role_id = 3
-order BY product_count DESC')
+order BY product_count DESC'),
+            'financial'=>[
+                'completed'=>financial_reconciliations::query()->where('status','=','completed')->count(),
+                'pending'=>financial_reconciliations::query()->where('status','=','pending')->count(),
+                'cancelled'=>financial_reconciliations::query()->where('status','=','cancelled')->count(),
+            ]
         ];
         return messages::success_output('',$output);
+    }
+
+    public function subscriptions_data(){
+        $time_type = request('time_type');
+        //return $data_model->get();
+        $obj = new Year_month_week_day();
+        $output = $obj->get_profit('App\Actions\SubscriptionsDataAction',null,'money',$time_type,[],'users_packages.created_at');
+        return $output;
+    }
+
+    public function products_statistics_data(){
+        $time_type = request('time_type');
+
+        return ProductsStatisticsSalesAction::get($time_type)->get();
+
     }
 }

@@ -28,7 +28,7 @@ class Year_month_week_day
             }
             $month = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay();
             $output[$i] = ['placeholder'=>$month , 'value'=> $query_data
-                ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
+                ->when(sizeof($conditions) > 0 , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereMonth($created_at,(string)($i + 1))

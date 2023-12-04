@@ -227,7 +227,10 @@ Route::group(['middleware'=>'changeLang'],function (){
     //----------------------- start of dashboard------------------
     Route::group(['prefix'=>'/dashboard','middleware'=>['CheckApiAuth']],function(){
         Route::group(['prefix'=>'/home-statistics'],function(){
-            Route::get('/users-packages',[DashboardController::class,'get_users_statistics']);
+            Route::get('/quick-data',[DashboardController::class,'quick_data']);
+            Route::post('/profit',[SellerInfoController::class,'profit_statistics']);
+            Route::post('/subscriptions',[DashboardController::class,'subscriptions_data']);
+            Route::post('/products',[DashboardController::class,'products_statistics_data']);
         });
         Route::group(['prefix'=>'/users'],function(){
             Route::post('/',[DashboardController::class,'get_users']);
