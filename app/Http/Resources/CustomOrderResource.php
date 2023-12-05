@@ -30,12 +30,22 @@ class CustomOrderResource extends JsonResource
             $accepted_seller_from_client = null;
         }
         return [
-           'id'=>$this->id,
-           'client'=>UserResource::make($this->user),
-           'name'=>$this->name,
-           'status'=>$this->status,
-           'ar_status'=>trans('keywords.'.$this->status),
 
+           'accepted_date'=>$this->when($this->status == 'active',function() use ($accepted_seller_from_client ){
+               if($accepted_seller_from_client != null){
+                    return $accepted_seller_from_client->reply->created_at;
+               }else{
+                   return '';
+               }
+           }),
+           'delivery_date'=>$this->when($this->status == 'active' ,function() use ($accepted_seller_from_client){
+
+                if($accepted_seller_from_client != null){
+                    return Carbon::parse($accepted_seller_from_client->reply->created_at)->addDays($accepted_seller_from_client->reply->days_delivery);
+                }else{
+                    return '';
+                }
+            }),
            'images'=>ImagesResource::collection($this->images),
            'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){
                return CustomOrderSellerResource::collection($this->whenLoaded('pending_alerts'));
