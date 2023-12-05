@@ -17,7 +17,7 @@ class SearchesController extends Controller
         $ids =  $data->getCollection()->map(function($e){
             return $e->item_id;
         });
-        dd($ids);
+
         $final_data = ProductWithAllData::get()->whereIn('id',$ids)->paginate(15);
         return ProductResource::collection($final_data);
     }
