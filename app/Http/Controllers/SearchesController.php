@@ -6,6 +6,7 @@ use App\Actions\ProductWithAllData;
 use App\Http\Resources\ProductResource;
 use App\Services\SearchesResults;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SearchesController extends Controller
 {
@@ -17,8 +18,9 @@ class SearchesController extends Controller
         $ids =  $data->getCollection()->map(function($e){
             return $e->item_id;
         });
+        $implodedIds = implode(',', $ids);
 
-        $final_data = ProductWithAllData::get()->whereIn('id',$ids)->paginate(15);
+        $final_data = ProductWithAllData::get()->orderByRaw(DB::raw("FIELD(id, $implodedIds)"))->paginate(15);
         return ProductResource::collection($final_data);
     }
 }
