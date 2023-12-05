@@ -18,7 +18,7 @@ class SearchesController extends Controller
         $ids =  $data->getCollection()->map(function($e){
             return $e->item_id;
         })->toArray();
-        dd($ids);
+
         $ids_ordered = implode(',', $ids);
 
         $final_data = ProductWithAllData::get()->whereIn('id',$ids)->orderByRaw("FIND_IN_SET('id','$ids_ordered')")->paginate(15);
