@@ -23,6 +23,7 @@ class SearchesResults
             'user_id'=>auth()->id(),
             'item_id'=>$item_id,
             'type'=>$type,
+            'updated_at'=>date('Y-m-d H:i:s')
         ]);
     }
 }
