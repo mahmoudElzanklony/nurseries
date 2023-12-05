@@ -33,6 +33,11 @@ class CouponRepository
           //  $products = array_merge(...$products);
 
             $this->coupon->products()->sync($products);
+        }else{
+            $data = coupons_products::query()->where('coupon_id','=',$this->coupon->id)->get();
+            if(sizeof($data) > 0){
+                coupons_products::query()->where('coupon_id','=',$this->coupon->id)->delete();
+            }
         }
         DB::commit();
         return messages::success_output(trans('messages.saved_successfully'),CouponRessource::make($this->coupon));
