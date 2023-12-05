@@ -132,7 +132,6 @@ trait FinancialHelperApi
                 })->with(['order.payment'])->whereHas('reply',function($q){
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
-            return [$orders,$custom];
             return [
                 'orders'=>OrderItemsResource::collection($orders),
                 'custom_orders'=>CustomOrderResource::collection($custom)
