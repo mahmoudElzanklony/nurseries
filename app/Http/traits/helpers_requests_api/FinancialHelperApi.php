@@ -63,6 +63,8 @@ trait FinancialHelperApi
         $orders = orders::query()->with('items.cancelled')
             ->whereRaw('financial_reconciliation_id is null')
             ->with('payment:paymentable_id,money')->get()->groupBy('seller_id');
+
+
         foreach($orders as $key => $order){
             $money = 0;
             foreach($order as $o){
