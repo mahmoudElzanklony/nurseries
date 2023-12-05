@@ -19,9 +19,9 @@ class SearchesController extends Controller
             return $e->item_id;
         })->toArray();
         dd($ids);
-        $implodedIds = implode(',', $ids);
+        $ids_ordered = implode(',', $ids);
 
-        $final_data = ProductWithAllData::get()->orderByRaw(DB::raw("FIELD(id, $implodedIds)"))->paginate(15);
+        $final_data = ProductWithAllData::get()->whereIn('id',$ids)->orderByRaw("FIND_IN_SET('id','$ids_ordered')")->paginate(15);
         return ProductResource::collection($final_data);
     }
 }
