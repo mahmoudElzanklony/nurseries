@@ -128,14 +128,17 @@ trait FinancialHelperApi
             })->groupBy('product_id')->get();
 
             $custom  = custom_orders_sellers::query()
-                ->where('seller_id',request('seller_id'))->whereHas('order',function ($o){
+                ->where('seller_id',request('seller_id'))
+                ->whereHas('order',function ($o){
                     $o->whereRaw('financial_reconciliation_id is null');
-                })->with(['order.payment'])->whereHas('reply',function($q){
+                })
+                ->with(['order.payment'])
+                ->whereHas('reply',function($q){
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
             return [
                 'orders'=>OrderItemsResource::collection($orders),
-                'custom_orders'=>2
+                'custom_orders'=>CustomOrderSellerResource::collection($custom)
             ];
 
         }
