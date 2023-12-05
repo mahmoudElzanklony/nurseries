@@ -15,16 +15,21 @@ class SearchesResults
         return $data;
     }
     public static function added_to_search($item_id,$type){
-        $output = searches::query()->updateOrCreate([
+        $output = searches::query()->where([
             'user_id'=>auth()->id(),
             'item_id'=>$item_id,
             'type'=>$type,
-        ],[
-            'user_id'=>auth()->id(),
-            'item_id'=>$item_id,
-            'type'=>$type,
-        ]);
-        $output->updated_at = date('Y-m-d H:i:s');
-        $output->save();
+        ])->first();
+        if($output != null){
+            $output->updated_at = date('Y-m-d H:i:s');
+            $output->save();
+        }else{
+            searches::query()->create([
+                'user_id'=>auth()->id(),
+                'item_id'=>$item_id,
+                'type'=>$type,
+            ]);
+        }
+
     }
 }
