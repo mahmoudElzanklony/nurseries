@@ -15,7 +15,7 @@ class SearchesResults
         return $data;
     }
     public static function added_to_search($item_id,$type){
-        searches::query()->updateOrCreate([
+        $output = searches::query()->updateOrCreate([
             'user_id'=>auth()->id(),
             'item_id'=>$item_id,
             'type'=>$type,
@@ -23,7 +23,8 @@ class SearchesResults
             'user_id'=>auth()->id(),
             'item_id'=>$item_id,
             'type'=>$type,
-            'updated_at'=>date('Y-m-d H:i:s')
         ]);
+        $output->updated_at = date('Y-m-d H:i:s');
+        $output->save();
     }
 }
