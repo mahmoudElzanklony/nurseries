@@ -5,6 +5,7 @@ namespace App\Http\traits\helpers_requests_api;
 
 
 use App\Http\Resources\CustomOrderResource;
+use App\Http\Resources\CustomOrderSellerResource;
 use App\Http\Resources\FinancialReconciliationResource;
 use App\Http\Resources\OrderItemsResource;
 use App\Http\Resources\UserResource;
@@ -134,7 +135,7 @@ trait FinancialHelperApi
                 })->orderBy('id','DESC')->get();
             return [
                 'orders'=>OrderItemsResource::collection($orders),
-                'custom_orders'=>CustomOrderResource::collection($custom)
+                'custom_orders'=>CustomOrderSellerResource::collection($custom)
             ];
 
         }
