@@ -12,10 +12,12 @@ class SearchesController extends Controller
     //
     public function products(){
         $data = SearchesResults::last_searches('products');
+
         // get id only from searches
         $ids =  $data->getCollection()->map(function($e){
             return $e->item_id;
         });
+        dd($ids);
         $final_data = ProductWithAllData::get()->whereIn('id',$ids)->paginate(15);
         return ProductResource::collection($final_data);
     }
