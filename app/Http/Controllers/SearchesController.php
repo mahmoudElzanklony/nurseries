@@ -17,7 +17,7 @@ class SearchesController extends Controller
         // get id only from searches
         $ids =  $data->getCollection()->map(function($e){
             return $e->item_id;
-        });
+        })->toArray();
         $implodedIds = implode(',', $ids);
 
         $final_data = ProductWithAllData::get()->orderByRaw(DB::raw("FIELD(id, $implodedIds)"))->paginate(15);
