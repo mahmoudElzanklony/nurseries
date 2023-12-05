@@ -133,7 +133,7 @@ trait FinancialHelperApi
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
             return [
-               // 'orders'=>OrderItemsResource::collection($orders),
+                'orders'=>OrderItemsResource::collection($orders),
                 'custom_orders'=>CustomOrderResource::collection($custom)
             ];
 
