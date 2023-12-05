@@ -50,8 +50,11 @@ class CustomOrderResource extends JsonResource
                     return '';
                 }
             }),
-           'images'=>ImagesResource::collection($this->images),
-
+           'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){
+               return CustomOrderSellerResource::collection($this->whenLoaded('pending_alerts'));
+           }),
+           'accepted_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('accepted_alerts')),
+           'rejected_alerts'=>CustomOrderSellerResource::collection($this->whenLoaded('rejected_alerts')),
            'payment'=>PaymentResource::make($this->whenLoaded('payment')),
            'created_at'=>$this->created_at,
         ];
