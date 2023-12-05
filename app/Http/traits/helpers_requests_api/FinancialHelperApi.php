@@ -135,7 +135,7 @@ trait FinancialHelperApi
                 })->orderBy('id','DESC')->get();
             return [
                 'orders'=>OrderItemsResource::collection($orders),
-                'custom_orders'=>CustomOrderSellerResource::collection($custom)
+                'custom_orders'=>2
             ];
 
         }
