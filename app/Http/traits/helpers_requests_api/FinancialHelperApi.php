@@ -8,6 +8,7 @@ use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerResource;
 use App\Http\Resources\FinancialReconciliationResource;
 use App\Http\Resources\OrderItemsResource;
+use App\Http\Resources\OrderResource;
 use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\custom_orders;
@@ -153,7 +154,7 @@ trait FinancialHelperApi
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();*/
             return [
-                'orders'=>OrderItemsResource::collection($orders['orders']),
+                'orders'=>OrderResource::collection($orders['orders']),
                 'custom_orders'=>CustomOrderSellerResource::collection($orders['custom_orders'])
             ];
 
