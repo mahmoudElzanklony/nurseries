@@ -84,8 +84,11 @@ trait FinancialHelperApi
                         $cancel += $price;
                     }
                 }
-                $money += $o->payment->money;
-                $money -= $cancel;
+                if(isset($o->payment) && $o->payment != null) {
+                    $money += $o->payment->money;
+                    $money -= $cancel;
+                }
+
             }
             $custom  = custom_orders_sellers::query()
                 ->whereHas('order',function($e){
