@@ -155,7 +155,7 @@ trait FinancialHelperApi
                 })->orderBy('id','DESC')->get();*/
             return [
                 'orders'=>OrderResource::collection($orders['orders']),
-                'custom_orders'=>CustomOrderSellerResource::collection($orders['custom_orders'])
+                'custom_orders'=>CustomOrderResource::collection($orders['custom_orders'])
             ];
 
         }
@@ -165,7 +165,7 @@ trait FinancialHelperApi
         if(request()->filled('seller_id')){
             $financil_repo = new FinancialReconciliationsRepository();
             $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
-            return $orders;
+
             if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
                 $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
                 financial_reconciliations::query()->find($financil_repo->financial_obj->id)->update([
