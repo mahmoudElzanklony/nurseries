@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Actions\SellerRateAVG;
+use App\Models\custom_orders;
+use App\Models\orders;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -41,6 +43,11 @@ class UserResource extends JsonResource
           'commercial_info'=>CommercialInfoResource::make($this->whenLoaded('commercial_info')),
           'products_count'=>$this->when(isset($this->products_count),function(){
               return $this->products_count;
+          }),
+          'orders_count'=>$this->when(auth()->check() && auth()->user()->role->name == 'admin',function(){
+                $orders = orders::query()->where('user_id','=',$this->id)->count();
+                $custom = custom_orders::query()->where('user_id','=',$this->id)->count();
+                return $orders + $custom;
           }),
           'block'=>$this->block,
           'articles'=>ProductResource::collection($this->whenLoaded('articles')),

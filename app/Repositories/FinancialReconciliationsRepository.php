@@ -16,7 +16,7 @@ use App\Models\User;
 class FinancialReconciliationsRepository
 {
     public $financial_obj;
-    public function get_orders_to_be_financial($completed = true , $user_id = null , $financial_id = null){
+    public function get_orders_to_be_financial($completed = true , $user_id = null , $financial_id = null , $more_info = false){
         if($user_id == null){
             $user_id = auth()->id();
         }
@@ -32,7 +32,15 @@ class FinancialReconciliationsRepository
                       $e->whereHas('last_shipment_info',function($q){
                           $q->where('content','=','completed');
                       });
-                  })->with('items.cancelled')->with('payment')->get();
+                  })->with('items',function($e) use ($more_info){
+                     $e->when($more_info == true,function($e){
+                         $e->with(['product'=>function ($e) {
+                             $e->with(['problems','images','features.feature.image','answers'=>function($e){
+                                 $e->with('question');
+                             }]);
+                         }]);
+                     })->with(['cancelled']);
+                  })->with('payment')->get();
 
         $custom_orders = custom_orders_sellers::query()
             ->whereHas('order',function($e){

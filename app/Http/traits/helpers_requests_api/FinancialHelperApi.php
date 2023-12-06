@@ -134,7 +134,7 @@ trait FinancialHelperApi
         }else if(request()->filled('seller_id')){
             // send seller id for orders that has no action
             $financil_repo = new FinancialReconciliationsRepository();
-            $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
+            $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'),null , true);
 
            /* $orders =  orders_items::query()->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->where('seller_id','=',request('seller_id'));
@@ -165,7 +165,6 @@ trait FinancialHelperApi
         if(request()->filled('seller_id')){
             $financil_repo = new FinancialReconciliationsRepository();
             $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
-
             if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
                 $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
                 financial_reconciliations::query()->find($financil_repo->financial_obj->id)->update([
