@@ -132,7 +132,9 @@ trait FinancialHelperApi
             ];
         }else if(request()->filled('seller_id')){
             // send seller id for orders that has no action
-            $orders =  orders_items::query()->whereHas('order', function ($e) {
+            $financil_repo = new FinancialReconciliationsRepository();
+            $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
+           /* $orders =  orders_items::query()->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->where('seller_id','=',request('seller_id'));
             })->with('product', function ($e) {
                 $e->with(['problems','images','features.feature.image','answers'=>function($e){
@@ -148,10 +150,10 @@ trait FinancialHelperApi
                 ->with(['order.payment'])
                 ->whereHas('reply',function($q){
                     $q->where('client_reply','=','accepted');
-                })->orderBy('id','DESC')->get();
+                })->orderBy('id','DESC')->get();*/
             return [
-                'orders'=>OrderItemsResource::collection($orders),
-                'custom_orders'=>CustomOrderSellerResource::collection($custom)
+                'orders'=>OrderItemsResource::collection($orders['orders']),
+                'custom_orders'=>CustomOrderSellerResource::collection($orders['custom_orders'])
             ];
 
         }
@@ -161,7 +163,7 @@ trait FinancialHelperApi
         if(request()->filled('seller_id')){
             $financil_repo = new FinancialReconciliationsRepository();
             $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
-            dd($orders);
+            return $orders;
             if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
                 $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
                 financial_reconciliations::query()->find($financil_repo->financial_obj->id)->update([
