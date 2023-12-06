@@ -138,7 +138,6 @@ class FinancialReconciliationsRepository
             ]);
         }
         $this->financial_obj = $finan_obj;
-        dd($this->financial_obj);
         if(sizeof($orders) > 0){
             $orders_ids = $orders->map(function($e){
                 return $e->id;
