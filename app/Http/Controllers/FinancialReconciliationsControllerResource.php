@@ -67,7 +67,8 @@ class FinancialReconciliationsControllerResource extends Controller
         $orders = $financil_repo->get_orders_to_be_financial(false);
         if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
             $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
-            return messages::success_output(trans('messages.saved_successfully'));
+            $final = FinancialRecociliationsWithAllData::get_data()->find($financil_repo->financial_obj->id);
+            return messages::success_output(trans('messages.saved_successfully'),FinancialReconciliationResource::make($final));
         }
 
 
