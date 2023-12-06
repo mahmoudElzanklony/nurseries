@@ -111,10 +111,8 @@ trait FinancialHelperApi
             $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
             })->with('product', function ($e) {
-                $e->with(['problems','images','features.feature.image','answers'=>function($e){
-                    $e->with('question');
-                }]);
-            })->get();
+                $e->with('problems');
+            })->groupBy('product_id')->get();
             $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
                 ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
             return [
@@ -126,7 +124,9 @@ trait FinancialHelperApi
             $orders =  orders_items::query()->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->where('seller_id','=',request('seller_id'));
             })->with('product', function ($e) {
-                $e->with('problems');
+                $e->with(['problems','images','features.feature.image','answers'=>function($e){
+                    $e->with('question');
+                }]);
             })->groupBy('product_id')->get();
 
             $custom  = custom_orders_sellers::query()
@@ -139,7 +139,7 @@ trait FinancialHelperApi
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
             return [
-                'orders'=>1,
+                'orders'=>OrderItemsResource::collection($orders),
                 'custom_orders'=>CustomOrderSellerResource::collection($custom)
             ];
 
