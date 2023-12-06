@@ -160,7 +160,7 @@ trait FinancialHelperApi
     public function accept_send_money(){
         if(request()->filled('seller_id')){
             $financil_repo = new FinancialReconciliationsRepository();
-            $orders = $financil_repo->get_orders_to_be_financial(request('complete') ?? true,request('seller_id'));
+            $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
             dd($orders);
             if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
                 $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
@@ -201,6 +201,8 @@ trait FinancialHelperApi
                         'status'=>'completed'
                     ]);
 
+                }else{
+                    return messages::error_output('لا يوجد اي اموال لهذا الشخص لكي يتم ارسالها او ان الطلبات لم يتم ايصالها للعميل بعد');
                 }
             }
         }
