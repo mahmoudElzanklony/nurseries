@@ -114,7 +114,7 @@ trait FinancialHelperApi
                 $e->with(['problems','images','features.feature.image','answers'=>function($e){
                     $e->with('question');
                 }]);
-            })->groupBy('product_id')->get();
+            })->get();
             $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
                 ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
             return [
