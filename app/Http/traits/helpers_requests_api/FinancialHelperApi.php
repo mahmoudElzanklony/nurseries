@@ -135,7 +135,7 @@ trait FinancialHelperApi
             // send seller id for orders that has no action
             $financil_repo = new FinancialReconciliationsRepository();
             $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
-            return $orders;
+
            /* $orders =  orders_items::query()->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->where('seller_id','=',request('seller_id'));
             })->with('product', function ($e) {
