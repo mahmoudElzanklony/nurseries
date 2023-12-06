@@ -111,7 +111,7 @@ trait FinancialHelperApi
             $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
                 $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
             })->with('product', function ($e) {
-                $e->with('problems');
+                $e->with(['problems','images']);
             })->groupBy('product_id')->get();
             $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
                 ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
