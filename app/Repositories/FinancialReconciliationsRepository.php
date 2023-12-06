@@ -27,9 +27,7 @@ class FinancialReconciliationsRepository
                       $f->where('financial_reconciliation_id','=',$financial_id);
                   })
                   ->whereRaw('financial_reconciliation_id is null')
-                  ->whereHas('last_shipment_info',function($q){
-                      $q->where('content','!=','cancelled');
-                  })
+
                   ->when($completed == true , function($e){
                       $e->whereHas('last_shipment_info',function($q){
                           $q->where('content','=','completed');
@@ -38,7 +36,12 @@ class FinancialReconciliationsRepository
 
         $custom_orders = custom_orders_sellers::query()
             ->whereHas('order',function($e){
-                $e->whereDoesntHave('cancelled');
+                $e->whereRaw('financial_reconciliation_id is null')->whereDoesntHave('cancelled');
+            })
+            ->when($financial_id == null , function ($e) {
+                $e->whereHas('order',function($e){
+                    $e->whereRaw('financial_reconciliation_id is null');
+                });
             })
             ->when($completed == true , function($e){
                 $e->where('status','=','completed');
@@ -88,6 +91,7 @@ class FinancialReconciliationsRepository
                 $total_money += $order->payment->money;
             }
         }
+
         return $total_money;
     }
 
@@ -103,12 +107,14 @@ class FinancialReconciliationsRepository
                     foreach($features as $feature){
                         $price += $feature->price;
                     }
+
                     $cancel += $price;
                 }
             }
             if($order->payment != null) {
                 $total_money += $order->payment->money;
             }
+
             $total_money -= $cancel;
         }
         foreach($custom as $order){
@@ -116,6 +122,7 @@ class FinancialReconciliationsRepository
                 $total_money += $order->payment->money;
             }
         }
+
         $percentages = financial_reconciliations_profit_percentages::query()->where('from_who','=','admin')->first();
         if($financial_id != null){
             $finan_obj = financial_reconciliations::query()->find($financial_id);

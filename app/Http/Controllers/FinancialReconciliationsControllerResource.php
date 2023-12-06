@@ -19,6 +19,7 @@ use App\Models\financial_reconciliations_profit_percentages;
 use App\Repositories\FinancialReconciliationsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\DB;
 
 class FinancialReconciliationsControllerResource extends Controller
 {
@@ -65,8 +66,11 @@ class FinancialReconciliationsControllerResource extends Controller
     {
         $financil_repo = new FinancialReconciliationsRepository();
         $orders = $financil_repo->get_orders_to_be_financial(false);
+
         if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
+            DB::beginTransaction();
             $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
+            DB::commit();
             $final = FinancialRecociliationsWithAllData::get_data()->find($financil_repo->financial_obj->id);
             return messages::success_output(trans('messages.saved_successfully'),FinancialReconciliationResource::make($final));
         }
@@ -95,6 +99,7 @@ class FinancialReconciliationsControllerResource extends Controller
         foreach ($pending_profit as $value){
             $pending += $value->total;
         }
+
         return messages::success_output('',[
            'can_be_requested'=>$pending_money,
            'active_profit'=>$active,

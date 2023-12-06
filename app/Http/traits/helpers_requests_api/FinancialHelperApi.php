@@ -61,14 +61,18 @@ trait FinancialHelperApi
     public function pending_orders_data(){
         $output  = [];
         $financial_percentage = financial_reconciliations_profit_percentages::query()->where('from_who','=','admin')->first();
-        $orders = orders::query()->with('items.cancelled')
-            ->whereRaw('financial_reconciliation_id is null')
-            ->with('payment:paymentable_id,money')->get()->groupBy('seller_id');
 
+        $all_sellers = User::query()->whereHas('role',function($e){
+            $e->where('name','=','seller');
+        })->get();
 
-        foreach($orders as $key => $order){
+        foreach($all_sellers as  $seller){
             $money = 0;
-            foreach($order as $o){
+            $orders = orders::query()->with('items.cancelled')
+                ->whereRaw('financial_reconciliation_id is null and seller_id = '.$seller->id)
+                ->with('payment:paymentable_id,money')->get();
+
+            foreach($orders as $o){
                 $cancel = 0;
                 foreach($o->items as $item){
                     if($item->cancelled != null && $item->cancelled->type == 'order'){
@@ -87,7 +91,7 @@ trait FinancialHelperApi
                 ->whereHas('order',function($e){
                     $e->whereDoesntHave('canceled');
                 })
-                ->where('seller_id',$key)->whereHas('order',function ($o){
+                ->where('seller_id',$seller->id)->whereHas('order',function ($o){
                     $o->whereRaw('financial_reconciliation_id is null');
                 })->with(['order.payment'])->whereHas('reply',function($q){
                     $q->where('client_reply','=','accepted');
@@ -96,12 +100,14 @@ trait FinancialHelperApi
                 $money += $c->order->payment->money;
             }
             $result = [
-                'seller'=>UserResource::make(User::query()->with('bank_info')->find($key)),
+                'seller'=>UserResource::make(User::query()->with('bank_info')->find($seller->id)),
                 'total_money'=>$money,
                 'total_money_per_seller'=>$money - ($money * $financial_percentage->percentage / 100),
                 'admin_profit_percentage'=>$financial_percentage->percentage
             ];
-            array_push($output,$result);
+            if($result['total_money'] > 0) {
+                array_push($output, $result);
+            }
         }
         return $output;
     }
@@ -179,7 +185,7 @@ trait FinancialHelperApi
                     rejected_financial_orders::query()->create([
                         'financial_reconciliation_id'=>request('financial_reconciliation_id'),
                         'order_id'=>$order->id,
-                        'order_type'=>'order',
+                        'order_type'=>'custom_order',
                     ]);
                     $order->financial_reconciliation_id = null;
                     $order->save();
