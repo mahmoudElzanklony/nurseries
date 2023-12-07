@@ -5,6 +5,8 @@ namespace App\Http\Resources;
 use App\Actions\SellerRateAVG;
 use App\Models\custom_orders;
 use App\Models\orders;
+use App\Models\User;
+use App\Models\users_store_info;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
@@ -40,9 +42,9 @@ class UserResource extends JsonResource
           'client_visas'=>VisaBankResource::collection($this->whenLoaded('client_visas')),
           'bank_info'=>BankInfoResource::make($this->whenLoaded('bank_info')),
           'store_info'=>UserStoreInfoResource::make($this->whenLoaded('store_info')),
-          'type'=>auth()->user()->store_info(),
-          'complete_data'=>$this->when(auth()->check() && auth()->user()->role->name == 'seller',function($e){
-             if(auth()->user()->store_info != null){
+          'complete_data'=>$this->when(auth()->check() && $this->role->name == 'seller',function($e){
+             $store = users_store_info::query()->where('user_id',auth()->id())->first();
+             if($store != null){
                  return true;
              }else{
                  return false;

@@ -77,6 +77,7 @@ class AuthControllerApi extends AuthServicesClass
                 }
                 $user['token'] =  $token;
                 $user['default_address'] = DefaultAddress::get($user->id);
+
                 return messages::success_output('',UserResource::make($user),[
                     'new_user'=>$user['new_user']
                 ]);
