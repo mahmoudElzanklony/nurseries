@@ -22,7 +22,7 @@ class UserResource extends JsonResource
         if($this->role->name == 'seller') {
             $seller_avg_rate = SellerRateAVG::get($this->id);
         }
-
+        dd($this->role->name);
         return [
           'id'=>$this->id,
           'username'=>$this->username,
