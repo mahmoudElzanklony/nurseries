@@ -22,7 +22,7 @@ class UserResource extends JsonResource
         if($this->role->name == 'seller') {
             $seller_avg_rate = SellerRateAVG::get($this->id);
         }
-        dd($this->role->name);
+
         return [
           'id'=>$this->id,
           'username'=>$this->username,
@@ -43,7 +43,7 @@ class UserResource extends JsonResource
           'bank_info'=>BankInfoResource::make($this->whenLoaded('bank_info')),
           'store_info'=>UserStoreInfoResource::make($this->whenLoaded('store_info')),
           'complete_data'=>$this->when(auth()->check() && $this->role->name == 'seller',function($e){
-             $store = users_store_info::query()->where('user_id',auth()->id())->first();
+             $store = users_store_info::query()->where('user_id',$this->id)->first();
              if($store != null){
                  return true;
              }else{
