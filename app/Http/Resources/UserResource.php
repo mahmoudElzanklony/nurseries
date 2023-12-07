@@ -44,7 +44,6 @@ class UserResource extends JsonResource
           'store_info'=>UserStoreInfoResource::make($this->whenLoaded('store_info')),
           'complete_data'=>$this->when(isset($this->role) && $this->role->name == 'seller',function(){
              $store = users_store_info::query()->where('user_id',$this->id)->first();
-             dd($store);
              if($store != null){
                  return true;
              }else{
