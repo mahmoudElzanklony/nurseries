@@ -31,7 +31,7 @@ class UserResource extends JsonResource
           'default_address'=>$this->when(isset($this->default_address),function (){
               return UserAddressesResource::make($this->default_address);
           }),
-          'token'=>isset($this->token) ? $this->token : null,
+          'token'=>isset($this->token) ? $thfis->token : null,
           'article_permission'=>isset($this->article_permission) ? true:false,
           'avg_rates'=>isset($seller_avg_rate)  ?
                        round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
