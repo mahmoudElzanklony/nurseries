@@ -72,9 +72,7 @@ trait FinancialHelperApi
             $orders = orders::query()->with('items.cancelled')
                 ->whereRaw('financial_reconciliation_id is null and seller_id = '.$seller->id)
                 ->with('payment:paymentable_id,money')->get();
-            if($seller->id == 3){
-                return $orders;
-            }
+
             foreach($orders as $o){
                 $cancel = 0;
                 foreach($o->items as $item){
