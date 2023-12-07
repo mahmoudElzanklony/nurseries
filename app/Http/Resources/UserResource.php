@@ -42,7 +42,7 @@ class UserResource extends JsonResource
           'client_visas'=>VisaBankResource::collection($this->whenLoaded('client_visas')),
           'bank_info'=>BankInfoResource::make($this->whenLoaded('bank_info')),
           'store_info'=>UserStoreInfoResource::make($this->whenLoaded('store_info')),
-          'complete_data'=>$this->when(auth()->check() && $this->role->name == 'seller',function(){
+          'complete_data'=>$this->when(isset($this->role) && $this->role->name == 'seller',function(){
              $store = users_store_info::query()->where('user_id',$this->id)->first();
              dd($store);
              if($store != null){
