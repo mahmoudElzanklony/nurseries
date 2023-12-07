@@ -31,7 +31,7 @@ class UserResource extends JsonResource
           'default_address'=>$this->when(isset($this->default_address),function (){
               return UserAddressesResource::make($this->default_address);
           }),
-          'token'=>isset($this->token) ? $thfis->token : null,
+          'token'=>isset($this->token) ? $this->token : null,
           'article_permission'=>isset($this->article_permission) ? true:false,
           'avg_rates'=>isset($seller_avg_rate)  ?
                        round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2) : null,
@@ -40,6 +40,13 @@ class UserResource extends JsonResource
           'client_visas'=>VisaBankResource::collection($this->whenLoaded('client_visas')),
           'bank_info'=>BankInfoResource::make($this->whenLoaded('bank_info')),
           'store_info'=>UserStoreInfoResource::make($this->whenLoaded('store_info')),
+          'complete_data'=>$this->when(auth()->check() && auth()->user()->role->name == 'seller',function($e){
+             if(auth()->user()->store_info != null){
+                 return true;
+             }else{
+                 return false;
+             }
+          }),
           'commercial_info'=>CommercialInfoResource::make($this->whenLoaded('commercial_info')),
           'products_count'=>$this->when(isset($this->products_count),function(){
               return $this->products_count;
