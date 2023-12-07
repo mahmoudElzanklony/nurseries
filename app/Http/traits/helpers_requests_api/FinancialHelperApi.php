@@ -109,8 +109,9 @@ trait FinancialHelperApi
                 'total_money_per_seller'=>$money - ($money * $financial_percentage->percentage / 100),
                 'admin_profit_percentage'=>$financial_percentage->percentage
             ];
+            array_push($output, $result);
             if($result['total_money'] > 0) {
-                array_push($output, $result);
+
             }
         }
         return $output;
