@@ -13,6 +13,7 @@ class VisaPayment implements IPayment
     public function handle($data)
     {
         // check visa related to this user
+        dd($data);
         $status = $this->check_payment_related_to_user($data);
         $output = [
           'status'=>$status,
@@ -23,6 +24,7 @@ class VisaPayment implements IPayment
 
     public function check_payment_related_to_user($data){
         $id = $data['id'];
+
         $user_visa = users_visa::query()
             ->where('user_id','=',auth()->id())
             ->where('id','=',$id)->first();
