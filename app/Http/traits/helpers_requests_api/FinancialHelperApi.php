@@ -118,15 +118,39 @@ trait FinancialHelperApi
 
     public function financial_details(){
         if(request()->filled('financial_reconciliation_id')) {
-            $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
-                $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
-            })->with('product', function ($e) {
-                $e->with(['problems','images','features.feature.image','answers'=>function($e){
-                    $e->with('question');
-                }]);
-            })->get();
-            $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
-                ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
+            $financial_info = financial_reconciliations::query()->find(request('financial_reconciliation_id'));
+            if($financial_info != null && $financial_info->status == 'rejected'){
+                $rejected_orders_ids = rejected_financial_orders::query()
+                    ->where('financial_reconciliation_id','=',$financial_info->id)
+                    ->where('order_type','=','order')->get()->map(function($e){
+                        return $e->order_id;
+                    })->toArray();
+                $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) use ($rejected_orders_ids){
+                    $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->whereIn('id',$rejected_orders_ids);
+                })->with('product', function ($e) {
+                    $e->with(['problems','images','features.feature.image','answers'=>function($e){
+                        $e->with('question');
+                    }]);
+                })->get();
+                $rejected_custom_ids = rejected_financial_orders::query()
+                    ->where('financial_reconciliation_id','=',$financial_info->id)
+                    ->where('order_type','=','custom_order')->get()->map(function($e){
+                        return $e->order_id;
+                    })->toArray();
+                $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
+                    ->whereIn('id',$rejected_custom_ids)
+                    ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
+            }else {
+                $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
+                    $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
+                })->with('product', function ($e) {
+                    $e->with(['problems', 'images', 'features.feature.image', 'answers' => function ($e) {
+                        $e->with('question');
+                    }]);
+                })->get();
+                $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
+                    ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
+            }
             return [
               'orders'=>OrderItemsResource::collection($products),
               'custom_orders'=>CustomOrderResource::collection($custom)
