@@ -127,13 +127,12 @@ trait FinancialHelperApi
                         return $e->order_id;
                     })->toArray();
                 $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) use ($rejected_orders_ids){
-                    $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->whereIn('id',$rejected_orders_ids);
+                    $e->whereIn('id',$rejected_orders_ids);
                 })->with('product', function ($e) {
                     $e->with(['problems','images','features.feature.image','answers'=>function($e){
                         $e->with('question');
                     }]);
                 })->get();
-                return $rejected_orders_ids;
                 $rejected_custom_ids = rejected_financial_orders::query()
                     ->where('financial_reconciliation_id','=',$financial_info->id)
                     ->where('order_type','=','custom_order')->get()->map(function($e){
@@ -141,7 +140,7 @@ trait FinancialHelperApi
                     })->toArray();
                 $custom = custom_orders::query()->with('cancelled')->with('images')->with('payment')
                     ->whereIn('id',$rejected_custom_ids)
-                    ->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'))->get();
+                    ->get();
             }else {
                 $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
                     $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
