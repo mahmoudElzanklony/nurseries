@@ -166,7 +166,7 @@ trait FinancialHelperApi
             $financil_repo = new FinancialReconciliationsRepository();
             $orders = $financil_repo->get_orders_to_be_financial(false,request('seller_id'));
             if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
-                $financil_repo->store_data($orders['orders'],$orders['custom_orders']);
+                $financil_repo->store_data($orders['orders'],$orders['custom_orders'],null,request('seller_id'));
                 financial_reconciliations::query()->find($financil_repo->financial_obj->id)->update([
                    'status'=>'completed'
                 ]);
