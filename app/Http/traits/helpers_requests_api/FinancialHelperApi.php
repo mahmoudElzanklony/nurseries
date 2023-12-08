@@ -133,7 +133,7 @@ trait FinancialHelperApi
                         $e->with('question');
                     }]);
                 })->get();
-                return $products;
+                return $rejected_orders_ids;
                 $rejected_custom_ids = rejected_financial_orders::query()
                     ->where('financial_reconciliation_id','=',$financial_info->id)
                     ->where('order_type','=','custom_order')->get()->map(function($e){
