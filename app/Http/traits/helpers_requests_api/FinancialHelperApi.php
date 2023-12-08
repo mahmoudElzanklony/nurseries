@@ -120,7 +120,7 @@ trait FinancialHelperApi
         if(request()->filled('financial_reconciliation_id')) {
             $financial_info = financial_reconciliations::query()->find(request('financial_reconciliation_id'));
             if($financial_info != null && $financial_info->status == 'rejected'){
-                dd('abc');
+
                 $rejected_orders_ids = rejected_financial_orders::query()
                     ->where('financial_reconciliation_id','=',$financial_info->id)
                     ->where('order_type','=','order')->get()->map(function($e){
@@ -133,6 +133,7 @@ trait FinancialHelperApi
                         $e->with('question');
                     }]);
                 })->get();
+                return $products;
                 $rejected_custom_ids = rejected_financial_orders::query()
                     ->where('financial_reconciliation_id','=',$financial_info->id)
                     ->where('order_type','=','custom_order')->get()->map(function($e){
