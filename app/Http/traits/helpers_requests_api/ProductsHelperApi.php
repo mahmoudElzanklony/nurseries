@@ -46,7 +46,13 @@ trait ProductsHelperApi
     }
 
     public function all_problems(){
-        $products_problems = products_problems::query()->with('reply')->with('user')->orderBy('id','DESC')->paginate(15);
+        $products_problems = products_problems::query()
+            ->when(request()->filled('product_id'),function($e){
+                $e->where('product_id','=',request('product_id'));
+            })
+            ->with('reply')
+            ->with('user')
+            ->orderBy('id','DESC')->paginate(15);
         return ProductProblemResource::collection($products_problems);
     }
 
