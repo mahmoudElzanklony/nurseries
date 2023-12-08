@@ -33,7 +33,7 @@ class OrdersWithAllData
                     ->whereColumn('order_id','=','orders.id')
                     ->limit(1)
             ])
-            ->when($user->role->name == 'client',function ($e){
+            ->when($user->role->name == 'client' || $user->role->name == 'company',function ($e){
                 $e->with('seller')->where('user_id','=',auth()->id());
             })->when($user->role->name == 'seller',function ($q){
                 $q->with('client')->where('seller_id','=',auth()->id());

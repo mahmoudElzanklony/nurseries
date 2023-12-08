@@ -35,7 +35,7 @@ trait QuickReportUserHelperApi
             }
         }
         $user = User::query()->where('id','=',auth()->id())->with('role')->first();
-        if($user->role->name == 'client'){
+        if($user->role->name == 'client' || $user->role->name == 'company'){
             return messages::success_output('',$this->client_report($id));
         }else if($user->role->name == 'seller'){
             return messages::success_output('',$this->seller_report($id));

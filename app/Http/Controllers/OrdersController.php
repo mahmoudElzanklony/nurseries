@@ -105,7 +105,7 @@ class OrdersController extends Controller
     public function validate_update_order($status){
         $available_statues = ['prepared','delivered','completed'];
         $user = User::query()->with('role')->find(auth()->id());
-        if($user->role->name == 'client' && $status != 'cancelled') {
+        if(($user->role->name == 'client'|| $user->role->name == 'company') && $status != 'cancelled') {
             return false;
         }else if($user->role->name == 'seller'){
             if(!(in_array($status,$available_statues))){
