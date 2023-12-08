@@ -40,8 +40,7 @@ class OrdersController extends Controller
             return messages::error_output(trans('errors.no_default_address'));
         }*/
         $default_address = user_addresses::query()->find(request('address_id'));
-        $default_address = $default_address;
-        return $default_address;
+
         $order_repo = new OrderRepository($default_address);
         $seller = User::query()->find(request('seller_id'));
         // check if this of any these products any one that has no delivery way to default client address
