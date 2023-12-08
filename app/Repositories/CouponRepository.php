@@ -50,7 +50,7 @@ class CouponRepository
             // check date
             if(!($coupon->end_date == null || $coupon->end_date > Carbon::now())){
                 $this->error = trans('errors.expired_coupon_date');
-            }else if($coupon == 0){
+            }else if($coupon->number == 0){
                 $this->error = trans('errors.coupon_amount_end');
             }else {
                 $this->coupon = $coupon;
