@@ -23,10 +23,10 @@ class VisaPayment implements IPayment
     }
 
     public function check_payment_related_to_user($data){
-        echo $data['id'];
         $user_visa = users_visa::query()
             ->where('user_id','=',auth()->id())
             ->where('id','=',$data['id'])->first();
+        dd($user_visa);
         if($user_visa != null){
             $status = true;
         }else{
