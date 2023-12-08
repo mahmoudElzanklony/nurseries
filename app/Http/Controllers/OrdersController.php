@@ -48,6 +48,7 @@ class OrdersController extends Controller
         if(false){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
+        dd($order_repo->validate_payment_info($data['payment_data'])['status']);
         if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
             // the visa is okay now
             $result = $order_repo->init_order($data)->order_items($data['items']);
