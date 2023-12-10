@@ -51,7 +51,9 @@ trait ClientHelperApi
           'statistics'=>$statistics,
           'last_three_orders'=>OrderResource::collection($last_orders),
           'user_info'=>UserResource::make($user),
-          'following_data'=>FollowerResource::collection(followers::query()->with('follower')->where('user_id','=',$user->id)->get())
+          'following_data'=>FollowerResource::collection(followers::query()->with('follower',function($e){
+              $e->with('bank_info');
+          })->where('user_id','=',$user->id)->get())
         ];
         return messages::success_output('',$output);
     }

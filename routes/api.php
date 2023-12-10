@@ -44,8 +44,10 @@ use App\Http\Controllers\AllSellersDataController;
 use App\Http\Controllers\AIController;
 
 
+Route::get('/test',[AuthControllerApi::class,'test']);
+
 Route::group(['middleware'=>'changeLang'],function (){
-    Route::get('/test',[AuthControllerApi::class,'test']);
+
     Route::get('/tax',[TaxesController::class,'index']);
 
 

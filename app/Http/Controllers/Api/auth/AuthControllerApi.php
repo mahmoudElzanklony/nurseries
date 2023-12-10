@@ -27,6 +27,10 @@ class AuthControllerApi extends AuthServicesClass
 {
     use messages;
 
+    public function test(){
+       // echo dirname('routes/api.php');
+        echo date('Y/m/d H:m:s');
+    }
 
     public function validate_user(){
         try {

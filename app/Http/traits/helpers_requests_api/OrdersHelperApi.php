@@ -14,6 +14,7 @@ use App\Filters\orders\MaxPriceFilter;
 use App\Filters\orders\MinPriceFilter;
 use App\Filters\orders\StatusOrderFilter;
 use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Requests\cancelOrderItemFormRequest;
 use App\Http\Resources\CancelOrderItemResource;
 use App\Http\Resources\CustomOrderResource;
@@ -61,7 +62,8 @@ trait OrdersHelperApi
                 StartDateFilter::class,
                 EndDateFilter::class,
                 StatusOrderFilter::class,
-                ClientNameFilter::class
+                ClientNameFilter::class,
+                UserIdFilter::class
             ])
             ->thenReturn()
             ->orderBy('id','DESC')
@@ -77,7 +79,8 @@ trait OrdersHelperApi
                 StartDateFilter::class,
                 EndDateFilter::class,
                 \App\Filters\custom_orders\NameFilter::class,
-                \App\Filters\marketer\StatusFilter::class
+                \App\Filters\marketer\StatusFilter::class,
+                UserIdFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
