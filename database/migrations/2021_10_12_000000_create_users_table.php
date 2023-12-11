@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('block')->default(0);
             $table->integer('activation_status')->default(0);
             $table->rememberToken();
+            $table->string('device_token')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

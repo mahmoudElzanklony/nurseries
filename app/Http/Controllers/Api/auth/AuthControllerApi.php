@@ -73,6 +73,9 @@ class AuthControllerApi extends AuthServicesClass
                 }
                 $token = Auth::guard('api')->login($user);
                 $role = roles::query()->find($user->role_id);
+                $user->device_token = request('device_token') ?? null;
+                $user->remember_token = request('remember_token') ?? null;
+                $user->save();
                 $user['role'] = $role;
                 if($user->email == '' && $user->username == '') {
                     $user['new_user'] = true;
@@ -100,9 +103,14 @@ class AuthControllerApi extends AuthServicesClass
             try {
                 $token = JWTAuth::parseToken();
                 $user = $token->authenticate();
+
                 if ($user == false) {
                     return messages::error_output(['invalid credential']);
                 }
+
+                $user->remember_token = null;
+                $user->device_token = null;
+                $user->save();
             } catch (\Exception $e) {
                 return messages::error_output([$e->getMessage()]);
             }
