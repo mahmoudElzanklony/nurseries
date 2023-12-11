@@ -285,6 +285,11 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::post('/template/save',[DashboardController::class,'save_notification_template']);
             Route::post('/send-notification',[DashboardController::class,'send_notification']);
         });
+        Route::group(['prefix'=>'/withdraw-money'],function(){
+            Route::get('/',[DashboardController::class,'all_withdraw_money']);
+            Route::get('/withdraw-product-money',[DashboardController::class,'withdraw_product_money']);
+
+        });
     });
     Route::group(['prefix'=>'/tickets','middleware'=>['CheckApiAuth']],function(){
         Route::post('/save-cat',[DashboardController::class,'save_tickets_cats']);

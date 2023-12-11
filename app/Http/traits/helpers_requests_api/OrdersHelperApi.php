@@ -25,6 +25,8 @@ use App\Models\custom_orders;
 use App\Models\financial_reconciliations;
 use App\Models\orders;
 use App\Models\orders_items;
+use App\Models\orders_items_features;
+use App\Models\payments;
 use App\Models\User;
 use App\Services\mail\send_email;
 use Illuminate\Pipeline\Pipeline;
@@ -102,12 +104,12 @@ trait OrdersHelperApi
         DB::beginTransaction();
         if($data['type'] == 'order') {
             $order_item = orders_items::query()->findOrFail(request('order_item_id'));
-            $order = orders::query()->with('seller')->find($order_item->order_id);
+            $order = orders::query()->with(['seller','payment'])->find($order_item->order_id);
             // send email to seller
             send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order_item->id.' التابعه لطلب رقم '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
                 '','اضغط هنا',$order->seller->email);
         }else{
-            $order = custom_orders::query()->with('reply')->find($data['order_item_id']);
+            $order = custom_orders::query()->with(['reply','payment'])->find($data['order_item_id']);
             // send email to seller
             send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
                 '','اضغط هنا',$order->seller->email);
@@ -116,6 +118,25 @@ trait OrdersHelperApi
             $financial = financial_reconciliations::query()->find($order->financial_reconciliation_id);
             if($financial->status != 'completed'){
                 return messages::error_output('لقد تم اتخاذ اجراء مع هذا الطلب التابع لاوردر رقم '.$order->id.' لذلك لا تستطيع اتخاذ اي اجراء عليه الان ');
+            }
+        }else{
+            // take money from profit seller
+            $price = 0;
+            if($data['type'] == 'order') {
+                $price += ($order_item->price * $order_item->quantity);
+                $feat = orders_items_features::query()->where('order_item_id','=',$order_item->id)->get();
+                foreach($feat as $f){
+                    $price += $f->price;
+                }
+            }else{
+                $price += ($order->reply->product_price + $order->reply->delivery_price);
+            }
+            try {
+                $payment = payments::query()->find($order->payment->id);
+                $payment->money = $payment->money - $price;
+                $payment->save();
+            }catch (\Exception $e){
+
             }
         }
         $item = cancelled_orders_items::query()->firstOrCreate([

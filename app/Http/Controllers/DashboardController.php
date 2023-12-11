@@ -29,6 +29,7 @@ use App\Http\traits\helpers_requests_api\FinancialHelperApi;
 use App\Http\traits\helpers_requests_api\OrdersHelperApi;
 use App\Http\traits\helpers_requests_api\NotificationsHelperApi;
 use App\Http\traits\helpers_requests_api\DashboardHomeStatistics;
+use App\Http\traits\helpers_requests_api\WithdrawMoneyHelperApi;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 use App\Http\traits\upload_image;
@@ -37,7 +38,7 @@ class DashboardController extends Controller
     //
     use upload_image;
     use PackagesHelperApi,TicketsHelperApi,SellersStatisticsHelperApi,SellersInfoHelperApi,DashboardHomeStatistics,
-        ProductsHelperApi,FinancialHelperApi,OrdersHelperApi , NotificationsHelperApi , ClientHelperApi;
+        ProductsHelperApi,FinancialHelperApi,OrdersHelperApi , NotificationsHelperApi , ClientHelperApi , WithdrawMoneyHelperApi;
 
     public function get_users(){
          $users = User::query()->with('role')

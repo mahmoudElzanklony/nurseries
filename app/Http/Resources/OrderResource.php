@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\financial_reconciliations;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -27,6 +28,9 @@ class OrderResource extends JsonResource
           'payment'=>PaymentResource::make($this->whenLoaded('payment')),
           'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
+          'financial'=>$this->when($this->financial_reconciliation_id != null && auth()->user()->role->name == 'admin',function($e){
+              return FinancialReconciliationResource::make(financial_reconciliations::query()->find($this->financial_reconciliation_id));
+          }) ,
           'status'=>isset($this->shipments_info) && sizeof($this->shipments_info)  > 0 ? $this->shipments_info[sizeof($this->shipments_info) - 1]->content:'pending',
           'created_at'=>$this->created_at,
 
