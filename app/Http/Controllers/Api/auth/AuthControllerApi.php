@@ -108,6 +108,7 @@ class AuthControllerApi extends AuthServicesClass
         // Get the JWT token from the request header.
         if(request()->hasHeader('token')) {
             $token = request()->header('token');
+            $device_id = request()->header('device_id');
             request()->headers->set('token', (string)$token, true);
             request()->headers->set('Authorization', 'Bearer ' . $token, true);
             try {
@@ -120,7 +121,7 @@ class AuthControllerApi extends AuthServicesClass
                 $token_info = user_devices::query()
                     ->where('user_id','=',$user->id)
                     ->where('device_id','=',request()->header('device_id'))->first();
-                dd($token_info,request()->header('device_id'),$user->id,request()->headers->get('device_id'));
+                dd($token_info,$device_id,$user->id);
 
             } catch (\Exception $e) {
                 return messages::error_output([$e->getMessage()]);
