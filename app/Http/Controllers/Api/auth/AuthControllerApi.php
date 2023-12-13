@@ -119,7 +119,7 @@ class AuthControllerApi extends AuthServicesClass
                 }
                 user_devices::query()
                     ->where('user_id','=',$user->id)
-                    ->where('device_id','=',request('token_id'))->delete();
+                    ->where('device_id','=',request('device_id'))->delete();
 
             } catch (\Exception $e) {
                 return messages::error_output([$e->getMessage()]);
