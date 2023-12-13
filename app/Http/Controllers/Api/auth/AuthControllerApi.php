@@ -117,9 +117,11 @@ class AuthControllerApi extends AuthServicesClass
                 if ($user == false) {
                     return messages::error_output(['invalid credential']);
                 }
-                user_devices::query()
-                    ->where('user_id','=',$user->id)
-                    ->where('device_id','=',request('device_id'))->delete();
+                if(request()->has('device_id')) {
+                    user_devices::query()
+                        ->where('user_id', '=', $user->id)
+                        ->where('device_id', '=', request('device_id'))->delete();
+                }
 
             } catch (\Exception $e) {
                 return messages::error_output([$e->getMessage()]);
