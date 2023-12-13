@@ -9,5 +9,5 @@ class user_devices extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['device_id','notification_token'];
+    protected $fillable = ['user_id','device_id','notification_token'];
 }
