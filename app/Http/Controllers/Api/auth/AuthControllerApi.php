@@ -106,7 +106,7 @@ class AuthControllerApi extends AuthServicesClass
 
     public function logout_api(){
         // Get the JWT token from the request header.
-        dd(request()->header('device_id'));
+        dd(request()->hasHeader('device_id'));
         if(request()->hasHeader('token')) {
             $token = request()->header('token');
 
