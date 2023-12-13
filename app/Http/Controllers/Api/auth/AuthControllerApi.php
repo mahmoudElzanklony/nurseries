@@ -13,6 +13,7 @@ use App\Models\countries;
 use App\Models\roles;
 use App\Models\tenants;
 use App\Models\User;
+use App\Models\user_devices;
 use App\Services\auth\register_service;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -60,6 +61,7 @@ class AuthControllerApi extends AuthServicesClass
         $data = Validator::make(request()->all(),[
             'phone'=>'required',
             'activation_code'=>'required',
+            'app'=>'required',
         ]);
         if(sizeof($data->errors()) == 0) {
 
@@ -73,8 +75,16 @@ class AuthControllerApi extends AuthServicesClass
                 }
                 $token = Auth::guard('api')->login($user);
                 $role = roles::query()->find($user->role_id);
-                $user->device_token = request('device_token') ?? null;
-                $user->remember_token = request('remember_token') ?? null;
+                if($role->name != request('app')){
+                    return messages::error_output(trans('errors.you_cant_access_this_app'));
+                }
+                if(request()->filled('device_id') || request()->filled('remember_token')){
+                    user_devices::query()->create([
+                        'user_id'=>$user->id,
+                        'device_id'=>request('device_id') ?? null,
+                        'notification_token'=>request('notification_token') ?? null,
+                    ]);
+                }
                 $user->save();
                 $user['role'] = $role;
                 if($user->email == '' && $user->username == '') {
@@ -107,10 +117,10 @@ class AuthControllerApi extends AuthServicesClass
                 if ($user == false) {
                     return messages::error_output(['invalid credential']);
                 }
+                user_devices::query()
+                    ->where('user_id','=',$user->id)
+                    ->where('device_id','=',request('token_id'))->delete();
 
-                $user->remember_token = null;
-                $user->device_token = null;
-                $user->save();
             } catch (\Exception $e) {
                 return messages::error_output([$e->getMessage()]);
             }

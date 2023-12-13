@@ -103,5 +103,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(users_visa::class,'user_id');
     }
 
+    public function devices(){
+        return $this->hasMany(user_devices::class,'user_id');
+    }
+
 
 }

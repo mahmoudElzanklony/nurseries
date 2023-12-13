@@ -36,38 +36,11 @@ class SendNotification
 
     public  static function send($id , $info,$from = 'Nabta Notification')
     {
-        $user = User::query()->find($id);
+        // notification_token
+        $user = User::query()->with('devices')->find($id);
         if($user != null)
         {
-
-            // $SERVER_API_KEY ='AAAAKXp515Q:APA91bH3r-ax2gsVq20l8tjee0x19-TyYMfSeYKKjpJx0WPJwDUkmAmMa4rDVfPtpD756khydKkH8EI34wYmYsgxn3OEx90XFElV56QwPEO258tFyXarW9evgTH9jo-1VAe5L-96_NrH';
-            $SERVER_API_KEY = 'AAAAWm5fWaw:APA91bHKEop8SAYMKUMcDQB5p9W-rUnmRJoXarUOhSKRHaN_H2S1PH6eVWAXDESFLtNTaWhlBEiuoQ4OSA_OsrVR1tblvGppQesUCCN6xZ-r-l3swAaNJFC0eZNrhw35e_TOcjSHEzw9';
-            $token_1 = $user->firebase_token;
-
-            $data = [
-
-                "registration_ids" => [
-                    $token_1
-                ],
-                "data" => ['type' => 'activation'],
-                "notification" => [
-
-                    "title" => $from,
-
-                    "body" => $info,
-
-                    "sound" => "default",// required for sound on ios
-
-                    "image" => "https://media.istockphoto.com/id/1045368942/vector/abstract-green-leaf-logo-icon-vector-design-ecology-icon-set-eco-icon.jpg?s=612x612&w=0&k=20&c=XIfHMI8r1G73blCpCBFmLIxCtOLx8qX0O3mZC9csRLs=",
-
-                    "click_action"=> "FLUTTER_NOTIFICATION_CLICK"
-
-                ],
-
-            ];
-
-            $dataString = json_encode($data);
-
+            $SERVER_API_KEY = 'AAAAF6UF-p0:APA91bHHc5bA553l0PiJWjDQ4bk3xM-ELO0MRNW0bfxv_qlJ7d5jI5-t03lfUsZyOMswOVZQXO4et3T4G_9s2QrEEVf7K5yDVvD9oyed3oJox3Fi16ZBEJBh1XchuKrGX4cAqESrL04P';
             $headers = [
 
                 'Authorization: key=' . $SERVER_API_KEY,
@@ -75,22 +48,52 @@ class SendNotification
                 'Content-Type: application/json',
 
             ];
+            foreach($user->devices as $d){
+                $token_1 = $d->notification_token;
 
-            $ch = curl_init();
+                $data = [
 
-            curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+                    "registration_ids" => [
+                        $token_1
+                    ],
+                    "data" => ['type' => 'activation'],
+                    "notification" => [
 
-            curl_setopt($ch, CURLOPT_POST, true);
+                        "title" => $from,
 
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+                        "body" => $info,
 
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        "sound" => "default",// required for sound on ios
 
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        "image" => "https://media.istockphoto.com/id/1045368942/vector/abstract-green-leaf-logo-icon-vector-design-ecology-icon-set-eco-icon.jpg?s=612x612&w=0&k=20&c=XIfHMI8r1G73blCpCBFmLIxCtOLx8qX0O3mZC9csRLs=",
 
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+                        "click_action"=> "FLUTTER_NOTIFICATION_CLICK"
 
-            $response = curl_exec($ch);
+                    ],
+
+                ];
+
+                $dataString = json_encode($data);
+
+
+
+                $ch = curl_init();
+
+                curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+
+                curl_setopt($ch, CURLOPT_POST, true);
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+                $response = curl_exec($ch);
+            }
+
         }
 
         return response()->json('success');

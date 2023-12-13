@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWithdrawMoneysTable extends Migration
+class CreateUserDevicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateWithdrawMoneysTable extends Migration
      */
     public function up()
     {
-        Schema::create('withdraw_moneys', function (Blueprint $table) {
+        Schema::create('user_devices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('item_id');
-            $table->string('item_type');
-            $table->string('price');
-            $table->string('message');
-            $table->string('status');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->string('device_id')->nullable();
+            $table->string('notification_token')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateWithdrawMoneysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('withdraw_moneys');
+        Schema::dropIfExists('user_devices');
     }
 }
