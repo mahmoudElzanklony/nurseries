@@ -30,7 +30,7 @@ class ManageTimeAlert
         } else if ($time_type == 'year') {
             $time = $now->addDays($time_number * 365);
         }
-        dd($time_type,$time);
+        dd($time_number,$time_type,$time);
         return $time;
     }
 
