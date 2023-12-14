@@ -21,13 +21,13 @@ class ManageTimeAlert
         } else if ($time_type == 'hour') {
             $time = $now->addHours($time_number);
         } else if ($time_type == 'day') {
-            $time = $now->addHours($time_number * 24);
+            $time = $now->addDays($time_number);
         }  else if ($time_type == 'week') {
-            $time = $now->addHours($time_number * 24 * 7);
+            $time = $now->addDays($time_number * 7);
         } else if ($time_type == 'month') {
-            $time = $now->addHours($time_number * 24 * 7 * 30);
+            $time = $now->addDays($time_number * 30);
         } else if ($time_type == 'year') {
-            $time = $now->addHours($time_number * 24 * 7 * 30 * 12);
+            $time = $now->addDays($time_number * 365);
         }
         return $time;
     }
