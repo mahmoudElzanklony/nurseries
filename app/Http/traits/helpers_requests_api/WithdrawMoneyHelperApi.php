@@ -41,6 +41,7 @@ trait WithdrawMoneyHelperApi
                 ]
             ]
         );
+        return $itemsTransformedAndPaginated;
     }
 
     public function withdraw_product_money(){
