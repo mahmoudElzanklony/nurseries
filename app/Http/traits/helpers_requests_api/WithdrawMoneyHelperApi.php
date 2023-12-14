@@ -61,14 +61,14 @@ trait WithdrawMoneyHelperApi
             ]
         );
         // Add meta data
-        $paginator->setMeta([
+        $paginator->meta = [
             'total_pages' => $paginator->lastPage(),
             'current_page' => $paginator->currentPage(),
             'next_page_url' => $paginator->nextPageUrl(),
             'previous_page_url' => $paginator->previousPageUrl(),
             'from' => $paginator->firstItem(),
             'to' => $paginator->lastItem(),
-        ]);
+        ];
         return $paginator;
     }
 }
