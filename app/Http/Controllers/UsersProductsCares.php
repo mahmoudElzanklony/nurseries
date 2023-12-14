@@ -74,10 +74,6 @@ class UsersProductsCares extends Controller
                 'user_id'=>auth()->id(),
                 'next_alert'=>$time
             ]);
-            echo $care->time_type.'<br>';
-            if($care->time_type != 'hour'){
-                dd($time,$care);
-            }
         }
         DB::commit();
     }
