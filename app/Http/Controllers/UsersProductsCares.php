@@ -64,8 +64,6 @@ class UsersProductsCares extends Controller
             ->where('product_id','=',$product_id)
             ->where('type','=','seller')
             ->get();
-        dd(ManageTimeAlert::manage('2','month',null));
-
         foreach($product_cares as $care){
             users_products_care_alerts::query()->updateOrCreate([
                 'product_care_id'=>$care->id,
