@@ -30,18 +30,7 @@ trait WithdrawMoneyHelperApi
         $itemsPaginated =  cancelled_orders_items::query()->with('images')->orderBy('id','DESC')->paginate(9);
 
         $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
-        $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-            $itemsTransformed,
-            $itemsPaginated->total(),
-            $itemsPaginated->perPage(),
-            $itemsPaginated->currentPage(), [
-                'path' => \Request::url(),
-                'query' => [
-                    'page' => $itemsPaginated->currentPage()
-                ]
-            ]
-        );
-        return $itemsTransformedAndPaginated;
+        return $this->transfer_and_paginate($itemsTransformed,$itemsPaginated);
     }
 
     public function withdraw_product_money(){
@@ -55,14 +44,19 @@ trait WithdrawMoneyHelperApi
         // features money
         $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
 
-        $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
-            $itemsTransformed,
-            $itemsPaginated->total(),
-            $itemsPaginated->perPage(),
-            $itemsPaginated->currentPage(), [
+
+        return $this->transfer_and_paginate($itemsTransformed,$itemsPaginated);
+    }
+
+    public function transfer_and_paginate($new_transform,$orginal){
+        return  new \Illuminate\Pagination\LengthAwarePaginator(
+            $new_transform,
+            $orginal->total(),
+            $orginal->perPage(),
+            $orginal->currentPage(), [
                 'path' => \Request::url(),
                 'query' => [
-                    'page' => $itemsPaginated->currentPage()
+                    'page' => $orginal->currentPage()
                 ]
             ]
         );
