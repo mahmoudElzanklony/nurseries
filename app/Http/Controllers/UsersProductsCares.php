@@ -66,7 +66,7 @@ class UsersProductsCares extends Controller
             ->get();
         foreach($product_cares as $care){
             $time = ManageTimeAlert::manage($care->time_number,$care->time_type,null);
-            $result = users_products_care_alerts::query()->updateOrCreate([
+            users_products_care_alerts::query()->updateOrCreate([
                 'product_care_id'=>$care->id,
                 'user_id'=>auth()->id(),
             ],[
@@ -74,6 +74,7 @@ class UsersProductsCares extends Controller
                 'user_id'=>auth()->id(),
                 'next_alert'=>$time
             ]);
+            echo $care->time_type.'<br>';
             if($care->time_type != 'hour'){
                 dd($time,$care);
             }
