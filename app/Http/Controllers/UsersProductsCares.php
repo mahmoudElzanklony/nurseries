@@ -65,16 +65,17 @@ class UsersProductsCares extends Controller
             ->where('type','=','seller')
             ->get();
         foreach($product_cares as $care){
+            $time = ManageTimeAlert::manage($care->time_number,$care->time_type,null);
             $result = users_products_care_alerts::query()->updateOrCreate([
                 'product_care_id'=>$care->id,
                 'user_id'=>auth()->id(),
             ],[
                 'product_care_id'=>$care->id,
                 'user_id'=>auth()->id(),
-                'next_alert'=>ManageTimeAlert::manage($care->time_number,$care->time_type,null)
+                'next_alert'=>$time
             ]);
             if($care->time_number != 'hour'){
-                dd($result);
+                dd($time,$care);
             }
         }
         DB::commit();
