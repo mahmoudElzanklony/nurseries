@@ -60,7 +60,7 @@ trait WithdrawMoneyHelperApi
                 ]
             ]
         );
-        $paginator->meta = [
+        $paginator['meta'] = [
             'total_pages' => $paginator->lastPage(),
             'current_page' => $paginator->currentPage(),
             'next_page_url' => $paginator->nextPageUrl(),
