@@ -16,7 +16,7 @@ class ManageTimeAlert
         }else{
             $now = Carbon::create($last_time);
         }
-        $time_type = 'month';
+
         if ($time_type == 'minute') {
             $time = $now->addMinutes($time_number);
         } else if ($time_type == 'hour') {
@@ -30,7 +30,6 @@ class ManageTimeAlert
         } else if ($time_type == 'year') {
             $time = $now->addDays($time_number * 365);
         }
-        dd($time_number,$time_type,$time);
         return $time;
     }
 

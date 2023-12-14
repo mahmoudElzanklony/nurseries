@@ -59,10 +59,13 @@ class UsersProductsCares extends Controller
     }
 
     public function send_care_alerts($product_id){
+        DB::beginTransaction();
         $product_cares = products_care::query()
             ->where('product_id','=',$product_id)
             ->where('type','=','seller')
             ->get();
+        dd(ManageTimeAlert::manage('2','month',null));
+
         foreach($product_cares as $care){
             users_products_care_alerts::query()->updateOrCreate([
                 'product_care_id'=>$care->id,
@@ -73,6 +76,7 @@ class UsersProductsCares extends Controller
                 'next_alert'=>ManageTimeAlert::manage($care->time_number,$care->time_type,null)
             ]);
         }
+        DB::commit();
     }
 
     public function has_care_check($product_id){
