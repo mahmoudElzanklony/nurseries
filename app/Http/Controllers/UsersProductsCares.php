@@ -74,7 +74,7 @@ class UsersProductsCares extends Controller
                 'user_id'=>auth()->id(),
                 'next_alert'=>$time
             ]);
-            if($care->time_number != 'hour'){
+            if($care->time_type != 'hour'){
                 dd($time,$care);
             }
         }
