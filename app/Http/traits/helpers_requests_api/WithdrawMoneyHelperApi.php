@@ -53,7 +53,7 @@ trait WithdrawMoneyHelperApi
                 });
             })->paginate(9);
         // features money
-        $itemsTransformed =  $this->manage_data($data->getCollection());
+        $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
 
         $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
             $itemsTransformed,
