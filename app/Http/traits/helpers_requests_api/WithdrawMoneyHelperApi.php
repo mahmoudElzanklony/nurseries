@@ -72,6 +72,7 @@ trait WithdrawMoneyHelperApi
 
         return response()->json([
             'data' => $paginator->getCollection(),
+            'links' => $paginator->links,
             'meta' => $paginator->meta,
         ]);
     }
