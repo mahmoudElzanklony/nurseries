@@ -28,7 +28,8 @@ trait WithdrawMoneyHelperApi
     }
     public function all_withdraw_money(){
         $data =  cancelled_orders_items::query()->with('images')->orderBy('id','DESC')->paginate(9);
-        return $this->manage_data($data->getCollection());
+        $data['data'] = $this->manage_data($data->getCollection());
+        return $data;
     }
 
     public function withdraw_product_money(){
