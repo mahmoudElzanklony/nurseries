@@ -70,6 +70,9 @@ trait WithdrawMoneyHelperApi
             // Add any other meta data you need...
         ];
 
-        return $paginator;
+        return response()->json([
+            'data' => $paginator->getCollection(),
+            'meta' => $paginator->meta,
+        ]);
     }
 }
