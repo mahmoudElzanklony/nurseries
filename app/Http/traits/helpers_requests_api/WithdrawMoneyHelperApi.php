@@ -60,7 +60,7 @@ trait WithdrawMoneyHelperApi
                 ]
             ]
         );
-        return $paginator->links;
+        return $paginator['links'];
         $links = [];
         foreach ($paginator->meta['links'] as $linkName => $linkUrl) {
             $links[] = [
