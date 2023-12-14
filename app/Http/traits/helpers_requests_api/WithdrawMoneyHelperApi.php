@@ -60,15 +60,7 @@ trait WithdrawMoneyHelperApi
                 ]
             ]
         );
-        return $paginator->toArray()['links'];
-        $links = [];
-        foreach ($paginator->meta['links'] as $linkName => $linkUrl) {
-            $links[] = [
-                'url' => $linkUrl,
-                'label' => $linkName,
-                'active' => $linkName === $paginator->currentPage(),
-            ];
-        }
+
         $paginator->meta = [
             'total_pages' => $paginator->lastPage(),
             'current_page' => $paginator->currentPage(),
@@ -76,7 +68,7 @@ trait WithdrawMoneyHelperApi
             'previous_page_url' => $paginator->previousPageUrl(),
             'from' => $paginator->firstItem(),
             'to' => $paginator->lastItem(),
-            'links' => $links
+            'links' => $paginator->toArray()['links']
             // Add any other meta data you need...
         ];
 
