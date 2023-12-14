@@ -45,7 +45,7 @@ trait WithdrawMoneyHelperApi
     }
 
     public function withdraw_product_money(){
-        $data =  cancelled_orders_items::query()->with('images')
+        $itemsPaginated =  cancelled_orders_items::query()->with('images')
             ->where('type','=','order')
             ->whereHas('order_item',function($q){
                 $q->whereHas('product',function($e){
@@ -53,6 +53,18 @@ trait WithdrawMoneyHelperApi
                 });
             })->paginate(9);
         // features money
-        return $this->manage_data($data->getCollection());
+        $itemsTransformed =  $this->manage_data($data->getCollection());
+
+        $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $itemsTransformed,
+            $itemsPaginated->total(),
+            $itemsPaginated->perPage(),
+            $itemsPaginated->currentPage(), [
+                'path' => \Request::url(),
+                'query' => [
+                    'page' => $itemsPaginated->currentPage()
+                ]
+            ]
+        );
     }
 }
