@@ -67,6 +67,12 @@ trait WithdrawMoneyHelperApi
             'previous_page_url' => $paginator->previousPageUrl(),
             'from' => $paginator->firstItem(),
             'to' => $paginator->lastItem(),
+            'links' => [
+                'next' => $paginator->nextPageUrl(),
+                'previous' => $paginator->previousPageUrl(),
+                'first' => $paginator->url(1),
+                'last' => $paginator->url($paginator->lastPage()),
+            ]
             // Add any other meta data you need...
         ];
 
