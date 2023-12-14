@@ -60,7 +60,6 @@ trait WithdrawMoneyHelperApi
                 ]
             ]
         );
-        // Add meta data
         $paginator->meta = [
             'total_pages' => $paginator->lastPage(),
             'current_page' => $paginator->currentPage(),
@@ -68,7 +67,9 @@ trait WithdrawMoneyHelperApi
             'previous_page_url' => $paginator->previousPageUrl(),
             'from' => $paginator->firstItem(),
             'to' => $paginator->lastItem(),
+            // Add any other meta data you need...
         ];
+
         return $paginator;
     }
 }
