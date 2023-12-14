@@ -49,7 +49,7 @@ trait WithdrawMoneyHelperApi
     }
 
     public function transfer_and_paginate($new_transform,$orginal){
-        return  new \Illuminate\Pagination\LengthAwarePaginator(
+        $paginator = new \Illuminate\Pagination\LengthAwarePaginator(
             $new_transform,
             $orginal->total(),
             $orginal->perPage(),
@@ -60,5 +60,15 @@ trait WithdrawMoneyHelperApi
                 ]
             ]
         );
+        // Add meta data
+        $paginator->setMeta([
+            'total_pages' => $paginator->lastPage(),
+            'current_page' => $paginator->currentPage(),
+            'next_page_url' => $paginator->nextPageUrl(),
+            'previous_page_url' => $paginator->previousPageUrl(),
+            'from' => $paginator->firstItem(),
+            'to' => $paginator->lastItem(),
+        ]);
+        return $paginator;
     }
 }
