@@ -27,9 +27,20 @@ trait WithdrawMoneyHelperApi
         return $data;
     }
     public function all_withdraw_money(){
-        $data =  cancelled_orders_items::query()->with('images')->orderBy('id','DESC')->paginate(9);
-        $data['data'] = $this->manage_data($data->getCollection());
-        return $data;
+        $itemsPaginated =  cancelled_orders_items::query()->with('images')->orderBy('id','DESC')->paginate(9);
+
+        $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
+        $itemsTransformedAndPaginated = new \Illuminate\Pagination\LengthAwarePaginator(
+            $itemsTransformed,
+            $itemsPaginated->total(),
+            $itemsPaginated->perPage(),
+            $itemsPaginated->currentPage(), [
+                'path' => \Request::url(),
+                'query' => [
+                    'page' => $itemsPaginated->currentPage()
+                ]
+            ]
+        );
     }
 
     public function withdraw_product_money(){
