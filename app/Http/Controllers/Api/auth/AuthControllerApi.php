@@ -56,6 +56,37 @@ class AuthControllerApi extends AuthServicesClass
 
         return response()->json($user);
     }
+    public function get_user_by_token(){
+        if(request()->hasHeader('token')) {
+            $token = request()->header('token');
+            request()->headers->set('token', (string)$token, true);
+            request()->headers->set('Authorization', 'Bearer ' . $token, true);
+            try {
+                $token = JWTAuth::parseToken();
+                $user = $token->authenticate();
+
+                if ($user == false) {
+                    return messages::error_output(['invalid credential']);
+                }
+                $user['role'] = roles::query()->find($user->role_id);
+                if($user->email == '' && $user->username == '') {
+                    $user['new_user'] = true;
+                }else{
+                    $user['new_user'] = false;
+                }
+                $user['token'] =  $token;
+                $user['default_address'] = DefaultAddress::get($user->id);
+
+                return messages::success_output('',UserResource::make($user),[
+                    'new_user'=>$user['new_user']
+                ]);
+
+
+            } catch (\Exception $e) {
+                return messages::error_output([$e->getMessage()]);
+            }
+        }
+    }
 
     public function login_api(){
         $data = Validator::make(request()->all(),[
