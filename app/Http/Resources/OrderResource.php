@@ -23,6 +23,12 @@ class OrderResource extends JsonResource
           'seller_profit'=>$this->seller_profit == 0 ? false:true,
           'items_price'=>round(doubleval($this->total_items),2),
           'address'=>$this->address,
+          'tax_percentage'=>$this->when(isset($this->tax_percentage),function(){
+              return $this->tax_percentage;
+          }),
+          'tax_value'=>$this->when(isset($this->tax_value),function(){
+              return $this->tax_value;
+          }),
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
           'payment'=>PaymentResource::make($this->whenLoaded('payment')),

@@ -19,6 +19,7 @@ use App\Models\orders;
 use App\Models\orders_items;
 use App\Models\orders_shipment_info;
 use App\Models\reports;
+use App\Models\taxes;
 use App\Models\User;
 use App\Models\user_addresses;
 use App\Repositories\OrderRepository;
@@ -67,7 +68,14 @@ class OrdersController extends Controller
 
     public function all_orders(){
         $orders = OrdersWithAllData::get();
-
+        if(request()->filled('id')){
+            $output = OrdersWithAllData::get()->with(['seller.commercial_info'])->findOrFail(request('id'));
+            $output['tax_percentage'] = taxes::query()->first()->percentage;
+            if($output->payment != null){
+                $output['tax_value'] = $output->payment->money - ($output->payment->money * $output['tax_percentage'] / 100);
+            }
+            return OrderResource::collection($output);
+        }
         $data = app(Pipeline::class)
             ->send($orders)
             ->through([
