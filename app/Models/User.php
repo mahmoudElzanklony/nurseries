@@ -95,6 +95,10 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(users_store_info::class,'user_id');
     }
 
+    public function farm_address(){
+        return $this->hasOne(user_farm_address::class,'user_id');
+    }
+
     public function article_permission(){
         return $this->hasOne(articles_permission::class,'user_id');
     }
@@ -106,6 +110,7 @@ class User extends Authenticatable implements JWTSubject
     public function devices(){
         return $this->hasMany(user_devices::class,'user_id');
     }
+
 
 
 }

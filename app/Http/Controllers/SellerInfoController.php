@@ -19,6 +19,7 @@ use App\Models\payments;
 use App\Models\products;
 use App\Models\User;
 use App\Models\user_addresses;
+use App\Models\user_farm_address;
 use App\Models\users_bank_info;
 use App\Models\users_commercial_info;
 use App\Models\users_store_info;
@@ -118,9 +119,11 @@ class SellerInfoController extends Controller
              'user_id'=>auth()->id()
          ],$data['bank_info']);
          $data['location_info']['default_address'] = 1;
-         user_addresses::query()->updateOrCreate([
-             'id'=>$data['id'] ?? null
-         ],$data['location_info']);
+         user_farm_address::query()->updateOrCreate([
+             'user_id'=>auth()->id()
+         ],[
+             'address_id'=>$data['location_info_id']
+         ]);
 
          if(request()->hasFile('images')){
              foreach(request()->file('images') as $file){

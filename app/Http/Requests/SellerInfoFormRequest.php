@@ -58,8 +58,7 @@ class SellerInfoFormRequest extends FormRequest
             'commercial_info.*'=>'required',
             'store_info'=>'required|array',
             'store_info.*'=>'required',
-            'location_info'=>'required|array',
-            'location_info.*'=>'required',
+            'location_info_id'=>'required|exists:user_addresses,id',
         ];
     }
 
