@@ -70,10 +70,6 @@ class OrdersController extends Controller
         $orders = OrdersWithAllData::get();
         if(request()->filled('id')){
             $output = OrdersWithAllData::get()->with(['seller.commercial_info'])->findOrFail(request('id'));
-            $output['tax_percentage'] = taxes::query()->first()->percentage;
-            if($output->payment != null){
-                $output['tax_value'] = $output->payment->money - ($output->payment->money * $output['tax_percentage'] / 100);
-            }
             return OrderResource::collection($output);
         }
         $data = app(Pipeline::class)
