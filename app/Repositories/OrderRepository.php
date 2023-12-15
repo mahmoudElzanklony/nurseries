@@ -151,7 +151,7 @@ class OrderRepository
                     // handle final price
                     $final_price = $this->handle_final_price($product,$whole_price,$discount);
                     $this->order_total_price += $final_price;
-                    echo $this->order_total_price .'<br>';
+                    echo 'price of product'.$final_price.' and final now =====> '.$this->order_total_price .'<br>';
                     $order_item = orders_items::query()->create([
                         'order_id' => $this->order->id,
                         'product_id' => $item['product_id'],
@@ -212,7 +212,7 @@ class OrderRepository
                     'price'=>$price
                 ]);
                 $this->order_total_price += $price;
-                echo $this->order_total_price .'<br>';
+                echo 'price of feature'.$price.' ==========> total  now'.$this->order_total_price .'<br>';
             }
         }
     }
