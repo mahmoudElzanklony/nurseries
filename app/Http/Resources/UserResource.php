@@ -34,7 +34,7 @@ class UserResource extends JsonResource
               return UserAddressesResource::make($this->default_address);
           }),
           'farm_address'=>$this->when(isset($this->farm_address) && $this->farm_address->address != null,function (){
-              return UserAddressesResource::make($this->whenLoaded($this->farm_address->address));
+              return UserAddressesResource::make($this->farm_address->address);
           }),
           'token'=>isset($this->token) ? $this->token : null,
           'article_permission'=>isset($this->article_permission) ? true:false,
