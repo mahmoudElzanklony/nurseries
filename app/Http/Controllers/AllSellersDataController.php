@@ -56,6 +56,7 @@ class AllSellersDataController extends Controller
                 \App\Filters\custom_orders\UsernameFilter::class,
                 StartDateFilter::class,
                 EndDateFilter::class,
+
             ])
             ->thenReturn()
             ->paginate(10);

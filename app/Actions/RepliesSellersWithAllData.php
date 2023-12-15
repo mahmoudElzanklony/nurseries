@@ -13,6 +13,10 @@ class RepliesSellersWithAllData
             $e->where('user_id','=',auth()->id());
         })->with(['seller','reply'=>function($e){
                 $e->with('images');
-            }])->orderBy('id','DESC');
+            }])->where(request()->filled('name'),function($e){
+                $e->whereHas('order',function($q){
+                   $q->where('name','LIKE','%'.request('name').'%');
+                });
+        })->orderBy('id','DESC');
     }
 }
