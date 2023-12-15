@@ -15,7 +15,7 @@ class PaymentModalSave
             'paymentable_id'=>$id,
             'paymentable_type'=>'App\Models\\'.$model_name,
             'visa_id'=>$visa,
-            'money'=>$money - ($money * $tax / 100 ),
+            'money'=>$money +  ($money * $tax / 100 ),
             'tax'=>$tax
         ]);
         return true;
