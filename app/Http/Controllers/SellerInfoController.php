@@ -18,6 +18,7 @@ use App\Models\orders_shipment_info;
 use App\Models\payments;
 use App\Models\products;
 use App\Models\User;
+use App\Models\user_addresses;
 use App\Models\users_bank_info;
 use App\Models\users_commercial_info;
 use App\Models\users_store_info;
@@ -116,6 +117,10 @@ class SellerInfoController extends Controller
          users_bank_info::query()->updateOrCreate([
              'user_id'=>auth()->id()
          ],$data['bank_info']);
+         $data['location_info']['default_address'] = 1;
+         user_addresses::query()->updateOrCreate([
+             'id'=>$data['id'] ?? null
+         ],$data['location_info']);
 
          if(request()->hasFile('images')){
              foreach(request()->file('images') as $file){
