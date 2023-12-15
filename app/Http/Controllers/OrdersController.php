@@ -70,7 +70,7 @@ class OrdersController extends Controller
         $orders = OrdersWithAllData::get();
         if(request()->filled('id')){
             $output = OrdersWithAllData::get()->with(['seller.commercial_info'])->findOrFail(request('id'));
-            return OrderResource::collection($output);
+            return OrderResource::make($output);
         }
         $data = app(Pipeline::class)
             ->send($orders)
