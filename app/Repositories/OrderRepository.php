@@ -151,6 +151,7 @@ class OrderRepository
                     // handle final price
                     $final_price = $this->handle_final_price($product,$whole_price,$discount);
                     $this->order_total_price += $final_price;
+                    echo $this->order_total_price .'<br>';
                     $order_item = orders_items::query()->create([
                         'order_id' => $this->order->id,
                         'product_id' => $item['product_id'],
@@ -188,6 +189,9 @@ class OrderRepository
             return messages::error_output($msg ?? 'error in quantity');
         }
         // add payment of this order
+        $this->order_total_price += $total_price_delivery;
+        echo $this->order_total_price .'<br>';
+        dd($this->order_total_price);
         PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$this->order_total_price);
         // add address and delivery for this order
         $this->order_address(round($total_days_delivery/sizeof($items)),$total_price_delivery);
@@ -208,6 +212,7 @@ class OrderRepository
                     'price'=>$price
                 ]);
                 $this->order_total_price += $price;
+                echo $this->order_total_price .'<br>';
             }
         }
     }
