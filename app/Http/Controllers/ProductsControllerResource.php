@@ -102,7 +102,8 @@ class ProductsControllerResource extends Controller
         $images = [];
         try{
             $check_cat = categories::query()->find(request('id'));
-            if(request()->filled('id') && $check_cat->id != request('category_id')){
+           // if(request()->filled('id') && $check_cat->id != request('category_id')){
+            if(request()->filled('id') ){
                 products_questions_answers::query()
                     ->where('product_id','=',request('id'))->delete();
                 products_features_prices::query()
