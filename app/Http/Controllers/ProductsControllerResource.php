@@ -20,10 +20,14 @@ use App\Http\Resources\ProductPriceChangeResource;
 use App\Http\Resources\ProductResource;
 use App\Http\traits\messages;
 use App\Jobs\sendNotificationsToFollowersJob;
+use App\Models\categories;
 use App\Models\centralized_products_data;
 use App\Models\followers;
+use App\Models\images;
 use App\Models\products;
+use App\Models\products_features_prices;
 use App\Models\products_prices;
+use App\Models\products_questions_answers;
 use App\Repositories\ProductsRepository;
 use App\Services\SearchesResults;
 use App\Services\users\favourite_toggle;
@@ -32,6 +36,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 use App\Http\traits\upload_image;
+use TheSeer\Tokenizer\Exception;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProductsControllerResource extends Controller
@@ -95,6 +100,17 @@ class ProductsControllerResource extends Controller
         $data = $request->validated();
         DB::beginTransaction();
         $images = [];
+        try{
+            $check_cat = categories::query()->find(request('id'));
+            if(request()->filled('id') && $check_cat->id != request('category_id')){
+                products_questions_answers::query()
+                    ->where('product_id','=',request('id'))->delete();
+                products_features_prices::query()
+                    ->where('product_id','=',request('id'))->delete();
+            }
+        }catch (\Exception $exception){
+
+        }
         if(request()->hasFile('images')){
             foreach(request()->file('images') as $img){
                 $name = $this->upload($img,'products');
@@ -118,6 +134,13 @@ class ProductsControllerResource extends Controller
           'ar'=>'تم نشر منتج جديد من قبل '.auth()->user()->username,
           'en'=>'there is a new product published from '.auth()->user()->username,
         ];
+        try{
+            if(request()->filled('deleted_images_ids')){
+                images::query()->whereIn('id',request('deleted_images_ids'))->delete();
+            }
+        }catch (Exception $e){
+
+        }
         dispatch(new sendNotificationsToFollowersJob($following_data,$msg,'/following'));
         $output = ProductWithAllData::get()->find($product_reposit->product->id);
         return messages::success_output(trans('messages.saved_successfully'),ProductResource::make($output));
