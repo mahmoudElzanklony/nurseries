@@ -22,7 +22,8 @@ class ProductQuestionResource extends JsonResource
           'type'=>$this->when(isset($this->type),function (){
              return $this->type;
           }),
-        //  'image'=>ProductQuestionResource::make($this->whenLoaded('image')),
+            'heading'=>CategoryHeadingQuestionsResource::make($this->whenLoaded('heading')),
+            //  'image'=>ProductQuestionResource::make($this->whenLoaded('image')),
           'options'=>SelectOptionsResource::collection($this->whenLoaded('options')),
           'created_at'=>$this->created_at,
 

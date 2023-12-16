@@ -32,7 +32,7 @@ class ProductWithAllData
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
                 }
                 ,'features.feature.image','answers'=>function($e){
-                    $e->with('question');
+                    $e->with('question.heading');
                 }]);
         return $data;
     }
