@@ -17,6 +17,7 @@ class FilterRequest
         return $next($request)->when($filter != '' && strpos($filter, 'date') == false,
             function ($q) use ($filter){
           $q->when(request()->input($filter) != '',function ($e) use ($filter){
+              dd($filter);
              $e->where($filter, request()->input($filter));
           });
         })
