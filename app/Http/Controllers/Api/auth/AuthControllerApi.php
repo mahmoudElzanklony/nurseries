@@ -75,7 +75,6 @@ class AuthControllerApi extends AuthServicesClass
                     $user['new_user'] = false;
                 }
                 // token
-                dd(request()->header('token'));
                 $user['token'] =  request()->header('token');
                 $user['default_address'] = DefaultAddress::get($user->id);
 
