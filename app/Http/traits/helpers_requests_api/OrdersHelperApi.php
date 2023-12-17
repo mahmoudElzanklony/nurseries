@@ -9,7 +9,7 @@ use App\Actions\ImageModalSave;
 use App\Actions\OrdersWithAllData;
 use App\Filters\custom_orders\sellers\StatusFilter;
 use App\Filters\EndDateFilter;
-use App\Filters\IDFilter;
+use App\Filters\IdFilter;
 use App\Filters\IDsFilter;
 use App\Filters\orders\ClientNameFilter;
 use App\Filters\orders\MaxPriceFilter;
@@ -68,7 +68,7 @@ trait OrdersHelperApi
                 StatusOrderFilter::class,
                 ClientNameFilter::class,
                 UserIdFilter::class,
-                IDFilter::class
+                IdFilter::class
             ])
             ->thenReturn()
             ->orderBy('id','DESC')
@@ -86,7 +86,7 @@ trait OrdersHelperApi
                 \App\Filters\custom_orders\NameFilter::class,
                 \App\Filters\marketer\StatusFilter::class,
                 UserIdFilter::class,
-                IDFilter::class
+                IdFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
