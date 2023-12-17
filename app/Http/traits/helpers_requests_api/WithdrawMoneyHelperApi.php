@@ -16,7 +16,7 @@ trait WithdrawMoneyHelperApi
     public function manage_data($data){
         foreach($data as $d){
             if($d->type == 'order'){
-                $d->order_item = orders_items::query()->with(['features','order',function($e){
+                $d->order_item = orders_items::query()->with(['features','order'=>function($e){
                     $e->with(['seller.image','client.image']);
                 }])->find($d->order_item_id);
                 $d->order_item->features = orders_items_features::query()->where('order_item_id','=',$d->order_item_id);
