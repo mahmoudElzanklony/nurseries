@@ -16,9 +16,9 @@ trait WithdrawMoneyHelperApi
     public function manage_data($data){
         foreach($data as $d){
             if($d->type == 'order'){
-                $d->order_item = orders_items::query()->with('order',function($e){
+                $d->order_item = orders_items::query()->with(['features','order',function($e){
                     $e->with(['seller.image','client.image']);
-                })->find($d->order_item_id);
+                }])->find($d->order_item_id);
                 $d->order_item->features = orders_items_features::query()->where('order_item_id','=',$d->order_item_id);
             }else{
                 $d->order_item = custom_orders::query()->with(['user','reply.custom_order_seller.seller.image'])->find($d->order_item_id);
@@ -27,7 +27,7 @@ trait WithdrawMoneyHelperApi
         return $data;
     }
     public function all_withdraw_money(){
-        $itemsPaginated =  cancelled_orders_items::query()->with('images')->orderBy('id','DESC')->paginate(9);
+        $itemsPaginated =  cancelled_orders_items::query()->with(['images'])->orderBy('id','DESC')->paginate(9);
 
         $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
         return $this->transfer_and_paginate($itemsTransformed,$itemsPaginated);
