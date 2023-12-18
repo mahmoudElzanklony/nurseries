@@ -6,6 +6,7 @@ use App\Actions\CustomOrdersWithAllData;
 use App\Actions\DefaultAddress;
 use App\Actions\ImageModalSave;
 use App\Actions\PaymentModalSave;
+use App\Actions\RepliesSellersWithAllData;
 use App\Actions\SendNotification;
 use App\Filters\custom_orders\SellerNameFilter;
 use App\Filters\EndDateFilter;
@@ -195,8 +196,11 @@ class CustomerOrdersControllerResource extends Controller
                 ];
                 SendNotification::to_any_one_else_admin
                 ($data->custom_order_seller->seller_id,$info_noti,'/profile/custom-orders');
+                $final = RepliesSellersWithAllData::get()
+                    ->where('custom_order_id','=',$data->custom_order_seller->order->id)
+                    ->where('seller_id','=',$data->custom_order_seller->seller_id)->first();
                 return messages::success_output(trans('messages.saved_successfully')
-                    ,CustomOrderSellerReplyResource::make($data));
+                    ,CustomOrderSellerResource::make($final));
             }else{
                 return messages::error_output($payment_status);
             }
