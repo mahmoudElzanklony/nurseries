@@ -18,15 +18,19 @@ class GeneralServiceController extends Controller
         $table = request('table');
         if($table == 'users_products_cares'){
             try {
-                $info = DB::table($table)->find(request('id'));
+                $info = DB::table($table)
+                    ->where('product_id','=',request('id'))
+                    ->where('user_id','=',auth()->id())
+                    ->first();
                 products_care::query()
                     ->where('product_id', '=', $info->product_id)
                     ->where('user_id', '=', $info->user_id)
                     ->where('type', '=', 'client')->delete();
+                $info->delete();
             }catch (\Throwable $e){
 
             }
-        }
+        }else{
         try {
             $model = app("App\Models\\".$table);
             $model->where('id',request('id'))->delete();
@@ -35,6 +39,7 @@ class GeneralServiceController extends Controller
                 $id = request('id');
                 DB::table($table)->delete($id);
             }
+        }
         }
         return messages::success_output(trans('messages.deleted_successfully'));
 
