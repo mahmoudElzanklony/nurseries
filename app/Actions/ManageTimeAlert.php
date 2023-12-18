@@ -17,7 +17,7 @@ class ManageTimeAlert
         }else{
             $now = Carbon::create($last_time);
         }
-        $time_type = 'month';
+        $time_type = 'hour';
         if ($time_type == 'minute') {
             $now->addMinutes($time_number);
         } else if ($time_type == 'hour') {
