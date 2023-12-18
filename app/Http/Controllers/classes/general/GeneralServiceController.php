@@ -22,7 +22,7 @@ class GeneralServiceController extends Controller
                     ->where('product_id','=',request('id'))
                     ->where('user_id','=',auth()->id())
                     ->first();
-                dd($info);
+                dd(request('id'),auth()->id());
                 products_care::query()
                     ->where('product_id', '=', $info->product_id)
                     ->where('user_id', '=', $info->user_id)
