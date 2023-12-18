@@ -64,8 +64,10 @@ class UsersProductsCares extends Controller
             ->where('product_id','=',$product_id)
             ->where('type','=','seller')
             ->get();
+        dd(sizeof($product_cares),$product_cares);
         foreach($product_cares as $care){
             $time = ManageTimeAlert::manage($care->time_number,$care->time_type,null);
+            dd($time->format('Y-m-d H:i:s'),$care->time_number,$time);
             users_products_care_alerts::query()->updateOrCreate([
                 'product_care_id'=>$care->id,
                 'user_id'=>auth()->id(),
