@@ -18,7 +18,7 @@ class ProductCareResource extends JsonResource
         $next_time = $this->when($this->next_time != null, function (){
             return $this->next_time->next_alert;
         });
-
+        dd(now());
         return [
           'id'=>$this->id,
           'product_id'=>$this->product_id,
