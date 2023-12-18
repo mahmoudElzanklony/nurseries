@@ -76,10 +76,10 @@ class ProductResource extends JsonResource
             'product_as_description'=>$this->when(true,function (){
                 if(sizeof($this->rates) > 0){
                     return collect($this->rates)->filter(function ($e){
-                            return $e->rate_product_info;
+                            return $e->rate_product_info == 5;
                         })->map(function ($e){
                             return $e->rate_product_info;
-                        })->count() / sizeof($this->rates) * 100;
+                        })->sum() / sizeof($this->rates) / 5 * 100;
                 }else{
                     return 0;
                 }
