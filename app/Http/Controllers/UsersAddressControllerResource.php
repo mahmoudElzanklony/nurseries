@@ -21,6 +21,7 @@ class UsersAddressControllerResource extends Controller
     public function index()
     {
         //
+        dd(auth()->id());
         $data = user_addresses::query()
             ->where('user_id','=',auth()->id())
             ->orderBy('id','DESC')->get();
