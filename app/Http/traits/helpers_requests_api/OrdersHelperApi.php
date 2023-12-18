@@ -113,11 +113,13 @@ trait OrdersHelperApi
             send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order_item->id.' التابعه لطلب رقم '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
                 '','اضغط هنا',$order->seller->email);
         }else{
-            $order = custom_orders::query()->with(['reply','payment'])->find($data['order_item_id']);
+            $order = custom_orders::query()->with(['reply','payment'])
+                ->find($data['order_item_id']);
             // send email to seller
             send_email::send('الغاء طلب','سيتم الغاء رقم القطعه '.$order->id.'وذلك بسبب رساله من الاداره محتواها '.$data['content'],
                 '','اضغط هنا',$order->seller->email);
         }
+        return $order;
         if($order->financial_reconciliation_id != null){
             $financial = financial_reconciliations::query()->find($order->financial_reconciliation_id);
             if($financial->status != 'completed'){
