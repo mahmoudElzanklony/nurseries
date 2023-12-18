@@ -26,7 +26,10 @@ class GeneralServiceController extends Controller
                     ->where('product_id', '=', $info->product_id)
                     ->where('user_id', '=', $info->user_id)
                     ->where('type', '=', 'client')->delete();
-                $info->delete();
+                DB::table($table)
+                    ->where('product_id','=',request('id'))
+                    ->where('user_id','=',auth()->id())
+                    ->delete();
             }catch (\Throwable $e){
 
             }
