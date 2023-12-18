@@ -27,7 +27,7 @@ class ProductCareResource extends JsonResource
           'time_number'=>$this->time_number,
           'time_type'=>$this->time_type,
           'type'=>$this->type,
-          'current_time'=>date('Y-m-d H:i:s'),
+          'current_time'=>Carbon::parse(date('Y-m-d H:i:s')),
           'next_time_alert'=>$next_time,
           'remaining_time'=>$this->when($this->next_time != null, function (){
               return ManageTimeAlert::difference_between_two_times(now(),$this->next_time->next_alert,$this->time_type);
