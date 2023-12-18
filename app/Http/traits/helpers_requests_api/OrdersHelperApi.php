@@ -123,7 +123,7 @@ trait OrdersHelperApi
 
             }
         }
-        return $order->reply;
+        return $order;
         if($order->financial_reconciliation_id != null){
             $financial = financial_reconciliations::query()->find($order->financial_reconciliation_id);
             if($financial->status != 'completed'){
