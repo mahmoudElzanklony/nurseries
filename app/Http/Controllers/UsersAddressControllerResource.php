@@ -24,6 +24,7 @@ class UsersAddressControllerResource extends Controller
         $data = user_addresses::query()
             ->where('user_id','=',auth()->id())
             ->orderBy('id','DESC')->get();
+        return $data;
         return UserAddressesResource::collection($data);
     }
 
