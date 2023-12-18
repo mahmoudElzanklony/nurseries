@@ -73,6 +73,17 @@ class ProductResource extends JsonResource
                    return 0;
                }
             }),
+            'product_as_description'=>$this->when(true,function (){
+                if(sizeof($this->rates) > 0){
+                    return collect($this->rates)->filter(function ($e){
+                            return $e->rate_product_info;
+                        })->map(function ($e){
+                            return $e->rate_product_info;
+                        })->count() / sizeof($this->rates) * 100;
+                }else{
+                    return 0;
+                }
+            }),
             'rates_bar'=>$rate_bars ?? [],
             'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),
             'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
