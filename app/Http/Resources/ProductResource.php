@@ -62,6 +62,15 @@ class ProductResource extends JsonResource
             'problems'=>ProductProblemResource::collection($this->whenLoaded('problems')),
             'want_rate'=>WantToBeRated::check($this->id),
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
+            'good_rates_percentage'=>$this->when(true,function (){
+               if(sizeof($this->rates) > 0){
+                   return collect($this->rates)->map(function ($e){
+                       return $e->rate_product_info;
+                   })->sum() / sizeof($this->rates) * 100;
+               }else{
+                   return 0;
+               }
+            }),
             'rates_bar'=>$rate_bars ?? [],
             'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),
             'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
