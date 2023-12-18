@@ -8,6 +8,7 @@ use App\Models\favourites;
 use App\Models\listings_notes;
 use App\Models\notifications;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;

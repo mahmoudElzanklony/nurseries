@@ -11,25 +11,27 @@ class ManageTimeAlert
 {
 
     public static function manage($time_number,$time_type , $last_time = null){
+
         if($last_time == null) {
             $now = Carbon::now();
         }else{
             $now = Carbon::create($last_time);
         }
-
+        $time_type = 'month';
         if ($time_type == 'minute') {
-            $time = $now->addMinutes($time_number);
+            $now->addMinutes($time_number);
         } else if ($time_type == 'hour') {
-            $time = $now->addHours($time_number);
+            $now->addHours($time_number);
         } else if ($time_type == 'day') {
-            $time = $now->addDays($time_number);
+            $now->addDays($time_number);
         }  else if ($time_type == 'week') {
-            $time = $now->addDays($time_number * 7);
+            $now->addDays($time_number * 7);
         } else if ($time_type == 'month') {
-            $time = $now->addDays($time_number * 30);
+            $now->addDays($time_number * 30);
         } else if ($time_type == 'year') {
-            $time = $now->addDays($time_number * 365);
+            $now->addDays($time_number * 365);
         }
+        dd($time_type,$time_number,$now);
         return $time;
     }
 
@@ -48,6 +50,7 @@ class ManageTimeAlert
         $alert_time = Carbon::create($alert_time);
         $time_type= Str::ucfirst($time_type);
         $time_type = 'diffIn'.$time_type.'s';
+
         return  $alert_time->{$time_type}($current_time);
     }
 }
