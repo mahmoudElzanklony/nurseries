@@ -42,12 +42,12 @@ class CustomOrderResource extends JsonResource
                    return '';
                }
            }),
-           'delivery_date'=>$this->when($this->status == 'active' ,function() use ($accepted_seller_from_client){
+           'delivery_date'=>$this->when( true,function() use ($accepted_seller_from_client){
 
-                if($accepted_seller_from_client != null){
+                if($this->status == 'active' && $accepted_seller_from_client != null){
                     return Carbon::parse($accepted_seller_from_client->reply->created_at)->addDays($accepted_seller_from_client->reply->days_delivery);
                 }else{
-                    return '';
+                    return null;
                 }
             }),
            'images'=>ImagesResource::collection($this->images),
