@@ -36,6 +36,7 @@ class CustomOrderResource extends JsonResource
            'status'=>$this->status,
            'ar_status'=>trans('keywords.'.$this->status),
            'accepted_date'=>$this->when(true,function() use ($accepted_seller_from_client ){
+               // fix accepted date
                if($this->status == 'active' && $accepted_seller_from_client != null){
                     return $accepted_seller_from_client->reply->created_at;
                }else{
