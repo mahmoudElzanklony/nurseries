@@ -66,7 +66,7 @@ class ProductResource extends JsonResource
                if(sizeof($this->rates) > 0){
                    return collect($this->rates)->map(function ($e){
                        return $e->rate_product_info;
-                   })->sum() / sizeof($this->rates) * 100;
+                   });
                }else{
                    return 0;
                }
