@@ -64,7 +64,7 @@ class ProductResource extends JsonResource
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
             'good_rates_percentage'=>$this->when(true,function (){
                if(sizeof($this->rates) > 0){
-                   return collect($this->rates)->map(function ($e){
+                   return collect($this->rates)->filter(function ($e){
                        return $e->rate_product_info >= 4;
                    });
                }else{
