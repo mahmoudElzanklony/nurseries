@@ -21,7 +21,6 @@ class UsersAddressControllerResource extends Controller
     public function index()
     {
         //
-        return auth()->user()->role->name;
         $data = user_addresses::query()
             ->when(auth()->user()->role->name != 'admin',function($e){
                   $e->where('user_id','=',auth()->id());
