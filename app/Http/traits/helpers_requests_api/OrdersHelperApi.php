@@ -123,6 +123,7 @@ trait OrdersHelperApi
 
             }
         }
+        return $order->reply;
         if($order->financial_reconciliation_id != null){
             $financial = financial_reconciliations::query()->find($order->financial_reconciliation_id);
             if($financial->status != 'completed'){
@@ -138,6 +139,7 @@ trait OrdersHelperApi
                     $price += $f->price;
                 }
             }else{
+
                 $price += ($order->reply->product_price + $order->reply->delivery_price);
             }
             try {
