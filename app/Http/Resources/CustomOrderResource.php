@@ -35,11 +35,11 @@ class CustomOrderResource extends JsonResource
            'name'=>$this->name,
            'status'=>$this->status,
            'ar_status'=>trans('keywords.'.$this->status),
-           'accepted_date'=>$this->when($this->status == 'active',function() use ($accepted_seller_from_client ){
-               if($accepted_seller_from_client != null){
+           'accepted_date'=>$this->when(true,function() use ($accepted_seller_from_client ){
+               if($this->status == 'active' && $accepted_seller_from_client != null){
                     return $accepted_seller_from_client->reply->created_at;
                }else{
-                   return '';
+                   return null;
                }
            }),
            'delivery_date'=>$this->when( true,function() use ($accepted_seller_from_client){
