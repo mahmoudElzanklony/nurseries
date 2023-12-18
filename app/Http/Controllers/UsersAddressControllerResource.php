@@ -21,7 +21,11 @@ class UsersAddressControllerResource extends Controller
     public function index()
     {
         //
-        $data = user_addresses::query()->orderBy('id','DESC')->get();
+        $data = user_addresses::query()
+            ->when(auth()->user()->role->name != 'admin',function($e){
+                  $e->where('user_id','=',auth()->id());
+            })
+            ->orderBy('id','DESC')->get();
         return UserAddressesResource::collection($data);
     }
 
