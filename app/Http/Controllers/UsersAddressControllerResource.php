@@ -23,6 +23,7 @@ class UsersAddressControllerResource extends Controller
         //
         $data = user_addresses::query()
             ->when(auth()->user()->role->name != 'admin',function($e){
+                dd(auth()->id());
                   $e->where('user_id','=',auth()->id());
             })
             ->orderBy('id','DESC')->get();
