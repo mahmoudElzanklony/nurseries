@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Actions\ManageTimeAlert;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductCareResource extends JsonResource
@@ -26,7 +27,7 @@ class ProductCareResource extends JsonResource
           'time_number'=>$this->time_number,
           'time_type'=>$this->time_type,
           'type'=>$this->type,
-          'current_time'=>now(),
+          'current_time'=>Carbon::now(),
           'next_time_alert'=>$next_time,
           'remaining_time'=>$this->when($this->next_time != null, function (){
               return ManageTimeAlert::difference_between_two_times(now(),$this->next_time->next_alert,$this->time_type);
