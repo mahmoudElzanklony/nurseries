@@ -49,7 +49,7 @@ class MangeTimeAlertsCommand extends Command
         foreach($alerts as $alert){
 
             $check = ManageTimeAlert::check_send_alert($alert->next_alert);
-            if(true){
+            if($check){
                 // send Notification
                 $name = $alert->product_care->product;
                 $info = [
