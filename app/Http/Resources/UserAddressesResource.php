@@ -16,7 +16,7 @@ class UserAddressesResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'user_id'=>$this->id,
+          'user_id'=>$this->user_id,
           'address'=>$this->address,
           'longitude'=>$this->longitude,
           'latitude'=>$this->latitude,
