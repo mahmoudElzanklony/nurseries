@@ -323,7 +323,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     //=========================end of coupons==================
 
     // delete item
-    Route::post('/delete-item',[GeneralServiceController::class,'delete_item']);
+    Route::post('/delete-item',[GeneralServiceController::class,'delete_item'])->middleware('CheckApiAuth');
 
 
 
