@@ -11,13 +11,16 @@ use App\Models\User;
 class OrdersWithAllData
 {
     public static function get(){
+        dd(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller');
         $user = User::query()->with('role')->find(auth()->id());
         $orders = orders::query()->with(['payment.visa','shipments_info','items'=>function($e){
             $e->with(['product'=>function($e){
                 $e->when(GetAuthenticatedUser::get_info() != null , function ($e){
                     $e->with('favourite');
                 })
-
+                    ->when(GetAuthenticatedUser::get_info() != null && auth()->user()->role->name == 'seller' , function ($e){
+                        $e->where('user_id','=',auth()->id());
+                    })
                     ->withCount('likes')
                     ->with(['category','images','user','discounts'=>function($e){
                         $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
