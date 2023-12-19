@@ -36,6 +36,13 @@ class CustomOrderResource extends JsonResource
            'client'=>UserResource::make($this->user),
            'name'=>$this->name,
            'status'=>$this->status,
+            'address'=>$this->when(true,function (){
+                if($this->address != null){
+                    return UserAddressesResource::make($this->address);
+                }else{
+                    return null;
+                }
+            }),
            'ar_status'=>trans('keywords.'.$this->status),
            'accepted_date'=>$this->when(true,function() use ($accepted_seller_from_client ){
                 // fix accepted date

@@ -36,6 +36,7 @@ class CustomOrdersRepository
                 ImageModalSave::make($this->order->id, 'custom_orders', 'custom_orders/'.$img);
             }
         }
+        // save default address
         $admin_info = [
           'ar'=>'تم عمل اوردر خاص من قبل العميل '.auth()->user()->username.' بأسم '.$this->data['name'],
           'en'=>'Custom order has been made by '.auth()->user()->username.' and its name is '.$this->data['name'],
