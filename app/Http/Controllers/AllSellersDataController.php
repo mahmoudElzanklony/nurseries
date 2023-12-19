@@ -21,7 +21,7 @@ class AllSellersDataController extends Controller
 {
     //
     public function index(){
-        $users = User::query()->whereHas('role',function($e){
+        $users = User::query()->has('commercial_info')->has('store_info')->whereHas('role',function($e){
             $e->where('name','=','seller');
         })->orderBy('id','DESC');
 
