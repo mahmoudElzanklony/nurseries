@@ -11,7 +11,7 @@ use App\Models\User;
 class OrdersWithAllData
 {
     public static function get(){
-        dd( auth()->user()->role->name == 'seller');
+        dd(auth()->user());
         $user = User::query()->with('role')->find(auth()->id());
         $orders = orders::query()->with(['payment.visa','shipments_info','items'=>function($e){
             $e->with(['product'=>function($e){
