@@ -12,7 +12,6 @@ class RepliesSellersWithAllData
         return custom_orders_sellers::query()->with('order')
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
                 $e->whereHas('order',function($e){
-                    dd(auth()->user());
                     $e->where('user_id','=',auth()->id());
                 });
             })
