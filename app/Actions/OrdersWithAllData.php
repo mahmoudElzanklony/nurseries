@@ -14,7 +14,10 @@ class OrdersWithAllData
         $user = User::query()->with('role')->find(auth()->id());
         $orders = orders::query()->with(['payment.visa','shipments_info','items'=>function($e){
             $e->with(['product'=>function($e){
-                $e
+                $e->when(GetAuthenticatedUser::get_info() != null , function ($e){
+                    $e->with('favourite');
+                })
+
                     ->withCount('likes')
                     ->with(['category','images','user','discounts'=>function($e){
                         $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
