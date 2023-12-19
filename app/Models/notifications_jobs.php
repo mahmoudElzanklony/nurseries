@@ -10,10 +10,15 @@ class notifications_jobs extends Model
     use SoftDeletes;
     use HasFactory;
 
-    protected $fillable = ['name','notification_template_id','notification_type','user_type','send_at','content','status'];
+    protected $fillable = ['name','notification_template_id','notification_type_id','user_type','send_at','content','status'];
 
     public function template()
     {
         return $this->belongsTo(notifications_templates::class,'notification_template_id');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(notifications_types::class,'notification_type_id');
     }
 }

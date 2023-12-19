@@ -17,7 +17,7 @@ class CreateNotificationsJobsTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('notification_template_id');
-            $table->string('notification_type'); // offers or news (( notification type ))
+            $table->unsignedBigInteger('notification_type_id'); // offers or news (( notification type ))
             $table->string('user_type');
             $table->text('content');
             $table->date('send_at');
