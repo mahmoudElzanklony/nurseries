@@ -23,7 +23,16 @@ class OrderResource extends JsonResource
           'has_coupon'=>$this->has_coupon == 0 ? false:true,
           'seller_profit'=>$this->seller_profit == 0 ? false:true,
           'items_price'=>round(doubleval($this->total_items),2),
-          'address'=>$this->address,
+          'address'=>$this->when(true,function (){
+              if($this->address != null){
+                  if($this->address->location != null){
+                      return UserAddressesResource::make($this->address->location);
+                  }
+                  return $this->address;
+              }else{
+                  return null;
+              }
+          }),
           'tax_percentage'=>$this->when($this->whenLoaded('payment'),function(){
               return $this->payment->tax;
           }),
