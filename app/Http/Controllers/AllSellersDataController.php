@@ -53,7 +53,7 @@ class AllSellersDataController extends Controller
         });
 
         if(request()->has('id')){
-            return RepliesSellersWithAllData::get()->latest();
+            return RepliesSellersWithAllData::get()->latest()->first();
             return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->find(request('id')));
         }
         $output = app(Pipeline::class)
