@@ -15,9 +15,15 @@ class RepliesSellersWithAllData
                     $e->where('user_id','=',auth()->id());
                 });
             })
-            ->when(auth()->user()->role->name == 'seller',function($e){
+            ->when(auth()->user()->role->name == 'seller' ,function($e){
                 $e->where('seller_id','=',auth()->id());
             })
-            ->orderBy('id','DESC');
+            ->with(['seller','reply'=>function($e){
+                $e->with('images');
+            }])->when(request()->filled('name'),function($e){
+                $e->whereHas('order',function($q){
+                   $q->where('name','LIKE','%'.request('name').'%');
+                });
+        })->orderBy('id','DESC');
     }
 }
