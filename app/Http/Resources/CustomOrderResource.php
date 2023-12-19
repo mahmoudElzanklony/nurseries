@@ -17,12 +17,7 @@ class CustomOrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        /*$check_cancel = cancelled_orders_items::query()
-            ->where('order_item_id','=',$this->id)
-            ->where('type','=','custom_order')->first();
-        if($check_cancel != null){
-            $this->status = 'cancelled';
-        }*/
+
         if($this->status == 'active') {
             try{
                 $accepted_seller_from_client = custom_orders_sellers::query()
@@ -57,6 +52,11 @@ class CustomOrderResource extends JsonResource
                 }else{
                     return null;
                 }
+            }),
+            'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function() use ($accepted_seller_from_client ){
+                return cancelled_orders_items::query()
+                    ->where('order_item_id','=',$this->id)
+                    ->where('type','=','custom_order')->first();
             }),
            'images'=>ImagesResource::collection($this->images),
            'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){
