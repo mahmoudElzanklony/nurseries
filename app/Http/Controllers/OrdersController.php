@@ -61,7 +61,7 @@ class OrdersController extends Controller
                 }
             }
             DB::commit();
-            $order_repo->order->has_coupon = $order_repo->order->has_coupon == 0 ? false:true;
+            $order_repo->order->has_coupon = ($order_repo->order->has_coupon == 0 ? false:true);
             $order_repo->order->seller_profit = false;
             return messages::success_output(trans('messages.order_done_successfully'),$order_repo->order);
         }else{
