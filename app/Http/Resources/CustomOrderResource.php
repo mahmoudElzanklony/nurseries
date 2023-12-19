@@ -53,7 +53,7 @@ class CustomOrderResource extends JsonResource
                     return null;
                 }
             }),
-            'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function() use ($accepted_seller_from_client ){
+            'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function() {
                 return cancelled_orders_items::query()
                     ->where('order_item_id','=',$this->id)
                     ->where('type','=','custom_order')->first();

@@ -30,7 +30,7 @@ class OrderResource extends JsonResource
           'tax_value'=>$this->when($this->whenLoaded('payment'),function(){
                 return ($this->payment->money * $this->payment->tax / 100);
           }),
-          'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function() use ($accepted_seller_from_client ){
+          'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function(){
                 return cancelled_orders_items::query()
                     ->where('order_item_id','=',$this->id)
                     ->where('type','=','order')->first();
