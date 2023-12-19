@@ -46,4 +46,8 @@ class orders extends Model
     public function coupon(){
         return $this->morphOne(users_coupons::class,'couponable');
     }
+
+    public function address(){
+        return $this->hasOne(orders_addresses::class,'order_id');
+    }
 }
