@@ -24,9 +24,10 @@ class NotificationsController extends Controller
           'all'=>$data->count(),
           'unseen'=>$data->where('seen','=',0)->count()
         ];
-        notifications::query()->where('receiver_id','=',auth()->id())->update([
-            'seen'=>0
-        ]);
+        notifications::query()->where('receiver_id','=',auth()->id())
+            ->update([
+                'seen'=>1
+            ]);
         return messages::success_output('',$output);
     }
 }

@@ -21,9 +21,6 @@ class ShowNotifications
                 });
             });
         }
-        notifications::query()->where('receiver_id','=',auth()->id())->update([
-            'status'=>1
-        ]);
         return $notifications->orderBy('id','DESC')->paginate(15);
     }
 }
