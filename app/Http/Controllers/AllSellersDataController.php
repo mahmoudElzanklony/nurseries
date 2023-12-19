@@ -34,13 +34,12 @@ class AllSellersDataController extends Controller
                 ])
                 ->thenReturn()
                 ->get();
-            return UserResource::collection($output);
         }else{
             $output = app(Pipeline::class)
                 ->send($users)
                 ->through([
                     UsernameFilter::class
-                ])->get();
+                ])->thenReturn()->get();
         }
         return UserResource::collection($output);
 
