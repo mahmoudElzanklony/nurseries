@@ -54,7 +54,9 @@ class CustomOrderResource extends JsonResource
                 }
             }),
             'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function() {
-                return $this->id;
+                return cancelled_orders_items::query()
+                    ->where('order_item_id','=',$this->id)
+                    ->where('type','=','custom-order')->first() != null ? true:false;
             }),
            'images'=>ImagesResource::collection($this->images),
            'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){

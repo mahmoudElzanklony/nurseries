@@ -33,7 +33,7 @@ class OrderResource extends JsonResource
           'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function(){
                 return cancelled_orders_items::query()
                     ->where('order_item_id','=',$this->id)
-                    ->where('type','=','order')->first();
+                    ->where('type','=','order')->first() != null ? true:false;
           }),
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
