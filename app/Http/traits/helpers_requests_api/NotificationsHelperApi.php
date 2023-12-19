@@ -34,6 +34,9 @@ trait NotificationsHelperApi
     public function notifications_jobs()
     {
          $data = notifications_jobs::query()->with('template')->orderBy('id','DESC');
+         if(request()->filled('status') && request('status') == 'deleted_at'){
+             return NotificationJobResource::collection($data->onlyTrashed()->get());
+         }
          $output = app(Pipeline::class)
             ->send($data)
             ->through([
