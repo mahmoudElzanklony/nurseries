@@ -62,7 +62,7 @@ class OrdersController extends Controller
             }
             DB::commit();
 
-            return messages::success_output(trans('messages.order_done_successfully'),OrdersWithAllData::get()->find($order_repo->order->id));
+            return messages::success_output(trans('messages.order_done_successfully'),OrderResource::make(OrdersWithAllData::get()->find($order_repo->order->id)));
         }else{
             return messages::error_output('بيانات الفيزا الخاصه بك خاطئة يرجي مراجعتها من فضلك');
         }
