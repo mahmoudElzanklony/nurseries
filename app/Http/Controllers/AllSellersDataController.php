@@ -39,8 +39,7 @@ class AllSellersDataController extends Controller
                 ->send($users)
                 ->through([
                     UsernameFilter::class
-                ])
-                ->thenReturn()->paginate(15);
+                ])->get();
         }
         return UserResource::collection($output);
 
