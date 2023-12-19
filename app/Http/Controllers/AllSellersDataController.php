@@ -59,7 +59,10 @@ class AllSellersDataController extends Controller
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
-
+                StatusFilter::class,
+                \App\Filters\custom_orders\UsernameFilter::class,
+                StartDateFilter::class,
+                EndDateFilter::class,
 
             ])
             ->thenReturn()
