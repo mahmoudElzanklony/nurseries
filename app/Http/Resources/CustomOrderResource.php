@@ -36,7 +36,7 @@ class CustomOrderResource extends JsonResource
            'client'=>UserResource::make($this->user),
            'name'=>$this->name,
            'status'=>$this->status,
-            'address'=>$this->when(true,function (){
+           'address'=>$this->when(true,function (){
                 if($this->address != null){
                     return UserAddressesResource::make($this->address);
                 }else{
