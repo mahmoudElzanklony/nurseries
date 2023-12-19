@@ -34,6 +34,7 @@ class AllSellersDataController extends Controller
                 ])
                 ->thenReturn()
                 ->get();
+            return UserResource::collection($output);
         }else{
             $output = app(Pipeline::class)
                 ->send($users)
