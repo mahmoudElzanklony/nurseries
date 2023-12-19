@@ -70,11 +70,11 @@ class OrdersController extends Controller
     }
 
     public function all_orders(){
-        $orders = OrdersWithAllData::get();
         if(request()->filled('id')){
             $output = OrdersWithAllData::get()->with(['seller.commercial_info'])->findOrFail(request('id'));
             return OrderResource::make($output);
         }
+        $orders = OrdersWithAllData::get();
         $data = app(Pipeline::class)
             ->send($orders)
             ->through([
@@ -87,7 +87,6 @@ class OrdersController extends Controller
             ->thenReturn()
             ->orderBy('id','DESC')
             ->paginate(10);
-        return $data;
         return OrderResource::collection($data);
     }
 
