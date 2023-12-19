@@ -152,6 +152,10 @@ trait OrdersHelperApi
         $item = cancelled_orders_items::query()->firstOrCreate([
             'order_item_id'=>$data['order_item_id']
         ],$data);
+        if($data['type'] != 'order') {
+            custom_orders::query()->with(['reply','payment'])
+                ->find($data['order_item_id'])->update(['status'=>'cancelled']);
+        }
 
 
         $output = cancelled_orders_items::query()->with(['order_item','custom_order'])->find($item->id);

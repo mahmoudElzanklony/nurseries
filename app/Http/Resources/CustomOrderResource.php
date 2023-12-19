@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\cancelled_orders_items;
 use App\Models\custom_orders_sellers;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -16,6 +17,12 @@ class CustomOrderResource extends JsonResource
      */
     public function toArray($request)
     {
+        /*$check_cancel = cancelled_orders_items::query()
+            ->where('order_item_id','=',$this->id)
+            ->where('type','=','custom_order')->first();
+        if($check_cancel != null){
+            $this->status = 'cancelled';
+        }*/
         if($this->status == 'active') {
             try{
                 $accepted_seller_from_client = custom_orders_sellers::query()
