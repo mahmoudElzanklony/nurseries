@@ -65,7 +65,6 @@ class AllSellersDataController extends Controller
             ])
             ->thenReturn()
             ->paginate(10);
-        return $data->get();
         return CustomOrderSellerResource::collection($output);
 
     }
