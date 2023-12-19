@@ -51,7 +51,7 @@ class AllSellersDataController extends Controller
         $data = RepliesSellersWithAllData::get()->whereHas('reply',function($e){
             $e->where('client_reply','=','pending');
         });
-
+        return auth()->user();
         if(request()->has('id')){
 
             return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->find(request('id')));
