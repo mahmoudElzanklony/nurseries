@@ -53,9 +53,7 @@ class AllSellersDataController extends Controller
         });
 
         if(request()->has('id')){
-            return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->whereHas('reply',function($e){
-                $e->where('client_reply','=','pending');
-            })->find(request('id')));
+            return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->find(request('id')));
         }
         $output = app(Pipeline::class)
             ->send($data)
