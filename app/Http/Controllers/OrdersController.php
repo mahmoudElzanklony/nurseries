@@ -33,6 +33,7 @@ class OrdersController extends Controller
     //
 
     public function make_order(ordersFormRequest $request){
+        return auth()->user();
         DB::beginTransaction();
         $data = $request->validated();
         /*$default_address = DefaultAddress::get();
