@@ -149,7 +149,7 @@ class OrderRepository
                     // check if there is discount at this date
                     $discount = $this->discount_per_product($product);
                     // handle final price
-                    $final_price = $this->handle_final_price($product,$whole_price,$discount);
+                    $final_price = $this->handle_final_price($product,$whole_price,$discount,$item['quantity']);
                     $this->order_total_price += $final_price;
                     echo 'price of product'.$final_price.' and final now =====> '.$this->order_total_price .'<br>';
                     $order_item = orders_items::query()->create([
@@ -241,7 +241,7 @@ class OrderRepository
         return $dis;
     }
 
-    protected function handle_final_price($product,$wholesale = 0,$discount = 0,$type='product'){
+    protected function handle_final_price($product,$wholesale = 0,$discount = 0,$type='product',$quantity = 0){
         $price = 0;
         if($type == 'product') {
             $price = $product->main_price;
@@ -257,7 +257,7 @@ class OrderRepository
             $dis_val = ($discount / 100) * $price;
             $price = $price - $dis_val;
         }
-        return $price;
+        return $price * $quantity;
 
     }
 
