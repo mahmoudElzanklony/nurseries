@@ -281,6 +281,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::group(['prefix'=>'/notifications'],function(){
             Route::get('/types',[DashboardController::class,'notifications_types']);
             Route::get('/statistics',[DashboardController::class,'statistics_notifications']);
+            Route::get('/jobs',[DashboardController::class,'notifications_jobs']);
             Route::post('/type/save',[DashboardController::class,'save_notification_type']);
             Route::get('/templates',[DashboardController::class,'notifications_templates']);
             Route::post('/template/save',[DashboardController::class,'save_notification_template']);

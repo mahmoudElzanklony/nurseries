@@ -4,8 +4,11 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Filters\marketer\StatusFilter;
+use App\Filters\NameFilter;
 use App\Http\Requests\notificationTemplateFormRequest;
 use App\Http\Requests\sendNotificationFormRequest;
+use App\Http\Resources\NotificationJobResource;
 use App\Http\Resources\NotificationTempleteResource;
 use App\Http\Resources\NotificationTypeResource;
 use App\Http\traits\messages;
@@ -14,6 +17,7 @@ use App\Models\notifications_jobs;
 use App\Models\notifications_templates;
 use App\Models\notifications_types;
 use App\Models\User;
+use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
 
 trait NotificationsHelperApi
@@ -25,6 +29,19 @@ trait NotificationsHelperApi
           'deleted'=>notifications_jobs::query()->onlyTrashed()->count()
         ];
         return messages::success_output('',$output);
+    }
+
+    public function notifications_jobs()
+    {
+         $data = notifications_jobs::query()->with('template')->orderBy('id','DESC');
+         $output = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                StatusFilter::class
+            ])
+            ->thenReturn()
+            ->paginate(10);
+        return NotificationJobResource::collection($output);
     }
     public function notifications_types(){
         $data = notifications_types::query()->orderBy('id','DESC')->get();
