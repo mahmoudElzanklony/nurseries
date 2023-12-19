@@ -29,7 +29,7 @@ class sendNotificationFormRequest extends FormRequest
             'notification_template_id'=>'filled',
             'notification_type'=>'filled',
             'user_type'=>'filled',
-            'type'=>'filled',
+            'type_id'=>'filled',
             'send_at'=>'filled',
             'content'=>'required',
         ];
