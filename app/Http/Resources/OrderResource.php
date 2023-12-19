@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
         return [
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
-          'has_coupon'=>$this->has_coupon == 0 ? false:true,
+          'has_coupon'=>$this->has_coupon == 0 ||  $this->has_coupon == "0" ? false:true,
           'seller_profit'=>$this->seller_profit == 0 ? false:true,
           'items_price'=>round(doubleval($this->total_items),2),
           'address'=>$this->address,
