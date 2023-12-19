@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
           'has_coupon'=>$this->when(true,function (){
+              dd($this->has_coupon == 0);
               if($this->has_coupon == 0){
                   return false;
               }else{
