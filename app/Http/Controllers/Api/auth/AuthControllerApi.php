@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\cities;
 use App\Models\countries;
+use App\Models\orders;
 use App\Models\roles;
 use App\Models\tenants;
 use App\Models\User;
@@ -30,6 +31,7 @@ class AuthControllerApi extends AuthServicesClass
 
     public function test(){
        // echo dirname('routes/api.php');
+        return orders::query()->with('last_shipment_info')->first();
         echo date('Y/m/d H:m:s');
     }
 

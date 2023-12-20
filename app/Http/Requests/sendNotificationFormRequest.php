@@ -31,7 +31,7 @@ class sendNotificationFormRequest extends FormRequest
             'user_type'=>'filled',
             'notification_type_id'=>'filled',
             'send_at'=>'filled',
-            'content'=>'required',
+            'content'=>'filled',
         ];
     }
 }
