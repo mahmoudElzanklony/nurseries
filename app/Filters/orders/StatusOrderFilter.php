@@ -10,7 +10,7 @@ class StatusOrderFilter extends FilterRequest
 {
     public function handle($request, Closure $next){
         if(request()->has('status')){
-            return $next($request)->whereHas('shipments_info',function($e){
+            return $next($request)->whereHas('last_shipment_info',function($e){
                 $e->where('content','=',request('status'));
             });
         }
