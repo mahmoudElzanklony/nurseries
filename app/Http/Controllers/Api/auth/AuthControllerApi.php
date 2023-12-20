@@ -31,8 +31,13 @@ class AuthControllerApi extends AuthServicesClass
 
     public function test(){
        // echo dirname('routes/api.php');
-        return orders::query()->with('last_shipment_info')->first();
-        echo date('Y/m/d H:m:s');
+        $output =  orders::query()
+            ->with('last_shipment_info')
+            ->whereHas('last_shipment_info',function($query){
+                $query->orderByDesc('id')->where('id',request('status'));
+            })->find(10);
+        return $output;
+       // echo date('Y/m/d H:m:s');
     }
 
     public function validate_user(){
