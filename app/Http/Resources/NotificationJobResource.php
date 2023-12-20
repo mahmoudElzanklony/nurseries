@@ -16,6 +16,7 @@ class NotificationJobResource extends JsonResource
     {
         return [
           'id'=>$this->id,
+          'name'=>$this->name,
           'template'=>NotificationTempleteResource::make($this->whenLoaded('template')),
           'type'=>NotificationTypeResource::make($this->whenLoaded('type')),
           'user_type'=>$this->user_type,
