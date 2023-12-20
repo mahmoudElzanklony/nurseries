@@ -20,7 +20,7 @@ class CustomOrderResource extends JsonResource
 
         if($this->status == 'active') {
             try{
-                $accepted_seller_from_client = custom_orders_sellers::query()
+                $accepted_seller_from_client = custom_orders_sellers::query()->with('seller')
                     ->where('custom_order_id', '=', $this->id)
                     ->where('status', '=', 'accepted')->whereHas('reply', function ($e) {
                         $e->where('client_reply', '=', 'accepted');
@@ -36,6 +36,9 @@ class CustomOrderResource extends JsonResource
            'client'=>UserResource::make($this->user),
            'name'=>$this->name,
            'status'=>$this->status,
+           'selected_seller'=>$this->when($this->status != 'pending' && $accepted_seller_from_client != null , function () use ($accepted_seller_from_client){
+               return UserResource::make($accepted_seller_from_client->seller);
+           }),
            'address'=>$this->when(true,function (){
                 if($this->address != null){
                     return UserAddressesResource::make($this->address);
