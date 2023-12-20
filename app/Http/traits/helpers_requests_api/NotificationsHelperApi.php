@@ -81,7 +81,7 @@ trait NotificationsHelperApi
         if(request()->filled('one_user')){
             notifications::query()->create([
                'sender_id'=>auth()->id(),
-               'receiver_id'=>request('user_id'),
+               'receiver_id'=>request('receiver_id'),
                'ar_content'=>request('content'),
                'en_content'=>null,
                'url'=>null,
