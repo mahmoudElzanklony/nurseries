@@ -82,7 +82,7 @@ trait NotificationsHelperApi
             notifications::query()->create([
                'sender_id'=>auth()->id(),
                'receiver_id'=>request('receiver_id'),
-               'ar_content'=>request('content'),
+               'ar_content'=>request('ar_content'),
                'en_content'=>null,
                'url'=>null,
                'seen'=>0,
