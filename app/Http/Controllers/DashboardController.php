@@ -77,6 +77,7 @@ class DashboardController extends Controller
     {
         DB::beginTransaction();
         $data = $request->validated();
+
         $category = categories::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],[
