@@ -40,7 +40,7 @@ class AIController extends Controller
                 }
             }
         }
-        dd($prompt);
+       // dd($prompt);
 
         // Load the input image using Intervention Image
         $file = request()->file('image');
@@ -61,7 +61,7 @@ class AIController extends Controller
             "image" => curl_file_create(public_path('images/ai/'.$name)),
             "mask" => curl_file_create(public_path('images/ai/'.$mask_name)),
             "prompt" => $prompt,
-            "n" => 3,
+            "n" => 14,
             "size" => "1024x1024",
         ]);
 
