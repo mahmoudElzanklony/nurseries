@@ -61,7 +61,7 @@ class AIController extends Controller
             "image" => curl_file_create(public_path('images/ai/'.$name)),
             "mask" => curl_file_create(public_path('images/ai/'.$mask_name)),
             "prompt" => $prompt,
-            "n" => 14,
+            "n" => 10,
             "size" => "1024x1024",
         ]);
 
