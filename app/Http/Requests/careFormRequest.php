@@ -13,7 +13,7 @@ class careFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class careFormRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ar_name'=>'required',
+            'is_required'=>'required',
         ];
     }
 }
