@@ -17,15 +17,34 @@ class AIController extends Controller
 
         // Create a new OpenAI client.
         $client = new OpenAi(env('openai'));
-        $prompt = "add a variety of lush and vibrant plants, each with unique colors, shapes, and sizes. Ensure that the plants are seamlessly integrated into the scene and appear natural in their placement. The overall composition should evoke a sense of tranquility and aesthetics. Please include a diverse selection of plants to offer the client a range of options. The lighting should be soft and natural, complementing the overall ambiance. The final image should be of the highest quality, suitable for presentation to the client for their selection ";
+        $prompt = "add a variety of lush and vibrant plants, each with unique colors, shapes,
+        and sizes. Ensure that the plants are seamlessly integrated into the scene and appear natural in their placement.
+        The overall composition should evoke a sense of tranquility and aesthetics. Please include a diverse selection of plants to offer the client a range of options.
+        The lighting should be soft and natural, complementing the overall ambiance. The final image should be of the highest quality,
+        suitable for presentation to the client for their selection ";
+
         if(request()->has('questions')){
             foreach(request('questions') as $q){
                 $question = ai_questions::query()->find($q['id']);
                 if($question != null){
                     $prompt .= 'and '.$question->en_name.' is '.$q['answer'].' ';
+                    if($question->en_name == 'plant place'){
+                        if($q['answer'] == 'inner house'){
+                            $trees = ['Shade trees ','Heat tolerant trees ','Evergreen trees ','Ornamental trees and plants ','Flowering trees ','Deciduous trees ','Fruit trees '
+                                ,'Seasonal flowers and plants ','Fragrant trees and plants ','Aromatic plants ','Flowering plants ','Climbing plants ','Rare plants '];
+
+                            $prompt .= 'and i want to select plants from these plants collection ( '.implode(' , ',$trees).' ) ';
+                        }else{
+                            $trees = ['Hyacinthus orientalis','Aloe barbadensis','Lucky Bamboo','Kalanchoe blossfeldiana','Gardenia Jasminoides','Hedera','Scindapsus'
+                                ,'Ficus elastica Robusta','agave desmettiana','Ficus elastica Robusta','Rosa','Caladium','Mini Monstera','Epipremnum aureum'];
+
+                            $prompt .= 'and i want to select plants from these plants collection ( '.implode(' , ',$trees).' ) ';
+                        }
+                    }
                 }
             }
         }
+        dd($prompt);
 
         // Load the input image using Intervention Image
         $file = request()->file('image');
