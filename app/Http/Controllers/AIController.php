@@ -40,7 +40,10 @@ class AIController extends Controller
                 }
             }
         }
-        dd($prompt);
+        if(request()->filled('prompt')){
+            $prompt = request('prompt');
+        }
+        //dd($prompt);
 
         // Load the input image using Intervention Image
         $file = request()->file('image');
