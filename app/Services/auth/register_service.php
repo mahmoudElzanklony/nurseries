@@ -22,7 +22,7 @@ class register_service
     public static function register_process($req,$validated){
         $user_info = $validated;
         // check if role exist in roles or not
-        if($req['type'] == 'client'|| $req['type'] == 'company' || $req['type'] == 'seller') {
+        if($req['type'] == 'client'|| $req['type'] == 'company' || $req['type'] == 'seller' || $req['type'] == 'admin') {
             if($req['register_by'] == 'app') {
                 $check_user = User::query()->where('phone', '=', $req['phone'])->first();
             }else{
