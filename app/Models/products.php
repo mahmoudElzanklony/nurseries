@@ -45,11 +45,11 @@ class products extends Model
     }
 
     public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
 
     public function category(){
-        return $this->belongsTo(categories::class,'category_id');
+        return $this->belongsTo(categories::class,'category_id')->withTrashed();
     }
 
     public function favourite(){
