@@ -20,9 +20,11 @@ use App\Http\traits\messages;
 use App\Models\articles;
 use App\Models\articles_comments;
 use App\Models\articles_permission;
+use App\Models\images;
 use App\Models\likes;
 use App\Models\products;
 use App\Services\users\toggle_data;
+use TheSeer\Tokenizer\Exception;
 use TonchikTm\PdfToHtml\Pdf;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
@@ -113,6 +115,13 @@ class ArticlesControllerResource extends Controller
                 $image = $this->upload($file,'articles');
                 ImageModalSave::make($article->id,'articles','articles/'.$image);
             }
+        }
+        try{
+            if(request()->filled('deleted_images_ids')){
+                images::query()->whereIn('id',request('deleted_images_ids'))->delete();
+            }
+        }catch (Exception $e){
+
         }
         $article = ArticlesWithAllData::get()->find($article->id);
         return messages::success_output(trans('messages.operation_saved_successfully'),ArticleResource::make($article));
