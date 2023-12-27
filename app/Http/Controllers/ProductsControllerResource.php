@@ -63,6 +63,9 @@ class ProductsControllerResource extends Controller
             ->when(GetAuthenticatedUser::get_info() != null &&  auth()->check() && auth()->user()->role->name == 'seller' , function ($e){
                 $e->where('user_id','=',auth()->id());
             })
+            ->when(GetAuthenticatedUser::get_info() != null &&  auth()->check() && auth()->user()->role->name == 'client' ||   auth()->check() && auth()->user()->role->name == 'company', function ($e){
+                $e->where('quantity','>',0);
+            })
             ->where('status','=',1)
             ->withCount('likes')
             ->with(['category','wholesale_prices','images','user','discounts'=>function($e){
