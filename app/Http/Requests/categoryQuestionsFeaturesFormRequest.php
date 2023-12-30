@@ -24,6 +24,7 @@ class categoryQuestionsFeaturesFormRequest extends FormRequest
     public function rules()
     {
         return [
+            'id'=>'filled',
             'ar_name'=>'required',
             'features'=>'nullable|array',
             'features.*'=>'nullable',
