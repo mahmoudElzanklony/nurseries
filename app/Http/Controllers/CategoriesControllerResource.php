@@ -47,10 +47,7 @@ class CategoriesControllerResource extends Controller
             $final = app(Pipeline::class)
                 ->send($data)
                 ->through([
-                    StartDateFilter::class,
-                    EndDateFilter::class,
-                    UsernameFilter::class,
-                    StatusFilter::class
+                    NameFilter::class
                 ])
                 ->thenReturn()
                 ->get();
