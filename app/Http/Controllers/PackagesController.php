@@ -4,6 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Actions\MakePackageOrder;
 use App\Actions\PaymentModalSave;
+use App\Filters\EndDateFilter;
+use App\Filters\IdFilter;
+use App\Filters\NameOnlyFilter;
+use App\Filters\orders\ClientNameFilter;
+use App\Filters\orders\MaxPriceFilter;
+use App\Filters\orders\MinPriceFilter;
+use App\Filters\orders\StatusOrderFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Controllers\classes\payment\VisaPayment;
 use App\Http\Requests\packagesOrdersFormRequest;
 use App\Http\Resources\PackageResource;
@@ -14,6 +23,8 @@ use App\Models\users_packages;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
+use Illuminate\Pipeline\Pipeline;
+
 class PackagesController extends Controller
 {
     use upload_image;
@@ -22,6 +33,14 @@ class PackagesController extends Controller
         $data = packages::query()->when(request()->has('type'),function ($e){
             $e->where('type','=',request('type'));
         })->withCount('users')->with('features')->orderBy('id','DESC')->get();
+        $final = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                NameOnlyFilter::class
+            ])
+            ->thenReturn()
+            ->orderBy('id','DESC')
+            ->paginate(10);
         return PackageResource::collection($data);
 
     }

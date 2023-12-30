@@ -58,6 +58,7 @@ trait PackagesHelperApi
             ->through([
                 StartDateFilter::class,
                 EndDateFilter::class,
+
             ])
             ->thenReturn()
             ->paginate(10);
