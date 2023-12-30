@@ -4,15 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ProductQuestionResource;
 use App\Http\traits\messages;
+use App\Http\traits\upload_image;
 use App\Models\ai_questions;
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Intervention\Image\Facades\Image;
 use Orhanerday\OpenAi\OpenAi;
+use Illuminate\Support\Facades\File;
 
 
 class AIController extends Controller
 {
     //
+    use messages;
     public function index(){
 
         // Create a new OpenAI client.
@@ -45,12 +50,10 @@ class AIController extends Controller
         }
         //dd($prompt);
 
-        // Load the input image using Intervention Image
-        $file = request()->file('image');
-        $name = rand(0,999999).'.png';
 
-        $mask = request()->file('mask');
-        $mask_name = rand(0,999999).'.png';
+        return $this->stability_ai($prompt,
+            file_get_contents(request()->file('image')->getRealPath()),
+            file_get_contents(request()->file('mask')->getRealPath()) ?? null);
 
         Image::make($file)
             ->save(public_path('images/ai/').$name);
@@ -76,5 +79,67 @@ class AIController extends Controller
     public function ai_questions(){
         $data =  ai_questions::query()->with('options')->get();
         return ProductQuestionResource::collection($data);
+    }
+
+    public function stability_ai($prompt,$original,$mask)
+    {
+        $url = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image/masking';
+        $client = new Client();
+        $headers = [
+            'Authorization' => 'Bearer ' . env('stability_ai')
+        ];
+        if($mask != null) {
+            $body = [
+                "mask_source" => "MASK_IMAGE_BLACK",
+                //"image_strength"=> 0.35,
+                //"init_image_mode"=> 'IMAGE_STRENGTH',
+                "text_prompts[0][text]" => $prompt,
+                "cfg_scale" => 7,
+                "clip_guidance_preset" => "FAST_BLUE",
+                "sampler" => "K_DPM_2_ANCESTRAL",
+                "samples" => 10,
+                "steps" => 30
+            ];
+            $response =  Http::withHeaders($headers)
+                ->attach('init_image', $original)
+                ->attach('mask_image', $mask)
+                ->post($url,$body);
+        }else{
+            $body = [
+                "image_strength"=> 0.35,
+                "init_image_mode"=> "IMAGE_STRENGTH",
+                //"image_strength"=> 0.35,
+                //"init_image_mode"=> 'IMAGE_STRENGTH',
+                "text_prompts[0][text]" => $prompt,
+                "cfg_scale" => 7,
+                "clip_guidance_preset" => "FAST_BLUE",
+                "sampler" => "K_DPM_2_ANCESTRAL",
+                "samples" => 10,
+                "steps" => 30
+            ];
+            $response =  Http::withHeaders($headers)
+                ->attach('init_image', $original)
+                ->post($url,$body);
+        }
+
+
+
+       /* File::deleteDirectory(public_path('/images/ai'));
+        mkdir(public_path('/images/ai'));*/
+        try {
+            foreach ($response->json()['artifacts'] as $key => $img) {
+                $image = $img['base64'];  // your base64 encoded
+                $file = base64_decode($image);
+                $safeName = rand(0, 10000000) . 'ai.' . 'png';
+                $success = file_put_contents(public_path() . '/images/ai/' . $safeName, $file);
+
+                $result[$key] = ['url' => url()->current() . '/images/ai/' . $safeName];
+            }
+            return $result;
+        }catch (\Exception $e){
+            return messages::error_output($response->json()['message']);
+        }
+
+
     }
 }
