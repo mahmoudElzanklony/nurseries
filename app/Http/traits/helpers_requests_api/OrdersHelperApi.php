@@ -79,7 +79,7 @@ trait OrdersHelperApi
     }
 
     public function custom_orders_data(){
-        $orders = CustomOrdersWithAllData::get();
+        $orders = CustomOrdersWithAllData::get()->with('payment');
         $data = app(Pipeline::class)
             ->send($orders)
             ->through([
