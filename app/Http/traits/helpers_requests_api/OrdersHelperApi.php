@@ -68,6 +68,8 @@ trait OrdersHelperApi
                 StatusOrderFilter::class,
                 ClientNameFilter::class,
                 UserIdFilter::class,
+                MinPriceFilter::class,
+                MaxPriceFilter::class,
                 IdFilter::class
             ])
             ->thenReturn()
