@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\EndDateFilter;
+use App\Filters\marketer\StatusFilter;
+use App\Filters\marketer\UsernameFilter;
 use App\Filters\NameFilter;
+use App\Filters\StartDateFilter;
 use App\Http\Resources\CategoriesResource;
 use App\Http\traits\messages;
 use App\Models\categories;
@@ -40,7 +44,17 @@ class CategoriesControllerResource extends Controller
         if(request()->has('category_id')){
             return CategoriesResource::make($data->find(request('category_id')));
         }else{
-            return CategoriesResource::collection($data->get());
+            $final = app(Pipeline::class)
+                ->send($data)
+                ->through([
+                    StartDateFilter::class,
+                    EndDateFilter::class,
+                    UsernameFilter::class,
+                    StatusFilter::class
+                ])
+                ->thenReturn()
+                ->get();
+            return CategoriesResource::collection($final);
         }
         // return messages::error_output('there is no category with this id');
     }
