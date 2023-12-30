@@ -41,7 +41,7 @@ class PackagesController extends Controller
             ->thenReturn()
             ->orderBy('id','DESC')
             ->paginate(10);
-        return PackageResource::collection($data);
+        return PackageResource::collection($final);
 
     }
 
