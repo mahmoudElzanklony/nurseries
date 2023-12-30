@@ -32,7 +32,7 @@ class PackagesController extends Controller
     public function index(){
         $data = packages::query()->when(request()->has('type'),function ($e){
             $e->where('type','=',request('type'));
-        })->withCount('users')->with('features')->orderBy('id','DESC')->get();
+        })->withCount('users')->with('features')->orderBy('id','DESC');
         $final = app(Pipeline::class)
             ->send($data)
             ->through([
