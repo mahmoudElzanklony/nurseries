@@ -4,8 +4,10 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Filters\EndDateFilter;
 use App\Filters\marketer\StatusFilter;
 use App\Filters\NameFilter;
+use App\Filters\StartDateFilter;
 use App\Http\Requests\notificationTemplateFormRequest;
 use App\Http\Requests\sendNotificationFormRequest;
 use App\Http\Resources\NotificationJobResource;
@@ -40,7 +42,9 @@ trait NotificationsHelperApi
          $output = app(Pipeline::class)
             ->send($data)
             ->through([
-                StatusFilter::class
+                StatusFilter::class,
+                StartDateFilter::class,
+                EndDateFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
