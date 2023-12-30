@@ -4,6 +4,10 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Filters\EndDateFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\UsernameFilter;
+use App\Filters\users\RoleNameFilter;
 use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerResource;
 use App\Http\Resources\FinancialReconciliationResource;
@@ -21,6 +25,7 @@ use App\Models\orders_items_features;
 use App\Models\rejected_financial_orders;
 use App\Models\User;
 use App\Repositories\FinancialReconciliationsRepository;
+use Illuminate\Pipeline\Pipeline;
 
 trait FinancialHelperApi
 {
@@ -55,8 +60,16 @@ trait FinancialHelperApi
             ->when($status != '',function($q) use ($status){
                 $q->where('status','=',$status);
             })
-             ->orderBy('id','DESC')->paginate(10);
-        return FinancialReconciliationResource::collection($output);
+             ->orderBy('id','DESC');
+        $final = app(Pipeline::class)
+            ->send($output)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(15);
+        return FinancialReconciliationResource::collection($final);
     }
 
     public function pending_orders_data(){
