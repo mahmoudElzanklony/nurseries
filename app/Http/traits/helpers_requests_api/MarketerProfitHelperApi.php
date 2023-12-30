@@ -34,7 +34,7 @@ trait MarketerProfitHelperApi
                 StatusFilter::class
             ])
             ->thenReturn()
-            ->paginate();
+            ->paginate(10);
         return MarketerProfitResource::collection($data);
     }
 

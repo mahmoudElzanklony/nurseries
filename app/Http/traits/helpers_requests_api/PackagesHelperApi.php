@@ -4,6 +4,10 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Filters\EndDateFilter;
+use App\Filters\marketer\StatusFilter;
+use App\Filters\marketer\UsernameFilter;
+use App\Filters\StartDateFilter;
 use App\Http\Requests\packageFeaturesFormRequest;
 use App\Http\Requests\packagesFormRequest;
 use App\Http\Resources\PackageResource;
@@ -14,6 +18,8 @@ use App\Models\packages_features;
 use App\Models\users_packages;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
+use Illuminate\Pipeline\Pipeline;
+
 trait PackagesHelperApi
 {
     use upload_image;
@@ -46,8 +52,16 @@ trait PackagesHelperApi
     }
 
     public function packages_users(){
-        $data = users_packages::query()->with(['user','package'])->orderBy('id','DESC')->paginate(10);
-        return UserPackageResource::collection($data);
+        $data = users_packages::query()->with(['user','package'])->orderBy('id','DESC');
+        $final  = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(10);
+        return UserPackageResource::collection($final);
     }
 
     public function packages_statistics(){

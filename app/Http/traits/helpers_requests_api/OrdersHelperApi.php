@@ -17,6 +17,7 @@ use App\Filters\orders\MinPriceFilter;
 use App\Filters\orders\StatusOrderFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\UserIdFilter;
+use App\Filters\UsernameFilter;
 use App\Http\Requests\cancelOrderItemFormRequest;
 use App\Http\Resources\CancelOrderItemResource;
 use App\Http\Resources\CustomOrderResource;
