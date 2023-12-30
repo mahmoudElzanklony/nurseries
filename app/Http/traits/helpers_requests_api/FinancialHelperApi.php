@@ -126,7 +126,15 @@ trait FinancialHelperApi
                 array_push($output, $result);
             }
         }
-        return $output;
+        $final = app(Pipeline::class)
+            ->send($output)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(15);
+        return $final;
     }
 
     public function financial_details(){
