@@ -126,15 +126,15 @@ trait FinancialHelperApi
                 array_push($output, $result);
             }
         }
-        $final = app(Pipeline::class)
+        $output = app(Pipeline::class)
             ->send($output)
             ->through([
                 StartDateFilter::class,
                 EndDateFilter::class,
             ])
             ->thenReturn()
-            ->paginate(15);
-        return $final;
+            ->get();
+        return $output;
     }
 
     public function financial_details(){
