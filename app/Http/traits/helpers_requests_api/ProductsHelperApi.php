@@ -4,11 +4,21 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Filters\CategoryIdFilter;
+use App\Filters\EndDateFilter;
+use App\Filters\IDsFilter;
+use App\Filters\marketer\StatusFilter;
+use App\Filters\NameFilter;
+use App\Filters\products\MaxPriceFilter;
+use App\Filters\products\MinPriceFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\UserIdFilter;
 use App\Http\Resources\ProductProblemResource;
 use App\Http\traits\messages;
 use App\Models\products;
 use App\Models\products_problems;
 use App\Models\products_problems_replies;
+use Illuminate\Pipeline\Pipeline;
 
 trait ProductsHelperApi
 {
@@ -52,8 +62,17 @@ trait ProductsHelperApi
             })
             ->with('reply')
             ->with('user')
-            ->orderBy('id','DESC')->paginate(15);
-        return ProductProblemResource::collection($products_problems);
+            ->orderBy('id','DESC');
+        $output = app(Pipeline::class)
+            ->send($products_problems)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+                StatusFilter::class
+            ])
+            ->thenReturn()
+            ->paginate(10);
+        return ProductProblemResource::collection($output);
     }
 
     public function reply_problem(){
