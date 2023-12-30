@@ -4,12 +4,17 @@
 namespace App\Http\traits\helpers_requests_api;
 
 
+use App\Filters\EndDateFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\UsernameFilter;
+use App\Filters\users\RoleNameFilter;
 use App\Http\Resources\CancelOrderItemResource;
 use App\Models\cancelled_orders_items;
 use App\Models\custom_orders;
 use App\Models\orders_items;
 use App\Models\orders_items_features;
 use App\Models\withdraw_money;
+use Illuminate\Pipeline\Pipeline;
 
 trait WithdrawMoneyHelperApi
 {
@@ -27,8 +32,15 @@ trait WithdrawMoneyHelperApi
         return $data;
     }
     public function all_withdraw_money(){
-        $itemsPaginated =  cancelled_orders_items::query()->with(['images'])->orderBy('id','DESC')->paginate(9);
-
+        $itemsPaginated =  cancelled_orders_items::query()->with(['images'])->orderBy('id','DESC');
+        $itemsPaginated = app(Pipeline::class)
+            ->send($itemsPaginated)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(15);
         $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
         return $this->transfer_and_paginate($itemsTransformed,$itemsPaginated);
     }
@@ -40,7 +52,15 @@ trait WithdrawMoneyHelperApi
                 $q->whereHas('product',function($e){
                     $e->where('id','=',request('product_id'));
                 });
-            })->paginate(9);
+            });
+        $itemsPaginated = app(Pipeline::class)
+            ->send($itemsPaginated)
+            ->through([
+                StartDateFilter::class,
+                EndDateFilter::class,
+            ])
+            ->thenReturn()
+            ->paginate(15);
         // features money
         $itemsTransformed =  $this->manage_data($itemsPaginated->getCollection());
 
