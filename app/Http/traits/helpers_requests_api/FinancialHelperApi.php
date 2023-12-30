@@ -126,14 +126,7 @@ trait FinancialHelperApi
                 array_push($output, $result);
             }
         }
-        $output = app(Pipeline::class)
-            ->send($output)
-            ->through([
-                StartDateFilter::class,
-                EndDateFilter::class,
-            ])
-            ->thenReturn()
-            ->get();
+
         return $output;
     }
 
