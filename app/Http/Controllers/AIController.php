@@ -84,12 +84,13 @@ class AIController extends Controller
 
     public function stability_ai($prompt,$original,$mask)
     {
-        $url = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image/masking';
+
         $client = new Client();
         $headers = [
             'Authorization' => 'Bearer ' . env('stability_ai')
         ];
         if($mask != null) {
+            $url = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image/masking';
             $body = [
                 "mask_source" => "MASK_IMAGE_BLACK",
                 //"image_strength"=> 0.35,
@@ -106,11 +107,10 @@ class AIController extends Controller
                 ->attach('mask_image', $mask)
                 ->post($url,$body);
         }else{
+            $url = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image';
             $body = [
                 "image_strength"=> 0.35,
                 "init_image_mode"=> "IMAGE_STRENGTH",
-                //"image_strength"=> 0.35,
-                //"init_image_mode"=> 'IMAGE_STRENGTH',
                 "text_prompts[0][text]" => $prompt,
                 "cfg_scale" => 7,
                 "clip_guidance_preset" => "FAST_BLUE",
