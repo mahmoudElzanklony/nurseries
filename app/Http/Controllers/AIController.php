@@ -125,8 +125,8 @@ class AIController extends Controller
 
 
 
-       /* File::deleteDirectory(public_path('/images/ai'));
-        mkdir(public_path('/images/ai'));*/
+        File::deleteDirectory(public_path('/images/ai'));
+        mkdir(public_path('/images/ai'));
         try {
             foreach ($response->json()['artifacts'] as $key => $img) {
                 $image = $img['base64'];  // your base64 encoded
@@ -138,7 +138,7 @@ class AIController extends Controller
             }
             return $result;
         }catch (\Exception $e){
-            return messages::error_output($response->json()['message']);
+            return messages::error_output($response->json()['message'] ?? $response->json());
         }
 
 
