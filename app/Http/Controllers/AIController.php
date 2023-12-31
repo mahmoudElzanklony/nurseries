@@ -53,7 +53,7 @@ class AIController extends Controller
 
         return $this->stability_ai($prompt,
             file_get_contents(request()->file('image')->getRealPath()),
-            file_get_contents(request()->hasFile('mask') ? request()->file('mask')->getRealPath() : null) ?? null
+             null
         );
 
         Image::make($file)
