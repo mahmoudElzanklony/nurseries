@@ -134,7 +134,7 @@ class AIController extends Controller
                 $safeName = rand(0, 10000000) . 'ai.' . 'png';
                 $success = file_put_contents(public_path() . '/images/ai/' . $safeName, $file);
 
-                $result[$key] = ['url' => url()->current() . '/images/ai/' . $safeName];
+                $result[$key] = ['url' => url('/') . '/images/ai/' . $safeName];
             }
             return $result;
         }catch (\Exception $e){
