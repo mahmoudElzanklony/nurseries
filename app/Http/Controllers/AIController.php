@@ -122,7 +122,7 @@ class AIController extends Controller
                 ->attach('init_image', $original)
                 ->post($url,$body);
         }
-
+        dd($body,$response->json());
 
 
        /* File::deleteDirectory(public_path('/images/ai'));
