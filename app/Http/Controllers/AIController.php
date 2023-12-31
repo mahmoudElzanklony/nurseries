@@ -115,7 +115,7 @@ class AIController extends Controller
                 "cfg_scale" => 7,
                 "clip_guidance_preset" => "FAST_BLUE",
                 "sampler" => "K_DPM_2_ANCESTRAL",
-                "samples" => 10,
+                "samples" => 6,
                 "steps" => 30
             ];
             $response =  Http::withHeaders($headers)
