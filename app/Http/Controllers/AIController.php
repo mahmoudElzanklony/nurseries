@@ -51,8 +51,9 @@ class AIController extends Controller
         //dd($prompt);
 
         try {
+            $realPath = request()->file('image')->getRealPath();
             return $this->stability_ai($prompt,
-                file_get_contents(request()->file('image')->getRealPath()),
+                file_get_contents($realPath),
                 null
             );
         }catch (\Exception $e){
