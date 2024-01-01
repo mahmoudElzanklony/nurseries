@@ -50,11 +50,14 @@ class AIController extends Controller
         }
         //dd($prompt);
 
-
-        return $this->stability_ai($prompt,
-            file_get_contents(request()->file('image')->getRealPath()),
-             null
-        );
+        try {
+            return $this->stability_ai($prompt,
+                file_get_contents(request()->file('image')->getRealPath()),
+                null
+            );
+        }catch (\Exception $e){
+            return messages::error_output($e);
+        }
 
         Image::make($file)
             ->save(public_path('images/ai/').$name);
