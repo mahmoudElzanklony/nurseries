@@ -40,7 +40,7 @@ class CheckPlaceMapLocation
                         $result =  collect($deliveries)->first(function ($e) use ($address_component){
                             return $e['city']['en_name'] == $address_component['long_name'];
                         });
-                        break;
+                        return $result;
                     }
                 }
             }
