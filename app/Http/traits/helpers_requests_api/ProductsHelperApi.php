@@ -73,6 +73,8 @@ trait ProductsHelperApi
             ->thenReturn()
             ->paginate(10);
         return ProductProblemResource::collection($output);
+        // product at problem
+        // tax , financial per admin , financial per seller
     }
 
     public function reply_problem(){
