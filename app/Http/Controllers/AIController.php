@@ -48,7 +48,7 @@ class AIController extends Controller
         if(request()->filled('prompt')){
             $prompt = request('prompt');
         }
-        dd($prompt);
+
 
         try {
             $realPath = request()->file('image')->getRealPath();
