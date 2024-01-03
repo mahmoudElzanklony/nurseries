@@ -113,14 +113,14 @@ class AIController extends Controller
         }else{
             $url = 'https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/image-to-image';
             $body = [
-                "image_strength"=> 0.40,
+                "image_strength"=> 0.50,
                 "init_image_mode"=> "IMAGE_STRENGTH",
                 "text_prompts[0][text]" => $prompt,
                 "cfg_scale" => 5,
                 "clip_guidance_preset" => "FAST_BLUE",
                // "sampler" => "K_DPM_2_ANCESTRAL",
                 "samples" => 6,
-                "steps" => 30
+                "steps" => 40
             ];
             $response =  Http::withHeaders($headers)
                 ->attach('init_image', $original)
