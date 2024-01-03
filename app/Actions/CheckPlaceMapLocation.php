@@ -37,7 +37,7 @@ class CheckPlaceMapLocation
             foreach ($response['results'] as $result) {
                 foreach ($result['address_components'] as $address_component) {
                     if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
-                        $result =  collect($deliveries)->filter(function ($e) use ($address_component){
+                        $result =  collect($deliveries)->first(function ($e) use ($address_component){
                             return $e['city']['en_name'] == $address_component['long_name'];
                         });
                         dd($result);
