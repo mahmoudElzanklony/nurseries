@@ -12,6 +12,12 @@ class CheckPlaceMapLocation
     public static function check_delivery($product_id,$default_address){
         $deliveries = products_delivery::query()->with('city')
             ->where('product_id','=',$product_id)->get();
+
+
+        $cities_en_english = $deliveries->map(function($e){
+            return $e['en_name'];
+        });
+
         if(sizeof($deliveries) == 0){
             return false;
         }
@@ -26,27 +32,19 @@ class CheckPlaceMapLocation
         // Parse the response
         $response = json_decode($client_request->getBody(), true);
         $place_id = null;
-        foreach ($response['results'] as $result) {
-            if(isset($result['types']) && in_array('administrative_area_level_2',$result['types'])){
-                $place_id = $result['place_id'];
-                $cities_codes = $deliveries->map(function ($e){
-                    return $e->city->map_code;
-                })->toArray();
-                echo "place id ===>".$place_id;
-                if(!(in_array($result['place_id'],$cities_codes))){
-                    return false;
+        if (isset($response['results']) && is_array($response['results'])) {
+            foreach ($response['results'] as $result) {
+                foreach ($result['address_components'] as $address_component) {
+                    if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
+                        return $deliveries->find(function ($e) use ($address_component){
+                            return $e->en_name == $address_component['long_name'];
+                        });
+                        break;
+                    }
                 }
             }
         }
-        if($place_id == null){
-            return false;
-        }
-        foreach($deliveries as $delivery){
-            if($delivery->city->map_code == $place_id){
-                return $delivery;
-                break;
-            }
-        }
+
         return false;
     }
 }
