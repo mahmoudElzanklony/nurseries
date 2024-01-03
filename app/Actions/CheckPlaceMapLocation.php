@@ -32,23 +32,19 @@ class CheckPlaceMapLocation
         // Parse the response
         $response = json_decode($client_request->getBody(), true);
         $place_id = null;
-        $result = false;
         if (isset($response['results']) && is_array($response['results'])) {
             foreach ($response['results'] as $result) {
                 foreach ($result['address_components'] as $address_component) {
 
                     if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
                         echo $address_component['long_name'] ."<br>";
-                        $result =  collect($deliveries)->first(function ($e) use ($address_component){
+                        return collect($deliveries)->first(function ($e) use ($address_component){
                             return $e['city']['en_name'] == $address_component['long_name'];
                         });
-
-                        return $result;
                     }
                 }
             }
         }
-        dd($result);
-        return $result;
+        return false;
     }
 }
