@@ -44,7 +44,6 @@ class OrderRepository
         foreach($products as $product){
           //  if(CheckProductSupportDeliveryToUserAddress::check($product['product_id'],$this->default_address) == false){
             $delivery = CheckPlaceMapLocation::check_delivery($product['product_id'],$this->default_address);
-            dd($delivery);
             if($delivery == false){
                 $err++;
                 $product = products::query()->select(app()->getLocale().'_name as name')->find($product['product_id']);
