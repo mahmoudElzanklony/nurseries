@@ -32,6 +32,8 @@ class CheckPlaceMapLocation
                 $cities_codes = $deliveries->map(function ($e){
                     return $e->city->map_code;
                 })->toArray();
+                echo "place id ===>".$place_id."<br>";
+                echo "cities code ===> ".implode("||",$cities_codes);
                 if(!(in_array($result['place_id'],$cities_codes))){
                     return false;
                 }
