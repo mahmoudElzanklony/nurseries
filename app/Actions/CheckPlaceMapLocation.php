@@ -36,10 +36,9 @@ class CheckPlaceMapLocation
         if (isset($response['results']) && is_array($response['results'])) {
             foreach ($response['results'] as $result) {
                 foreach ($result['address_components'] as $address_component) {
-                    dd($address_component['long_name']);
                     if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
                         $result =  $deliveries->find(function ($e) use ($address_component){
-                            return $e->en_name == $address_component['long_name'];
+                            return $e->city->en_name == $address_component['long_name'];
                         });
                         break;
                     }
