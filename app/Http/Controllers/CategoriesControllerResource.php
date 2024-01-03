@@ -22,7 +22,7 @@ class CategoriesControllerResource extends Controller
      */
     public function index()
     {
-        $data = categories::query()->orderBy('id','DESC');
+        $data = categories::withTrashed()->orderBy('id','DESC');
 
         $output = app(Pipeline::class)
             ->send($data)
