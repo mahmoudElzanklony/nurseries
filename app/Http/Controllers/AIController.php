@@ -118,7 +118,7 @@ class AIController extends Controller
                 "text_prompts[0][text]" => $prompt,
                 "cfg_scale" => 5,
                 "clip_guidance_preset" => "FAST_BLUE",
-                "sampler" => "K_DPM_2_ANCESTRAL",
+               // "sampler" => "K_DPM_2_ANCESTRAL",
                 "samples" => 6,
                 "steps" => 30
             ];
