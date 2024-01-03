@@ -45,6 +45,7 @@ class CheckPlaceMapLocation
                 }
             }
         }
+        dd($result);
         return $result;
     }
 }
