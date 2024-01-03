@@ -116,7 +116,7 @@ class AIController extends Controller
                 "image_strength"=> 0.35,
                 "init_image_mode"=> "IMAGE_STRENGTH",
                 "text_prompts[0][text]" => $prompt,
-                "cfg_scale" => 20,
+                "cfg_scale" => 5,
                 "clip_guidance_preset" => "FAST_BLUE",
                 "sampler" => "K_DPM_2_ANCESTRAL",
                 "samples" => 6,
