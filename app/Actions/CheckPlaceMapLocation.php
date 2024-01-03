@@ -45,7 +45,7 @@ class CheckPlaceMapLocation
                 }
             }
         }
-        dd($result);
+        dd($cities_en_english);
         return $result;
     }
 }
