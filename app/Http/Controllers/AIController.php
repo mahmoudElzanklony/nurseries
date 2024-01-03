@@ -22,7 +22,7 @@ class AIController extends Controller
 
         // Create a new OpenAI client.
         $client = new OpenAi(env('openai'));
-        $prompt = "A bedroom with a warm and inviting ambiance is pictured, showcasing a comfortable bed and soft, muted decor. Suspended above the bed is an array of beautiful indoor plants, including cascading golden pothos with their vibrant green leaves and delicate ferns in stylish planters, creating a lush, green oasis that enhances the peaceful and rejuvenating atmosphere of the room.";
+        $prompt = "an image of a well-designed space, enriched with a variety of indoor plants suitable for any indoor setting, be it a home, office, or commercial area. Feature an assortment of plants like tall, leafy fiddle leaf figs for corners, small succulents for desks or shelves, and cascading spider plants for hanging planters. Include peace lilies and rubber plants, known for their air-purifying qualities, placed in strategic locations to enhance air quality and add a refreshing touch. The arrangement of the plants should be aesthetically pleasing, with a mix of sizes, textures, and colors, creating a vibrant yet harmonious environment. This imagery should capture the essence of integrating greenery into various indoor spaces, showcasing how plants can transform any area into a more inviting and lively place.";
 
         if(request()->has('questions')){
             foreach(request('questions') as $q){
