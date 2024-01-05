@@ -107,10 +107,10 @@ class ProductsControllerResource extends Controller
             $check_cat = categories::query()->find(request('id'));
            // if(request()->filled('id') && $check_cat->id != request('category_id')){
             if(request()->filled('id') ){
-                products_questions_answers::query()
+                /*products_questions_answers::query()
                     ->where('product_id','=',request('id'))->delete();
                 products_features_prices::query()
-                    ->where('product_id','=',request('id'))->delete();
+                    ->where('product_id','=',request('id'))->delete();*/
             }
         }catch (\Exception $exception){
 

@@ -157,7 +157,7 @@ class OrderRepository
                         'order_id' => $this->order->id,
                         'product_id' => $item['product_id'],
                         'quantity' => $item['quantity'],
-                        'price' => $final_price,
+                        'price' => $final_price, // this is total prices for all quantities
                     ]);
                     // check for apply coupon
                     if($this->validate_product_for_coupon($item['product_id']) == true){
