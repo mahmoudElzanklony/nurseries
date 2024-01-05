@@ -25,6 +25,8 @@ use App\Models\centralized_products_data;
 use App\Models\followers;
 use App\Models\images;
 use App\Models\products;
+use App\Models\products_delivery;
+use App\Models\products_discount;
 use App\Models\products_features_prices;
 use App\Models\products_prices;
 use App\Models\products_questions_answers;
@@ -107,10 +109,12 @@ class ProductsControllerResource extends Controller
             $check_cat = categories::query()->find(request('id'));
            // if(request()->filled('id') && $check_cat->id != request('category_id')){
             if(request()->filled('id') ){
-                /*products_questions_answers::query()
+                products_questions_answers::query()
                     ->where('product_id','=',request('id'))->delete();
-                products_features_prices::query()
-                    ->where('product_id','=',request('id'))->delete();*/
+                products_delivery::query()
+                    ->where('product_id','=',request('id'))->delete();
+                products_discount::query()
+                    ->where('product_id','=',request('id'))->delete();
             }
         }catch (\Exception $exception){
 
