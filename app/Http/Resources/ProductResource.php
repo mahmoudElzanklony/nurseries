@@ -123,7 +123,8 @@ class ProductResource extends JsonResource
             'features'=>ProductFeaturesResource::collection($this->whenLoaded('features')),
             'deliveries'=>ProductDeliveriesResource::collection($this->whenLoaded('deliveries')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
-            'delivery'=>auth()->check() && $delivery != false ? $delivery :trans('errors.product_doesnt_support_delivery'),
+            'delivery'=>auth()->check() && $delivery != false ? $delivery :null,
+            'delivery_ar'=>auth()->check() && $delivery == false ? trans('errors.product_doesnt_support_delivery'):null,
             'discounts'=>ProductDiscountsResource::collection($this->whenLoaded('discounts')),
             'wholesale_prices'=>ProductWholesalePricesResource::collection($this->whenLoaded('wholesale_prices')),
 
