@@ -33,8 +33,8 @@ class CheckPlaceMapLocation
         $response = json_decode($client_request->getBody(), true);
         $place_id = null;
         if (isset($response['results']) && is_array($response['results'])) {
+            dd($response['results']);
             foreach ($response['results'] as $result) {
-                dd($result);
                 foreach ($result['address_components'] as $address_component) {
                     echo $address_component['long_name']."<br>";
                     if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
