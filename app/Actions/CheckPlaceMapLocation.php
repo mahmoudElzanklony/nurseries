@@ -32,6 +32,7 @@ class CheckPlaceMapLocation
         // Parse the response
         $response = json_decode($client_request->getBody(), true);
         $place_id = null;
+        echo "test----------";
         if (isset($response['results']) && is_array($response['results'])) {
             foreach ($response['results'] as $result) {
                 foreach ($result['address_components'] as $address_component) {
