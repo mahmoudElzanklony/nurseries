@@ -111,8 +111,6 @@ class ProductsControllerResource extends Controller
             if(request()->filled('id') ){
                 products_questions_answers::query()
                     ->where('product_id','=',request('id'))->delete();
-                products_delivery::query()
-                    ->where('product_id','=',request('id'))->delete();
                 products_discount::query()
                     ->where('product_id','=',request('id'))->delete();
             }
