@@ -37,7 +37,7 @@ class OrderResource extends JsonResource
               return $this->payment->tax;
           }),
           'tax_value'=>$this->when($this->whenLoaded('payment'),function(){
-                return ($this->payment->money * $this->payment->tax / 100);
+                return ($this->payment->money * $this->payment->tax / 100); // 230
           }),
           'cancelled'=>$this->when(auth()->user()->role->name == 'admin',function(){
                 return cancelled_orders_items::query()
