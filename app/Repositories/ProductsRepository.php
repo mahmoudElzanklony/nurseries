@@ -109,9 +109,8 @@ class ProductsRepository
     public function save_product_deliveries($data){
         foreach($data as $d){
             $d['product_id'] = $this->product->id;
-            products_delivery::query()->updateOrCreate([
-               'id'=>$d['id'] ?? null
-            ],$d);
+            unset($d['id']);
+            products_delivery::query()->create($d);
         }
         return $this;
     }
