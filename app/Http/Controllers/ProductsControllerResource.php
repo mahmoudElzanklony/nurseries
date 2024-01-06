@@ -30,6 +30,7 @@ use App\Models\products_discount;
 use App\Models\products_features_prices;
 use App\Models\products_prices;
 use App\Models\products_questions_answers;
+use App\Models\products_wholesale_prices;
 use App\Repositories\ProductsRepository;
 use App\Services\SearchesResults;
 use App\Services\users\favourite_toggle;
@@ -109,6 +110,8 @@ class ProductsControllerResource extends Controller
             $check_cat = categories::query()->find(request('id'));
            // if(request()->filled('id') && $check_cat->id != request('category_id')){
             if(request()->filled('id') ){
+                products_wholesale_prices::query()
+                    ->where('product_id','=',request('id'))->delete();
                 products_questions_answers::query()
                     ->where('product_id','=',request('id'))->delete();
                 products_discount::query()
