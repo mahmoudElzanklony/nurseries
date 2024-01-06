@@ -12,6 +12,6 @@ class products_delivery extends Model
     protected $fillable = ['product_id','location_id','location_type','price','days_delivery'];
 
     public function city(){
-        return $this->belongsTo(cities::class,'location_id');
+        return $this->belongsTo(cities::class,'location_id')->withTrashed();
     }
 }
