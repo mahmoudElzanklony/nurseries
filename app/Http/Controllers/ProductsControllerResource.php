@@ -113,6 +113,8 @@ class ProductsControllerResource extends Controller
                     ->where('product_id','=',request('id'))->delete();
                 products_discount::query()
                     ->where('product_id','=',request('id'))->delete();
+                products_delivery::query()
+                    ->where('product_id','=',request('id'))->delete();
             }
         }catch (\Exception $exception){
 
