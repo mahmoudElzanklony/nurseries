@@ -153,7 +153,7 @@ class ProductsControllerResource extends Controller
 
         }
         dispatch(new sendNotificationsToFollowersJob($following_data,$msg,'/following'));
-        $output = ProductWithAllData::get()->find($product_reposit->product->id);
+        $output = ProductWithAllData::get()->with(['deliveries'])->find($product_reposit->product->id);
         return messages::success_output(trans('messages.saved_successfully'),ProductResource::make($output));
 
     }
