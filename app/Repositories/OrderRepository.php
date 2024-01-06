@@ -264,8 +264,9 @@ class OrderRepository
     }
 
     protected function remove_from_stock($product,$quantity){
-        $product->quantity = $product->quantity - $quantity;
-        $product->save();
+        $pro = products::query()->find($product->id);
+        $pro->quantity = $pro->quantity - $quantity;
+        $pro->save();
 
     }
 
