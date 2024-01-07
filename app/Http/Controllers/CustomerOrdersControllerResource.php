@@ -188,7 +188,7 @@ class CustomerOrdersControllerResource extends Controller
 
                 // active order
                 $this->make_order_active($data->custom_order_seller->order->id);
-                return $data;
+
                 // send notification to accepted seller
                 try{
                     $order_name = $data->custom_order_seller->order->name;
