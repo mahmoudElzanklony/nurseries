@@ -176,9 +176,11 @@ class CustomerOrdersControllerResource extends Controller
             if($payment_status == true){
                 // reject orders
                 foreach($sellers_replies as $sellers_reply){
-                    custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
-                        'client_reply' => 'rejected'
-                    ]);
+                    if($sellers_reply->reply != null) {
+                        custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
+                            'client_reply' => 'rejected'
+                        ]);
+                    }
                 }
                 // accept only one
                 $data->client_reply = 'accepted';
