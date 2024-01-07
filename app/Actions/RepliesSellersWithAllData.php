@@ -14,7 +14,7 @@ class RepliesSellersWithAllData
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
                 })->whereHas('reply',function($r){
-                    $r->where('id','=', 'pending');
+                    $r->where('info','=', 'pending');
                 });
             })
             ->when(auth()->user()->role->name == 'seller' ,function($e){
