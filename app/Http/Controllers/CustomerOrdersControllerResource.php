@@ -165,7 +165,7 @@ class CustomerOrdersControllerResource extends Controller
             }
             // it must be pending , active ==> this mean it in progress now
             if($data->custom_order_seller->order->status != 'pending'){
-                return messages::error_output(trans('errors.cant_select_seller_to_this_order'));
+               // return messages::error_output(trans('errors.cant_select_seller_to_this_order'));
             }
             // get all sellers and reject them
             $sellers_replies = custom_orders_sellers::query()->with('reply')
