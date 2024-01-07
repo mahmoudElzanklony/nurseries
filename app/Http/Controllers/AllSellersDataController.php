@@ -62,7 +62,7 @@ class AllSellersDataController extends Controller
         }
         return custom_orders_sellers::query()->with('reply')->whereHas('reply',function($r){
             $r->whereRaw('custom_orders_sellers_replies.client_reply = "pending" ');
-        });
+        })->get();
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
