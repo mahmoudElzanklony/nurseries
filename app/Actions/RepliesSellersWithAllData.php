@@ -5,7 +5,6 @@ namespace App\Actions;
 
 
 use App\Models\custom_orders_sellers;
-use Illuminate\Support\Facades\DB;
 
 class RepliesSellersWithAllData
 {
@@ -14,6 +13,8 @@ class RepliesSellersWithAllData
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
+                })->whereHas('reply',function($e){
+                    $e->where('client_reply','=','pending');
                 });
             })
             ->when(auth()->user()->role->name == 'seller' ,function($e){
