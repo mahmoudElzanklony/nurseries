@@ -74,7 +74,7 @@ class ProductsControllerResource extends Controller
             ->with(['category','wholesale_prices','images','user','discounts'=>function($e){
                     $e->whereRaw('CURDATE() >= start_date and CURDATE() <= end_date');
                 }
-                ,'features.feature.image','answers.question.image']);
+                ,'features.feature.image','answers.question.image'])->orderBy('id','DESC');
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
