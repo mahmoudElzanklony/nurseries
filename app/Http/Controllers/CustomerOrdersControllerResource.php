@@ -178,6 +178,7 @@ class CustomerOrdersControllerResource extends Controller
 
                 foreach($sellers_replies as $sellers_reply){
                     if($sellers_reply->reply != null) {
+                        print_r($sellers_reply->reply);
                         custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
                             'client_reply' => 'rejected'
                         ]);
