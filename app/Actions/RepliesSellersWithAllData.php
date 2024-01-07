@@ -14,6 +14,7 @@ class RepliesSellersWithAllData
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
                 })->whereHas('reply',function($e){
+                    dd($e);
                     $e->where('client_reply','=','pending');
                 });
             })
