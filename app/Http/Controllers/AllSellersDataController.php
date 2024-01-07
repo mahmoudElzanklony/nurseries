@@ -60,7 +60,7 @@ class AllSellersDataController extends Controller
                 return messages::error_output('لا يوجد ردود');
             }
         }
-        return custom_orders_sellers::query()->whereHas('reply',function($r){
+        return custom_orders_sellers::query()->with('reply')->whereHas('reply',function($r){
             $r->whereRaw('custom_orders_sellers_replies.client_reply = "pending" ');
         });
         $output = app(Pipeline::class)
