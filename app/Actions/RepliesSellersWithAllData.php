@@ -13,9 +13,9 @@ class RepliesSellersWithAllData
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
-                })->whereHas('reply',function($r){
+                });/*->whereHas('reply',function($r){
                     $r->whereRaw('custom_orders_sellers_replies.client_reply = "pending" ');
-                });
+                });*/
             })
             ->when(auth()->user()->role->name == 'seller' ,function($e){
                 $e->where('seller_id','=',auth()->id());
