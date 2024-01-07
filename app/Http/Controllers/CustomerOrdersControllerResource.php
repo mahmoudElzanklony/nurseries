@@ -191,13 +191,18 @@ class CustomerOrdersControllerResource extends Controller
                 $this->make_order_active($data->custom_order_seller->order->id);
 
                 // send notification to accepted seller
-                $order_name = $data->custom_order_seller->order->name;
-                $info_noti = [
-                    'ar'=>'تم قبول عرضك المقدم بنجاح الخاص بطلب '.$order_name,
-                    'en'=>'Your offer has been accepted successfully to order '.$order_name,
-                ];
-                SendNotification::to_any_one_else_admin
-                ($data->custom_order_seller->seller_id,$info_noti,'/profile/custom-orders');
+                try{
+                    $order_name = $data->custom_order_seller->order->name;
+                    $info_noti = [
+                        'ar'=>'تم قبول عرضك المقدم بنجاح الخاص بطلب '.$order_name,
+                        'en'=>'Your offer has been accepted successfully to order '.$order_name,
+                    ];
+                    SendNotification::to_any_one_else_admin
+                    ($data->custom_order_seller->seller_id,$info_noti,'/profile/custom-orders');
+                }catch (\Throwable $e){
+                    echo 'error.......';
+                    echo $e->getMessage();
+                }
                 $final = RepliesSellersWithAllData::get()
                     ->where('custom_order_id','=',$data->custom_order_seller->order->id)
                     ->where('seller_id','=',$data->custom_order_seller->seller_id)->first();
