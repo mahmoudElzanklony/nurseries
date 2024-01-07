@@ -53,7 +53,7 @@ class AllSellersDataController extends Controller
         });
         if(request()->has('id')){
             $result = RepliesSellersWithAllData::get()->find(request('id'));
-            return $result;
+            return $result->toSql();
             if($result != null) {
                 return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->find(request('id')));
             }else{
