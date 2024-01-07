@@ -13,6 +13,7 @@ use App\Filters\StartDateFilter;
 use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerResource;
 use App\Http\Resources\UserResource;
+use App\Http\traits\messages;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -51,9 +52,12 @@ class AllSellersDataController extends Controller
             $e->where('client_reply','=','pending');
         });
         if(request()->has('id')){
-           // return RepliesSellersWithAllData::get()->toSql();
-            return RepliesSellersWithAllData::get()->find(request('id'));
-            return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->find(request('id')));
+            $result = RepliesSellersWithAllData::get()->find(request('id'));
+            if($result != null) {
+                return CustomOrderSellerResource::make(RepliesSellersWithAllData::get()->find(request('id')));
+            }else{
+                return messages::error_output('لا يوجد ردود');
+            }
         }
         $output = app(Pipeline::class)
             ->send($data)
