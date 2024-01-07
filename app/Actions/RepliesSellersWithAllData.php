@@ -13,6 +13,8 @@ class RepliesSellersWithAllData
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
+                })->whereHas('client_reply',function($e){
+                    $e->where('client_reply','=','pending');
                 });
             })
             ->when(auth()->user()->role->name == 'seller' ,function($e){
