@@ -201,8 +201,12 @@ class CustomerOrdersControllerResource extends Controller
                 }catch (\Throwable $e){
                     echo $e->getMessage();
                 }
-                $final = RepliesSellersWithAllData::get()
+                /*$final = RepliesSellersWithAllData::get()
                     ->where('custom_order_id','=',$data->custom_order_seller->order->id)
+                    ->where('seller_id','=',$data->custom_order_seller->seller_id)->first();*/
+                $final = custom_orders_sellers::query()->with('order')->with(['seller','reply'=>function($e){
+                    $e->with('images');
+                }])->where('custom_order_id','=',$data->custom_order_seller->order->id)
                     ->where('seller_id','=',$data->custom_order_seller->seller_id)->first();
                 DB::commit();
                 return $final;
