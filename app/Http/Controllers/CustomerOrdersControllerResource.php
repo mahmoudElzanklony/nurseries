@@ -171,7 +171,6 @@ class CustomerOrdersControllerResource extends Controller
             $sellers_replies = custom_orders_sellers::query()->with('reply')
                 ->where('custom_order_id','=',$data->custom_order_seller->custom_order_id)
                 ->get();
-            return [$data,$sellers_replies];
             // handle visa payment
             $payment_status = $this->handle_payment(request('visa_id'),$data->custom_order_seller->order->id,$data->product_price + $data->delivery_price);
             if($payment_status == true){
