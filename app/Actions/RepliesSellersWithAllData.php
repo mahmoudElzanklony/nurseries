@@ -11,7 +11,9 @@ class RepliesSellersWithAllData
     public static function get(){
         return custom_orders_sellers::query()->with('order')
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
-                $e->whereHas('reply',function($r){
+                $e->whereHas('order',function($e){
+                    $e->where('user_id','=',auth()->id());
+                })->whereHas('reply',function($r){
                     $r->where('client_reply','=', 'pending');
                 });
             })
