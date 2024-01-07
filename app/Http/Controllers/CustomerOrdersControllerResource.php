@@ -157,7 +157,7 @@ class CustomerOrdersControllerResource extends Controller
     public function client_reply(customOrderClientReplyFormRequest $request){
 
         if(request()->has('custom_orders_seller_id')){
-
+            DB::beginTransaction();
             $data = custom_orders_sellers_reply::query()->with('images')->with('custom_order_seller.order.images')
                 ->where('custom_orders_seller_id','=',request('custom_orders_seller_id'))->first();
             if($data == null){
@@ -176,15 +176,9 @@ class CustomerOrdersControllerResource extends Controller
             if($payment_status == true){
                 // reject orders
                 foreach($sellers_replies as $sellers_reply){
-                    try {
-                        if ($sellers_reply->reply != null) {
-                            custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
-                                'client_reply' => 'rejected'
-                            ]);
-                        }
-                    }catch (\Throwable $e){
-                        echo print_r($sellers_reply);
-                    }
+                    custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
+                        'client_reply' => 'rejected'
+                    ]);
                 }
                 // accept only one
                 $data->client_reply = 'accepted';
@@ -192,7 +186,7 @@ class CustomerOrdersControllerResource extends Controller
 
                 // active order
                 $this->make_order_active($data->custom_order_seller->order->id);
-
+                return $data;
                 // send notification to accepted seller
                 try{
                     $order_name = $data->custom_order_seller->order->name;
@@ -203,12 +197,13 @@ class CustomerOrdersControllerResource extends Controller
                     SendNotification::to_any_one_else_admin
                     ($data->custom_order_seller->seller_id,$info_noti,'/profile/custom-orders');
                 }catch (\Throwable $e){
-                    echo 'error.......';
                     echo $e->getMessage();
                 }
                 $final = RepliesSellersWithAllData::get()
                     ->where('custom_order_id','=',$data->custom_order_seller->order->id)
                     ->where('seller_id','=',$data->custom_order_seller->seller_id)->first();
+                DB::commit();
+                return $final;
                 return messages::success_output(trans('messages.saved_successfully')
                     ,CustomOrderSellerResource::make($final));
             }else{
