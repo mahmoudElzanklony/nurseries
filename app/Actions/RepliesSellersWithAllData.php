@@ -14,7 +14,7 @@ class RepliesSellersWithAllData
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
                 })->whereHas('reply',function($r){
-                    $r->where('product_price','<', '10');
+                    $r->where('client_reply','=', 'pending');
                 });
             })
             ->when(auth()->user()->role->name == 'seller' ,function($e){
