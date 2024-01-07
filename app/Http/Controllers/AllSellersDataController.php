@@ -14,6 +14,7 @@ use App\Http\Resources\CustomOrderResource;
 use App\Http\Resources\CustomOrderSellerResource;
 use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
+use App\Models\custom_orders_sellers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
@@ -59,6 +60,9 @@ class AllSellersDataController extends Controller
                 return messages::error_output('لا يوجد ردود');
             }
         }
+        return custom_orders_sellers::query()->whereHas('reply',function($r){
+            $r->whereRaw('custom_orders_sellers_replies.client_reply = "pending" ');
+        });
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
