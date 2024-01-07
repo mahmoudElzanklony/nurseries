@@ -167,9 +167,13 @@ class OrderRepository
                     }
 
                     // get price of delivery , get days of delivery
+                    if($total_price_delivery < ($this->deliveries_arr[$key]->price ?? 0)){
+                        $total_price_delivery = ($this->deliveries_arr[$key]->price ?? 0);
+                    }
+                    if($total_days_delivery < ($this->deliveries_arr[$key]->days_delivery ?? 0)){
+                        $total_days_delivery = ($this->deliveries_arr[$key]->days_delivery ?? 0);
+                    }
 
-                    $total_price_delivery += ($this->deliveries_arr[$key]->price ?? 0);
-                    $total_days_delivery +=  ($this->deliveries_arr[$key]->days_delivery ?? 0);
 
                     // remove from product stock the amount of quantity client take
                     $this->remove_from_stock($product,$item['quantity']);
@@ -195,7 +199,7 @@ class OrderRepository
         //dd($this->order_total_price);
         PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$this->order_total_price);
         // add address and delivery for this order
-        $this->order_address(round($total_days_delivery/sizeof($items)),$total_price_delivery);
+        $this->order_address($total_days_delivery,$total_price_delivery);
 
     }
 
