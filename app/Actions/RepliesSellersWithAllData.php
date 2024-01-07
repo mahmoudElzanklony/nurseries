@@ -10,12 +10,7 @@ use Illuminate\Support\Facades\DB;
 class RepliesSellersWithAllData
 {
     public static function get(){
-        return custom_orders_sellers::query()->with('order')->whereExists(function ($query) {
-            $query->select(DB::raw(1))
-                ->from('custom_orders_sellers_replies')
-                ->whereRaw('client_reply = "pending"')
-                ->whereColumn('custom_orders_sellers_replies.custom_orders_seller_id ', 'custom_orders_sellers.id');
-        })
+        return custom_orders_sellers::query()->with('order')
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
                 $e->whereHas('order',function($e){
                     $e->where('user_id','=',auth()->id());
