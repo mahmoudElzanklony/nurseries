@@ -12,7 +12,7 @@ class RepliesSellersWithAllData
         return custom_orders_sellers::query()->with('order')
             ->when(auth()->user()->role->name == 'client' || auth()->user()->role->name == 'company' ,function($e){
                 $e->whereHas('order',function($e){
-                    $e->where('user_id','=',auth()->id());
+                    $e->where('user_id','=',auth()->id())->where('status','!=','pending');
                 });
             })
             ->when(auth()->user()->role->name == 'seller' ,function($e){

@@ -12,7 +12,7 @@ class OrdersWithAllData
 {
     public static function get(){
         $user = User::query()->with('role')->find(auth()->id());
-        $orders = orders::query()->with(['payment.visa','shipments_info','items'=>function($e){
+        $orders = orders::query()->with(['payment.visa','shipments_info','address','items'=>function($e){
             $e->with(['product'=>function($e){
                 $e->when(GetAuthenticatedUser::get_info() != null , function ($e){
                     $e->with('favourite');
