@@ -60,13 +60,14 @@ class AllSellersDataController extends Controller
                 return messages::error_output('لا يوجد ردود');
             }
         }
-        return custom_orders_sellers::query()
+        $query =  custom_orders_sellers::query()
             ->with('reply')
             ->whereHas('reply', function ($query) {
                 // Adjust the relationship and column names as needed
                 $query->where('client_reply', '=', 'pending');
             })
             ->get();
+        dd($query->toSql(), $query->getBindings());
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
