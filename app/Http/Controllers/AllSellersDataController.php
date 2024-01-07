@@ -67,7 +67,7 @@ class AllSellersDataController extends Controller
                 $query->where('client_reply', '=', 'pending');
             })
             ;
-        dd($query->toSql(), $query->getBindings());
+        return $query->get();
         $output = app(Pipeline::class)
             ->send($data)
             ->through([
