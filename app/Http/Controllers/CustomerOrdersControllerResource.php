@@ -175,12 +175,15 @@ class CustomerOrdersControllerResource extends Controller
             $payment_status = $this->handle_payment(request('visa_id'),$data->custom_order_seller->order->id,$data->product_price + $data->delivery_price);
             if($payment_status == true){
                 // reject orders
-                return ($sellers_replies);
                 foreach($sellers_replies as $sellers_reply){
-                    if($sellers_reply->reply != null) {
-                        custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
-                            'client_reply' => 'rejected'
-                        ]);
+                    try {
+                        if ($sellers_reply->reply != null) {
+                            custom_orders_sellers_reply::query()->find($sellers_reply->reply->id)->update([
+                                'client_reply' => 'rejected'
+                            ]);
+                        }
+                    }catch (\Throwable $e){
+                        echo print_r($sellers_reply);
                     }
                 }
                 // accept only one
