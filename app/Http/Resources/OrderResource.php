@@ -33,6 +33,7 @@ class OrderResource extends JsonResource
                   return null;
               }
           }),
+          'delivery'=>OrderDeliveryResource::make($this->whenLoaded('address')),
           'tax_percentage'=>$this->when($this->whenLoaded('payment'),function(){
               return $this->payment->tax;
           }),
