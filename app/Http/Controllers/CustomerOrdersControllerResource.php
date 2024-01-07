@@ -104,9 +104,11 @@ class CustomerOrdersControllerResource extends Controller
         if($check == null){
             return messages::error_output(trans('errors.no_data'));
         }
-        $check->update([
-            'status'=>'rejected'
-        ]);
+        $reply = custom_orders_sellers_reply::query()->where('custom_orders_seller_id','=',$check->id)->first();
+        if($reply != null){
+            $reply->client_reply = 'rejected';
+            $reply->save();
+        }
         return messages::success_output(trans('saved_successfully'),CustomOrderSellerResource::make($check));
     }
 
