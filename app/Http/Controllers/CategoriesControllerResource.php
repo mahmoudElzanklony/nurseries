@@ -59,9 +59,8 @@ class CategoriesControllerResource extends Controller
 
     public function cat_questions()
     {
-        $data = categories::withTrashed()->where('id','=',request('category_id'))->first();
-        $result = $data->load('questions');
-        return $result;
+        $data = categories::withTrashed()->where('id','=',request('category_id'))->first()->load('questions');
+        return $data;
     }
 
     /**
