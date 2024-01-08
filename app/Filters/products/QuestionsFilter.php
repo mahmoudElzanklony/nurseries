@@ -11,7 +11,7 @@ class QuestionsFilter
             return $next($request)
                 ->whereHas('answers',function($e) use ($questions_ids,$questions_answers){
                     $e->whereIn('category_heading_questions_data_id',$questions_ids)
-                      ->whereIn('ar_answer ',$questions_answers);
+                      ->whereIn('ar_answer',$questions_answers);
                 });
         }
         return $next($request);
