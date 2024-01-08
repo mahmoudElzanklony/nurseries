@@ -8,6 +8,7 @@ use App\Filters\marketer\UsernameFilter;
 use App\Filters\NameFilter;
 use App\Filters\StartDateFilter;
 use App\Http\Resources\CategoriesResource;
+use App\Http\Resources\CategoryHeadingQuestionsDataResource;
 use App\Http\traits\messages;
 use App\Models\categories;
 use Illuminate\Pipeline\Pipeline;
@@ -59,9 +60,11 @@ class CategoriesControllerResource extends Controller
 
     public function cat_questions()
     {
-        $data = categories::query()->where('id','=',request('category_id'))->first();
+        $data = categories::query()->with('questions',function($e){
+            $e->with(['selections','image']);
+        })->where('id','=',request('category_id'))->first();
         if($data != null && sizeof($data->questions) > 0){
-            return $data->questions;
+            return CategoryHeadingQuestionsDataResource::collection($data->questions);
         }else{
             return messages::error_output(trans('errors.not_found_data'));
         }
