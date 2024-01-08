@@ -6,7 +6,6 @@ class QuestionsFilter
 {
     public function handle($request, Closure $next){
         if(request()->filled('questions')){
-            dd(request('questions'));
             $questions_ids = collect(request('questions'))->map(fn($e)=> $e['id']);
             $questions_answers = collect(request('questions'))->map(fn($e)=> $e['answer']);
             return $next($request)
