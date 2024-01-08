@@ -10,7 +10,7 @@ class QuestionsFilter
             $questions_answers = collect(request('questions'))->map(fn($e)=> $e['answer']);
             return $next($request)
                 ->whereHas('answers',function($e) use ($questions_ids,$questions_answers){
-                    $e->whereRaw('(category_heading_questions_data_id in '.$questions_ids.' OR ar_answer in '.$questions_answers.')');
+                    $e->whereRaw('(category_heading_questions_data_id in ('.implode(',',$questions_ids).') OR ar_answer in '.implode(',',$questions_answers).')');
                 });
         }
         return $next($request);
