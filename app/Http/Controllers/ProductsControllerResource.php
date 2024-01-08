@@ -11,6 +11,7 @@ use App\Filters\IDsFilter;
 use App\Filters\NameFilter;
 use App\Filters\products\MaxPriceFilter;
 use App\Filters\products\MinPriceFilter;
+use App\Filters\products\QuestionsFilter;
 use App\Filters\products\SellerNameFilter;
 use App\Filters\StartDateFilter;
 use App\Filters\UserIdFilter;
@@ -86,7 +87,8 @@ class ProductsControllerResource extends Controller
                 UserIdFilter::class,
                 IDsFilter::class,
                 NameFilter::class,
-                SellerNameFilter::class
+                SellerNameFilter::class,
+                QuestionsFilter::class
             ])
             ->thenReturn()
             ->paginate(10);
