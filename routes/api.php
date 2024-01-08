@@ -81,6 +81,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     // ---------------------start of categories actions --------------------
     Route::group(['prefix'=>'/categories-data','middleware'=>'CheckApiAuth'],function (){
         Route::get('/cat-questions-features',[CategoriesControllerResource::class,'cat_questions_features']);
+        Route::get('/questions',[CategoriesControllerResource::class,'cat_questions']);
 
     });
     // ---------------------end of categories actions --------------------

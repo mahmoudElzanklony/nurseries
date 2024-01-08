@@ -19,4 +19,9 @@ class categories extends Model
     public function heading_questions(){
         return $this->hasMany(categories_heading_questions::class,'category_id');
     }
+
+    public function questions()
+    {
+        return $this->hasManyThrough(categories_heading_questions_data::class,categories_heading_questions::class,'category_id','category_heading_question_id');
+    }
 }

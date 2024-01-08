@@ -56,6 +56,13 @@ class CategoriesControllerResource extends Controller
         // return messages::error_output('there is no category with this id');
     }
 
+
+    public function cat_questions()
+    {
+        $data = categories::withTrashed()->load(['questions'])->where('category_id','=',request('category_id'))->first();
+        return $data;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
