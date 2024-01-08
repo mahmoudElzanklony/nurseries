@@ -61,7 +61,7 @@ class CategoriesControllerResource extends Controller
     {
         $data = categories::withTrashed()->where('id','=',request('category_id'))->first();
         $result = $data->load('questions');
-        return $data;
+        return $result;
     }
 
     /**
