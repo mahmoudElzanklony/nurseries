@@ -63,7 +63,7 @@ class CategoriesControllerResource extends Controller
         if($data != null && sizeof($data->questions) > 0){
             return $data;
         }else{
-            return messages::error_output(trans('errors.not_found'));
+            return messages::error_output(trans('errors.not_found_data'));
         }
     }
 
