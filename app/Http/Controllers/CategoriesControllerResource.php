@@ -61,7 +61,7 @@ class CategoriesControllerResource extends Controller
     {
         $data = categories::query()->where('id','=',request('category_id'))->first();
         if($data != null && sizeof($data->questions) > 0){
-            return $data;
+            return $data->questions;
         }else{
             return messages::error_output(trans('errors.not_found_data'));
         }
