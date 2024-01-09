@@ -24,22 +24,26 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        dd(request()->fullUrl());
-        $seller_avg_rate = SellerRateAVG::get($this->user_id);
-        $default_address = DefaultAddress::get();
-        $delivery = CheckPlaceMapLocation::check_delivery($this->id,$default_address);
-        try {
-            if (sizeof($this->rates) > 0) {
-                $rate_bars = [
-                    0, 0, 0, 0, 0
-                ];
-                foreach ($this->rates as $rate) {
-                    $rate_bars[$rate->rate_product_info - 1]++;
+        if(!(str_contains(request()->fullUrl(), 'orders'))){
+            $seller_avg_rate = SellerRateAVG::get($this->user_id);
+            $default_address = DefaultAddress::get();
+            $delivery = CheckPlaceMapLocation::check_delivery($this->id,$default_address);
+            try {
+                if (sizeof($this->rates) > 0) {
+                    $rate_bars = [
+                        0, 0, 0, 0, 0
+                    ];
+                    foreach ($this->rates as $rate) {
+                        $rate_bars[$rate->rate_product_info - 1]++;
+                    }
                 }
+            }catch (\Throwable $exception){
+                $rate_bars = [];
             }
-        }catch (\Throwable $exception){
+        }else{
             $rate_bars = [];
         }
+
         return [
             'id'=>$this->id,
             'user_id'=>$this->user_id,
