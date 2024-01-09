@@ -65,7 +65,7 @@ class FinancialReconciliationsControllerResource extends Controller
     public function store()
     {
         $financil_repo = new FinancialReconciliationsRepository();
-        $orders = $financil_repo->get_orders_to_be_financial(false);
+        $orders = $financil_repo->get_orders_to_be_financial(true);
 
         if(sizeof($orders['orders']) > 0 || sizeof($orders['custom_orders']) > 0){
             DB::beginTransaction();
