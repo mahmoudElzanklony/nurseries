@@ -80,7 +80,7 @@ class FinancialReconciliationsControllerResource extends Controller
 
     public function statistics(){
         $financil_repo = new FinancialReconciliationsRepository();
-        $orders = $financil_repo->get_orders_to_be_financial(false);
+        $orders = $financil_repo->get_orders_to_be_financial(true);
         $pending_money = $financil_repo->detect_total_money($orders['orders'],$orders['custom_orders']);
         $active_profit = financial_reconciliations::query()
             ->where('status','=','completed')
