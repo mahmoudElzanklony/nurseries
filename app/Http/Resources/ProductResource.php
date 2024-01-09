@@ -24,8 +24,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        dd(str_contains(request()->fullUrl(), 'orders'));
-        if(!(str_contains(request()->fullUrl(), 'orders'))){
+        if(str_contains(request()->fullUrl(), 'orders') == false){
             $seller_avg_rate = SellerRateAVG::get($this->user_id);
             $default_address = DefaultAddress::get();
             $delivery = CheckPlaceMapLocation::check_delivery($this->id,$default_address);
@@ -91,9 +90,10 @@ class ProductResource extends JsonResource
                 }
             }),
             'rates_bar'=>$rate_bars ?? [],
-            'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),
-            'avg_rates_seller'=>$this->when(!(str_contains(request()->fullUrl(), 'orders')),function() use ($seller_avg_rate){
-                dd((str_contains(request()->fullUrl(), 'orders')));
+            'avg_rates_product'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function (){
+                return round($this->rates->avg('rate_product_info'),2);
+            }),
+            'avg_rates_seller'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function() use ($seller_avg_rate){
                return round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2);
             }),
             'is_following'=>auth()->check() && followers::query()->where('user_id',auth()->id())->where('following_id',$this->user_id)->first() != null ? true:false,
