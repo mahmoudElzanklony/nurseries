@@ -10,6 +10,7 @@ use App\Models\custom_orders;
 use App\Models\followers;
 use App\Models\orders;
 use App\Models\products;
+use App\Repositories\FinancialReconciliationsRepository;
 
 class StatisticsService
 {
@@ -40,11 +41,16 @@ class StatisticsService
                 });
             })->withSum('payment','money')->get()->sum('payment_sum_money');
 
+
+        $financil_repo = new FinancialReconciliationsRepository();
+        $orders = $financil_repo->get_orders_to_be_financial(true);
+        $active_money = $financil_repo->detect_total_money($orders['orders'],$orders['custom_orders']);
+
         $output = [
             'active_orders'=>$active_orders,
             'waiting_orders'=>$waiting,
             'pending_money'=>$pending_money,
-            'active_money'=>self::my_orders($user_id)->whereRaw('financial_reconciliation_id is not null')->withSum('payment','money')->get()->sum('payment_sum_money'),
+            'active_money'=>$active_money,
             'products'=>products::query()->when($user_id != null , function($e) use ($user_id){
                 $e->where('user_id','=',$user_id);
             })->count(),
