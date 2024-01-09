@@ -91,7 +91,9 @@ class ProductResource extends JsonResource
             }),
             'rates_bar'=>$rate_bars ?? [],
             'avg_rates_product'=>round($this->rates->avg('rate_product_info'),2),
-            'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
+            'avg_rates_seller'=>$this->when(!(str_contains(request()->fullUrl(), 'orders')),function() use ($seller_avg_rate){
+               return round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2);
+            }),
             'is_following'=>auth()->check() && followers::query()->where('user_id',auth()->id())->where('following_id',$this->user_id)->first() != null ? true:false,
             'user'=>UserResource::make($this->whenLoaded('user')),
             'statistics'=>$this->when(auth()->check() && (auth()->user()->role->name == 'seller' || auth()->user()->role->name == 'admin'),function (){
