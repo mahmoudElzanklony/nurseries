@@ -21,10 +21,10 @@ class StatisticsService
     }
 
     public static function orders_money_products($user_id = null){
-        $active_orders = self::my_orders($user_id)->wherehas('shipments_info',function($e){
+        $active_orders = self::my_orders($user_id)->wherehas('last_shipment_info',function($e){
             $e->where('content','=',OrdersDeliveryCases::$delivery);
         })->count();
-        $waiting = self::my_orders($user_id)->wherehas('shipments_info',function($e){
+        $waiting = self::my_orders($user_id)->wherehas('last_shipment_info',function($e){
             $e->where('content','!=',OrdersDeliveryCases::$delivery);
         })->count();
         $output = [
