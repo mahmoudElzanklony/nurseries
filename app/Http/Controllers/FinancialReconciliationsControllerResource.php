@@ -117,6 +117,7 @@ class FinancialReconciliationsControllerResource extends Controller
     {
         //
         $output = FinancialRecociliationsWithAllData::get_data()->with('problem')->findOrFail($id);
+        return $output;
         return FinancialReconciliationResource::make($output);
     }
 
