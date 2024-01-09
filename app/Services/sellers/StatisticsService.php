@@ -32,14 +32,26 @@ class StatisticsService
 
 
         $pending_money = self::my_orders($user_id)->wherehas('last_shipment_info',function($e){
-                $e->where('content','=',OrdersDeliveryCases::$delivery);
+                $e->where('content','!=',OrdersDeliveryCases::$completed);
             })->withSum('payment','money')->get()->sum('payment_sum_money')
             +
             custom_orders::query()->whereHas('reply',function($e) use ($user_id){
                 $e->whereHas('custom_order_seller',function($q) use ($user_id){
                     $q->where('seller_id','=',$user_id);
                 });
+            })->wherehas('last_shipment_info',function($e){
+                $e->where('content','!=',OrdersDeliveryCases::$completed);
             })->withSum('payment','money')->get()->sum('payment_sum_money');
+
+
+        $total_sales = self::rmy_oders($user_id)->withSum('payment','money')->get()->sum('payment_sum_money')
+            +
+            custom_orders::query()->whereHas('reply',function($e) use ($user_id){
+                $e->whereHas('custom_order_seller',function($q) use ($user_id){
+                    $q->where('seller_id','=',$user_id);
+                });
+            })->withSum('payment','money')->get()->sum('payment_sum_money');
+
 
 
         $financil_repo = new FinancialReconciliationsRepository();
@@ -51,6 +63,7 @@ class StatisticsService
             'waiting_orders'=>$waiting,
             'pending_money'=>$pending_money,
             'active_money'=>$active_money,
+            'total_sales'=>$total_sales,
             'products'=>products::query()->when($user_id != null , function($e) use ($user_id){
                 $e->where('user_id','=',$user_id);
             })->count(),
