@@ -24,7 +24,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        dd(str_contains(request()->fullUrl(), 'orders') == false);
+
         if(str_contains(request()->fullUrl(), 'orders') == false){
             $seller_avg_rate = SellerRateAVG::get($this->user_id);
             $default_address = DefaultAddress::get();
@@ -68,7 +68,7 @@ class ProductResource extends JsonResource
             'problems'=>ProductProblemResource::collection($this->whenLoaded('problems')),
             'want_rate'=>WantToBeRated::check($this->id),
             'rates'=>RateResource::collection($this->whenLoaded('rates')),
-            'good_rates_percentage'=>$this->when(true,function (){
+            'good_rates_percentage'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function (){
                if(sizeof($this->rates) > 0){
                    return collect($this->rates)->filter(function ($e){
                        return $e->rate_product_info >= 4;
@@ -79,7 +79,7 @@ class ProductResource extends JsonResource
                    return 0;
                }
             }),
-            'product_as_description'=>$this->when(true,function (){
+            'product_as_description'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function (){
                 if(sizeof($this->rates) > 0){
                     return collect($this->rates)->filter(function ($e){
                             return $e->rate_product_info;
