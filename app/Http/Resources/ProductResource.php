@@ -94,6 +94,7 @@ class ProductResource extends JsonResource
                 return round($this->rates->avg('rate_product_info'),2);
             }),
             'avg_rates_seller'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function() use ($seller_avg_rate){
+               dd(str_contains(request()->fullUrl(), 'orders'));
                return round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2);
             }),
             'is_following'=>auth()->check() && followers::query()->where('user_id',auth()->id())->where('following_id',$this->user_id)->first() != null ? true:false,
