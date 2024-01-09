@@ -24,6 +24,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
+        dd(request()->fullUrl());
         $seller_avg_rate = SellerRateAVG::get($this->user_id);
         $default_address = DefaultAddress::get();
         $delivery = CheckPlaceMapLocation::check_delivery($this->id,$default_address);
