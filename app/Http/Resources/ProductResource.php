@@ -44,6 +44,7 @@ class ProductResource extends JsonResource
         }else{
             $rate_bars = [];
             $seller_avg_rate = [];
+            $delivery = false;
         }
 
         return [
