@@ -15,8 +15,10 @@ class OrderResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+    public static $payment;
     public function toArray($request)
     {
+        self::$payment = $this->payment;
         return [
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
@@ -60,7 +62,7 @@ class OrderResource extends JsonResource
                   'money'=>round($paypment_with_tax, 2)
               ];
           }),
-          'items'=>OrderItemsResource::collection($this->whenLoaded('items'))->contact(['payment'=>$this->payment]),
+          'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
           'financial'=>$this->when($this->financial_reconciliation_id != null && auth()->user()->role->name == 'admin',function(){
               return FinancialReconciliationResource::make(financial_reconciliations::query()->find($this->financial_reconciliation_id));
