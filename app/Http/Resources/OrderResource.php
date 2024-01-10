@@ -48,7 +48,7 @@ class OrderResource extends JsonResource
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
           //'payment'=>PaymentResource::make($this->whenLoaded('payment')),
-          'payment'=>$this->when($this->whenLoaded('payment'),function($e){
+          'payment'=>$this->when($this->whenLoaded('payment'),function(){
               $paypment_with_tax = $this->payment->money;
               $tax_percen = $this->payment->tax;
               $total_money_without_tax = $paypment_with_tax / (1+$tax_percen/100);
