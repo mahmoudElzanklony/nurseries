@@ -178,7 +178,7 @@ class OrderRepository
                     // remove from product stock the amount of quantity client take
                     $this->remove_from_stock($product,$item['quantity']);
                     // handle order items features
-                    $this->orders_items_features($order_item->id,$product,$discount,$item['features'] ?? []);
+                    $this->orders_items_features($order_item->id,$product,$discount,$item['features'] ?? [] , $item['quantity']);
 
                 }else{
                     $err_quantity++;
@@ -203,19 +203,21 @@ class OrderRepository
 
     }
 
-    public function orders_items_features($order_item_id,$product,$discount,$features){
+    public function orders_items_features($order_item_id,$product,$discount,$features , $quantity){
         if(sizeof($features) > 0){
             foreach ($features as $feature){
                 $feat = products_features_prices::query()->find($feature['id']);
-                $price = $feat->price;
+                $price = $feat->price * $quantity;
                 /*if($price > 0 && $discount > 0){
                     $price = $this->handle_final_price($product,$price,$discount,'feature');
                 }*/
                 orders_items_features::query()->create([
                     'order_item_id'=>$order_item_id,
                     'product_feature_id'=>$feature['id'],
-                    'price'=>$price
+                    'price'=>$price,
                 ]);
+                echo "price feature ========>".$price;
+                echo "quantity product ========>".$quantity;
                 $this->order_total_price += $price;
                 //echo 'price of feature'.$price.' ==========> total  now'.$this->order_total_price .'<br>';
             }
