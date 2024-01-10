@@ -64,7 +64,7 @@ class OrderResource extends JsonResource
               ];
           }),
           'items'=>$this->when($this->whenLoaded('items'),function () use ($items){
-              return OrderItemsResource::collection($items);
+              return OrderItemsResource::collection($this->items);
           }),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
           'financial'=>$this->when($this->financial_reconciliation_id != null && auth()->user()->role->name == 'admin',function(){
