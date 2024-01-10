@@ -12,17 +12,10 @@ class OrderItemsResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    protected $tax;
-    public function additional($tax)
-    {
-        $this->tax = $tax;
 
-        return $this;
-    }
 
     public function toArray($request)
     {
-        dd($this->tax);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),

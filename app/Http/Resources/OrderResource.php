@@ -17,6 +17,9 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
+        $items = $this->items;
+        $items['payment'] = $this->payment;
+        dd($items);
         return [
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
@@ -60,7 +63,7 @@ class OrderResource extends JsonResource
                   'money'=>round($paypment_with_tax, 2)
               ];
           }),
-          'items'=>OrderItemsResource::collection($this->whenLoaded('items'))->additional(['tax'=>$this->payment->tax]),
+          'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
           'financial'=>$this->when($this->financial_reconciliation_id != null && auth()->user()->role->name == 'admin',function(){
               return FinancialReconciliationResource::make(financial_reconciliations::query()->find($this->financial_reconciliation_id));
