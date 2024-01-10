@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\payments;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class OrderItemsResource extends JsonResource
@@ -12,18 +13,30 @@ class OrderItemsResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+     protected static $payment = null;
+     public static function setPayment($order_id)
+     {
+         self::$payment = payments::query()
+             ->where('paymentable_id','=',$order_id)
+             ->where('paymentable_type','=','App\Models\orders')->first();
+     }
+
 
 
     public function toArray($request)
     {
-        print_r(OrderResource::$payment->money);
+        if(self::$payment == null){
+            self::setPayment($this->order_id);
+        }
+        dd(self::$payment);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
           'rate'=>RateResource::make($this->whenLoaded('rate')),
           'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
           'quantity'=>$this->quantity,
-          'prices_info'=>$this->when(OrderResource::$payment && OrderResource::$payment != null , function(){
+          'prices_info'=>$this->when(true, function(){
+
               $tax_percen = OrderResource::$payment->tax;
 
 
