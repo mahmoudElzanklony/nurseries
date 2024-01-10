@@ -68,7 +68,7 @@ class StatisticsService
             'my_clients'=>self::my_orders($user_id)->groupBy('user_id')->get()->count(),
             'followers'=>followers::query()->where('following_id','=',$user_id)->count(),
             'articles'=>articles::query()->where('user_id','=',$user_id)->count(),
-            'shop-progress'=>$active_orders * (50/100).'%'
+            'shop-progress'=>$total_sales * (50/100).'%'
         ];
         return $output;
     }
