@@ -16,7 +16,6 @@ class OrderItemsResource extends JsonResource
      protected static $payment = null;
      public static function setPayment($order_id)
      {
-         echo 'calllllllllllllllllllllll';
          self::$payment = payments::query()
              ->where('paymentable_id','=',$order_id)
              ->where('paymentable_type','=','App\Models\orders')->first();
@@ -35,7 +34,7 @@ class OrderItemsResource extends JsonResource
           'rate'=>RateResource::make($this->whenLoaded('rate')),
           'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
           'quantity'=>$this->quantity,
-          'prices_info'=>$this->when(true, function(){
+          'prices_info'=>$this->when(self::$payment != null, function(){
 
               $tax_percen = self::$payment->tax;
 
