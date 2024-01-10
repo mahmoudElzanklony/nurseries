@@ -96,6 +96,12 @@ class ProductResource extends JsonResource
             'avg_rates_product'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function (){
                 return round($this->rates->avg('rate_product_info'),2);
             }),
+            'avg_rates_product_service'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function (){
+                return round($this->rates->avg('rate_product_services'),2);
+            }),
+            'avg_rates_product_delivery'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function (){
+                return round($this->rates->avg('rate_product_delivery'),2);
+            }),
             'avg_rates_seller'=>$this->when(str_contains(request()->fullUrl(), 'orders') == false,function() use ($seller_avg_rate){
 
                return round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2);
