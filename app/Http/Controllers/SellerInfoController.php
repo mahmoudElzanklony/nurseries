@@ -82,7 +82,7 @@ class SellerInfoController extends Controller
         $time_type = request('time_type');
         //return $data_model->get();
         $obj = new Year_month_week_day();
-        $output = $obj->get_profit('App\Actions\SellerOrdersClientsStatistics',null,'user_id',$time_type,[],'orders.created_at','count');
+        $output = $obj->get_profit('App\Actions\SellerOrdersClientsStatistics',null,'user_id',$time_type,[],'orders.created_at','sum');
         return $output;
     }
 
