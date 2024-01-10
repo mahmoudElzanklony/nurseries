@@ -12,15 +12,15 @@ class OrderItemsResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public $payment;
+    public $payment_data;
     public function payment($payment)
     {
-        $this->payment = $payment;
+        $this->payment_data = $payment;
     }
 
     public function toArray($request)
     {
-        dd($this->payment);
+        dd($this->payment_data);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
