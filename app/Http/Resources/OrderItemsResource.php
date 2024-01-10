@@ -16,15 +16,14 @@ class OrderItemsResource extends JsonResource
 
     public function toArray($request)
     {
-        dd(OrderResource::$payment);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
           'rate'=>RateResource::make($this->whenLoaded('rate')),
           'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
           'quantity'=>$this->quantity,
-          'prices_info'=>$this->when(isset($this->payment) && $this->payment != null , function(){
-              $tax_percen = $this->payment->tax;
+          'prices_info'=>$this->when(OrderResource::$payment && OrderResource::$payment != null , function(){
+              $tax_percen = OrderResource::$payment->tax;
 
 
              $all_price_with_tax = round($this->price, 2);
