@@ -19,7 +19,7 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         self::$payment = $this->payment;
-        print_r(self::$payment->money);
+        print_r(self::$payment->money); echo '------------->';
         return [
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
