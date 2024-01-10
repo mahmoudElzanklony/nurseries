@@ -22,6 +22,7 @@ use App\Models\orders_items_features;
 use App\Models\products;
 use App\Models\products_features_prices;
 use App\Models\user_addresses;
+use Illuminate\Support\Facades\DB;
 use function OpenAI\Responses\Chat\toArray;
 
 class OrderRepository
@@ -78,6 +79,7 @@ class OrderRepository
 
             }
         }
+        DB::beginTransaction();
         $order = orders::query()->create([
            'user_id'=>auth()->id(),
            'seller_id'=>$data['seller_id'],
@@ -200,6 +202,7 @@ class OrderRepository
         PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$this->order_total_price);
         // add address and delivery for this order
         $this->order_address($total_days_delivery,$total_price_delivery);
+        DB::commit();
 
     }
 
@@ -218,7 +221,7 @@ class OrderRepository
                 ]);
                 echo "price feature ========>".$price;
                 echo "quantity product ========>".$quantity;
-                $this->order_total_price += $price;
+
                 //echo 'price of feature'.$price.' ==========> total  now'.$this->order_total_price .'<br>';
             }
         }
