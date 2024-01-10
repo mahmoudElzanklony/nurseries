@@ -16,6 +16,7 @@ class OrderItemsResource extends JsonResource
 
     public function toArray($request)
     {
+        print_r(OrderResource::$payment->money);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
