@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\ImageModalSave;
+use App\Actions\SellerCustomOrdersClientsStatistics;
 use App\Actions\SellerInfoWithAllData;
 use App\Actions\SellerOrdersAndCustomOrdersAction;
 use App\Enum\OrdersDeliveryCases;
@@ -83,6 +84,7 @@ class SellerInfoController extends Controller
         //return $data_model->get();
         $obj = new Year_month_week_day();
         $output = $obj->get_profit('App\Actions\SellerOrdersClientsStatistics',null,'user_id',$time_type,[],'orders.created_at','sum');
+        return SellerCustomOrdersClientsStatistics::get();
         $output_two = $obj->get_profit('App\Actions\SellerCustomOrdersClientsStatistics',null,'user_id',$time_type,[],'orders.created_at','sum');
         return [$output,$output_two];
     }
