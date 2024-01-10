@@ -13,12 +13,8 @@ class OrderItemsResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public $payment;
-    public function __construct($resource, $payment)
+    public function payment($payment)
     {
-        // Ensure you call the parent constructor
-        parent::__construct($resource);
-        $this->resource = $resource;
-        dd($this->payment);
         $this->payment = $payment;
     }
 
