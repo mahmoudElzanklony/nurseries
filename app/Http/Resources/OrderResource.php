@@ -54,10 +54,10 @@ class OrderResource extends JsonResource
               $total_money_without_tax = $paypment_with_tax / (1+$tax_percen/100);
               $tax_value = $paypment_with_tax - $total_money_without_tax;
               return [
-                  'tax_value'=>$tax_value,
+                  'tax_value'=>round($tax_value, 2),
                   'tax_percentage'=>$tax_percen,
-                  'total_money_without_tax'=>$total_money_without_tax,
-                  'total_money_with_tax'=>$paypment_with_tax
+                  'total_money_without_tax'=>round($total_money_without_tax, 2),
+                  'total_money_with_tax'=>round($paypment_with_tax, 2)
               ];
           }),
           'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
