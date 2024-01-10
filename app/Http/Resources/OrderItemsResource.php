@@ -12,8 +12,16 @@ class OrderItemsResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+
+    protected static $payment;
+
+    public static function setPayment($value){
+        self::$payment = $value;
+    }
+
     public function toArray($request)
     {
+        dd(self::$payment);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
