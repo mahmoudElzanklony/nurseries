@@ -22,7 +22,7 @@ class OrderItemsResource extends JsonResource
 
     public function toArray($request)
     {
-        dd($this->);
+        dd($this->tax);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
