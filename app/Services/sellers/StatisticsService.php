@@ -39,9 +39,7 @@ class StatisticsService
                 $e->whereHas('custom_order_seller',function($q) use ($user_id){
                     $q->where('seller_id','=',$user_id);
                 });
-            })->wherehas('last_shipment_info',function($e){
-                $e->where('content','!=',OrdersDeliveryCases::$completed);
-            })->withSum('payment','money')->get()->sum('payment_sum_money');
+            })->where('status','=','completed')->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
         $total_sales = self::rmy_oders($user_id)->withSum('payment','money')->get()->sum('payment_sum_money')
