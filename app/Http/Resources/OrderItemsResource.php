@@ -28,6 +28,7 @@ class OrderItemsResource extends JsonResource
         if(self::$payment == null){
             self::setPayment($this->order_id);
         }
+        dd(self::$payment);
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
