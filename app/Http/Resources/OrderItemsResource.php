@@ -18,7 +18,7 @@ class OrderItemsResource extends JsonResource
         // Ensure you call the parent constructor
         parent::__construct($resource);
         $this->resource = $resource;
-
+        dd($this->payment);
         $this->payment = $payment;
     }
 
