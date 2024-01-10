@@ -222,6 +222,7 @@ class OrderRepository
                 echo "price feature ========>".$price;
                 echo "quantity product ========>".$quantity;
 
+                $this->order_total_price += $price;
                 //echo 'price of feature'.$price.' ==========> total  now'.$this->order_total_price .'<br>';
             }
         }
