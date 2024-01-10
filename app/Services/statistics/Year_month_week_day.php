@@ -27,13 +27,14 @@ class Year_month_week_day
                 $query_data = app($model)::get();
             }
             $month = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay();
-            $output[$i] = ['placeholder'=>$month , 'value'=> $query_data
+            $value = $query_data
                 ->when(sizeof($conditions) > 0 , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereMonth($created_at,(string)($i + 1))
                 ->whereYear($created_at,date('Y'))
-                ->{$func_name}($column_sum)];
+                ->{$func_name}($column_sum);
+            $output[$i] = ['placeholder'=>$month , 'value'=> floatval($value)];
         }
         return $output;
     }
@@ -49,14 +50,15 @@ class Year_month_week_day
                 $query_data = app($model)::get();
             }
             $week = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay()->week($i + 1);
-            $output[$i] = ['placeholder'=>$week , 'value'=> $query_data
+            $value = $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereRaw(DB::raw("DAY(".$created_at.")").' >= '.(7*$i).'  && DAY('.$created_at.') < '. (7+(7*$i)))
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
-                ->{$func_name}($column_sum) ] ;
+                ->{$func_name}($column_sum);
+            $output[$i] = ['placeholder'=>$week , 'value'=> floatval($value) ] ;
         }
         return $output;
     }
@@ -75,14 +77,15 @@ class Year_month_week_day
             }else{
                 $query_data = app($model)::get();
             }
-            $output[$i - 1] = ['placeholder'=>Carbon::parse($currentWeek->toDateString())->addDays($i) , 'value'=> $query_data
+            $value =  $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
                 ->whereRaw(DB::raw("DAY(".$created_at.")").' = '.($i+1))
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
-                ->{$func_name}($column_sum) ] ;
+                ->{$func_name}($column_sum) ;
+            $output[$i - 1] = ['placeholder'=>Carbon::parse($currentWeek->toDateString())->addDays($i) , 'value'=> floatval($value)] ;
         }
         return $output;
     }
@@ -105,7 +108,7 @@ class Year_month_week_day
             ->first();
 
         if($output != null){
-            $output[0] = ['placeholder'=>Carbon::now() , 'value'=> $output->{$column_sum} ];
+            $output[0] = ['placeholder'=>Carbon::now() , 'value'=> floatval($output->{$column_sum}) ];
         }else{
             $output[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
         }
