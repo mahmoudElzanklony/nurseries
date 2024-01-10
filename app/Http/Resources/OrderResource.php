@@ -63,9 +63,7 @@ class OrderResource extends JsonResource
                   'money'=>round($paypment_with_tax, 2)
               ];
           }),
-          'items'=>$this->when($this->whenLoaded('items'),function () use ($items){
-              return OrderItemsResource::collection($this->items);
-          }),
+          'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
           'financial'=>$this->when($this->financial_reconciliation_id != null && auth()->user()->role->name == 'admin',function(){
               return FinancialReconciliationResource::make(financial_reconciliations::query()->find($this->financial_reconciliation_id));
