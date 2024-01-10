@@ -47,7 +47,19 @@ class OrderResource extends JsonResource
           }),
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
-          'payment'=>PaymentResource::make($this->whenLoaded('payment')),
+          //'payment'=>PaymentResource::make($this->whenLoaded('payment')),
+          'payment'=>$this->when($this->whenLoaded('payment'),function($e){
+              $paypment_with_tax = $this->payment->money;
+              $tax_percen = $this->payment->tax;
+              $total_money_without_tax = $paypment_with_tax / (1+$tax_percen/100);
+              $tax_value = $paypment_with_tax - $total_money_without_tax;
+              return [
+                  'tax_value'=>$tax_value,
+                  'tax_percentage'=>$tax_percen,
+                  'total_money_without_tax'=>$total_money_without_tax,
+                  'total_money_with_tax'=>$paypment_with_tax
+              ];
+          }),
           'items'=>OrderItemsResource::collection($this->whenLoaded('items')),
           'shipments_info'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
           'financial'=>$this->when($this->financial_reconciliation_id != null && auth()->user()->role->name == 'admin',function(){
