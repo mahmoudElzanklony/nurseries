@@ -87,8 +87,12 @@ class SellerInfoController extends Controller
         $output_two = $obj->get_profit('App\Actions\SellerCustomOrdersClientsStatistics',null,'money',$time_type,[],'custom_orders.created_at','sum');
         $final = [];
         foreach($output as $key => $item){
-            dd($key);
+            $info = [];
+            $info['placeholder'] = $item['placeholder'];
+            $info['value'] = floatval($item['value']) + floatval($output_two[$key]['value']);
+            array_push($final,$info);
         }
+        return $final;
     }
 
      public function cities_statistics(){
