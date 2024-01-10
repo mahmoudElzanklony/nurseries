@@ -219,8 +219,8 @@ class OrderRepository
                     'product_feature_id'=>$feature['id'],
                     'price'=>$price,
                 ]);
-                echo "price feature ========>".$price;
-                echo "quantity product ========>".$quantity;
+               /* echo "price feature ========>".$price;
+                echo "quantity product ========>".$quantity;*/
 
                 $this->order_total_price += $price;
                 //echo 'price of feature'.$price.' ==========> total  now'.$this->order_total_price .'<br>';
