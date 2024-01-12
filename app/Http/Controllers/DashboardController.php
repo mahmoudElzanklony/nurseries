@@ -8,10 +8,13 @@ use App\Filters\StartDateFilter;
 use App\Filters\UsernameFilter;
 use App\Filters\users\RoleIdFilter;
 use App\Filters\users\RoleNameFilter;
+use App\Http\Requests\adFormRequest;
 use App\Http\Requests\categoryQuestionsFeaturesFormRequest;
+use App\Http\Resources\AdResource;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
+use App\Models\ads;
 use App\Models\categories;
 use App\Models\categories_features;
 use App\Models\categories_heading_questions;
@@ -63,6 +66,18 @@ class DashboardController extends Controller
             ->thenReturn()
             ->paginate(15);
         return UserResource::collection($output);
+
+    }
+
+    public function save_ad(adFormRequest $request)
+    {
+        $data = $request->validated();
+        $image = $this->upload(request()->file('image'),'ads');
+        $output = ads::query()->updateOrCreate([
+            'id'=>$data['id'] ?? null
+        ],$data);
+        ImageModalSave::make($output->id,'ads','ads/'.$image);
+        return AdResource::make($output);
 
     }
 

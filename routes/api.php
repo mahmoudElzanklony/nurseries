@@ -42,6 +42,7 @@ use App\Http\Controllers\CustomerOrdersControllerResource;
 use App\Http\Controllers\ProductsProblemsControllerResource;
 use App\Http\Controllers\AllSellersDataController;
 use App\Http\Controllers\AIController;
+use App\Http\Controllers\AdsController;
 
 
 Route::get('/test',[AuthControllerApi::class,'test']);
@@ -49,6 +50,7 @@ Route::get('/test',[AuthControllerApi::class,'test']);
 Route::group(['middleware'=>'changeLang'],function (){
 
     Route::get('/tax',[TaxesController::class,'index']);
+    Route::get('/ads',[AdsController::class,'index']);
 
 
     Route::group(['prefix'=>'/auth'],function(){
@@ -251,6 +253,9 @@ Route::group(['middleware'=>'changeLang'],function (){
         });
         Route::group(['prefix'=>'/categories'],function(){
             Route::post('/save',[DashboardController::class,'save_cat']);
+        });
+        Route::group(['prefix'=>'/ads'],function(){
+            Route::post('/save',[DashboardController::class,'save_ad']);
         });
         Route::group(['prefix'=>'/packages'],function(){
           Route::post('/save',[DashboardController::class,'save_package']);
