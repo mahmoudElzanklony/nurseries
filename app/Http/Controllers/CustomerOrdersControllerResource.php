@@ -245,8 +245,10 @@ class CustomerOrdersControllerResource extends Controller
         if($custom != null){
             $custom->status = request('status');
             $custom->save();
+        }else{
+            return messages::error_output(trans('errors.not_found'));
         }
-        return CustomOrderResource::make($custom);
+        return messages::success_output(trans('messages.saved_successfully'),CustomOrderResource::make($custom));
     }
 
 
