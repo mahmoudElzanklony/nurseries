@@ -56,6 +56,10 @@ class AllSellersDataController extends Controller
             $data->whereHas('order',function($e){
                 $e->where('status','!=','completed');
             });
+        }else{
+            $data->whereHas('order',function($e){
+                $e->where('status','!=','completed');
+            });
         }
         if(request()->has('id')){
             $result = RepliesSellersWithAllData::get();
