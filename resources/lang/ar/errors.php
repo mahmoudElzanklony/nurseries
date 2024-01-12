@@ -28,7 +28,7 @@ return [
     'wrong_otp'=>'رقم otp غير صحيح برجاء المحاولة مرة اخري',
     'item_exist_at_care_list'=>'هذا المنتج موجود بالفعل في قائمة الرعاية الخاصة بك',
     'item_doesnt_exist_at_care_list'=>'هذا المنتج غير موجود في قائمة الرعاية الخاصة بك يرجي اضافتة اولا',
-    'cant_reply_to_this_order'=>'انتهت صلاحية الرد علي هذا الطلب',
+    'cant_reply_to_this_order'=>'انتهت صلاحية الرد علي هذا الطلب وقام العميل بأختيار شخص اخر',
     'cant_select_seller_to_this_order'=>'لا تستطيع اختيار بائع لهذا الطلب',
     'expired_coupon_date'=>'تم انتهاء تاريخ صلاحية الكوبون',
     'coupon_used_before'=>'تم استخدام الكوبون مسبقا',
