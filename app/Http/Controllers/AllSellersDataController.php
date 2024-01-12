@@ -52,7 +52,7 @@ class AllSellersDataController extends Controller
         $data = RepliesSellersWithAllData::get()->whereHas('reply',function($e){
             $e->where('client_reply','=','pending');
         });
-        if(request()->filled('status') && (request('status') != 'completed'){
+        if(request()->filled('status') && (request('status') != 'completed')){
             $data->whereHas('order',function($e){
                 $e->where('status','!=','completed');
             });
