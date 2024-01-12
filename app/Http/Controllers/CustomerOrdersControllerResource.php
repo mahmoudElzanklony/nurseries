@@ -238,6 +238,15 @@ class CustomerOrdersControllerResource extends Controller
         }
     }
 
+    public function update_shipment_custom()
+    {
+        $custom = custom_orders::query()
+                ->update(
+                    ['status',request('status')]
+                );
+        return CustomOrderResource::make($custom);
+    }
+
 
     /**
      * Store a newly created resource in storage.

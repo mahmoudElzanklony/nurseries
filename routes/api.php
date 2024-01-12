@@ -169,6 +169,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::post('/send-request',[CustomerOrdersControllerResource::class,'send_request']);
         Route::post('/reject',[CustomerOrdersControllerResource::class,'reject_seller']);
         Route::post('/all-custom-requests',[CustomerOrdersControllerResource::class,'seller_requests']);
+        Route::post('/update-status-custom-order',[CustomerOrdersControllerResource::class,'update_shipment_custom']);
     });
     // ---------------------end of custom orders actions --------------------
 
