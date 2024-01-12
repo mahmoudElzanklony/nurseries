@@ -54,10 +54,33 @@ class RateController extends Controller
         }
     }
 
+    public function rate_product_item($data){
+        $order_item = orders_items::query()
+            ->whereDoesntHave('rate')
+            ->whereHas('order',function($e) use ($data){
+                $e->where('user_id',auth()->id())->where('order_id','=',$data['order_id']);
+            })
+            ->where('product_id','=',$data['product_id'])->first();
+        if($order_item != null){
+            unset($data['product_id']);
+            $data['user_id'] = auth()->id();
+            $data['order_item_id'] = $order_item->id;
+            $rate =  orders_items_rates::query()->updateOrCreate([
+                'id'=>$data['id'] ?? null,
+            ],$data);
+            $rate = orders_items_rates::query()->with('user')->find($rate->id);
+            return messages::success_output(trans('messages.rated_successfully'),RateResource::make($rate));
+        }else{
+            return messages::error_output(trans('errors.please_order_this_product_to_rate_it'));
+        }
+    }
+
     public function make(productRateFormRequest $request){
         $data = $request->validated();
         // in case rate product per product
-        if(request()->has('order_id')){
+        if(request()->filled('order_id') && request()->filled('product_id')){
+            return $this->rate_product_item($data);
+        }else if(request()->has('order_id')){
             return $this->rate_per_order($data);
         }else {
             return $this->rate_product_per_product($data);
