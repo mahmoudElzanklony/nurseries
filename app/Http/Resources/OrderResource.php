@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\SellerRateAVG;
 use App\Models\cancelled_orders_items;
 use App\Models\financial_reconciliations;
 use App\Models\User;
@@ -18,6 +19,7 @@ class OrderResource extends JsonResource
     public static $payment;
     public function toArray($request)
     {
+        $seller_avg_rate = SellerRateAVG::get($this->seller->id);
         return [
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
@@ -46,6 +48,7 @@ class OrderResource extends JsonResource
                     ->where('order_item_id','=',$this->id)
                     ->where('type','=','order')->first() != null ? true:false;
           }),
+          'avg_rates_seller'=>round(($seller_avg_rate['avg_services']+$seller_avg_rate['avg_delivery'])/2,2),
           'client'=>UserResource::make($this->whenLoaded('client')),
           'seller'=>UserResource::make($this->whenLoaded('seller')),
           //'payment'=>PaymentResource::make($this->whenLoaded('payment')),
