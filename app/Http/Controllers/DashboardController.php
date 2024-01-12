@@ -19,6 +19,7 @@ use App\Models\categories;
 use App\Models\categories_features;
 use App\Models\categories_heading_questions;
 use App\Models\categories_heading_questions_data;
+use App\Models\images;
 use App\Models\select_options;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -76,6 +77,11 @@ class DashboardController extends Controller
         $output = ads::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
+        if(request()->filled('id')){
+            images::query()
+                ->where('imageable_type','=','App\Models\ads')
+                ->where('imageable_id','=',request('id'))->delete();
+        }
         ImageModalSave::make($output->id,'ads','ads/'.$image);
         return AdResource::make($output);
 
