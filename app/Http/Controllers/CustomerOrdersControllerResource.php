@@ -241,10 +241,11 @@ class CustomerOrdersControllerResource extends Controller
     public function update_shipment_custom()
     {
         $custom = custom_orders::query()
-                ->find(request('id'))
-                ->update(
-                    ['status',request('status')]
-                );
+                ->find(request('id'));
+        if($custom != null){
+            $custom->status = request('status');
+            $custom->save();
+        }
         return CustomOrderResource::make($custom);
     }
 
