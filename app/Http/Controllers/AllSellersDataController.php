@@ -51,6 +51,8 @@ class AllSellersDataController extends Controller
     public function replies_custom_orders(){
         $data = RepliesSellersWithAllData::get()->whereHas('reply',function($e){
             $e->where('client_reply','=','pending');
+        })->whereHas('order',function($e){
+            $e->where('status','!=','completed');
         });
         if(request()->has('id')){
             $result = RepliesSellersWithAllData::get();
