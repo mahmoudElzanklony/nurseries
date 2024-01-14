@@ -50,7 +50,7 @@ class CustomOrderResource extends JsonResource
            'accepted_date'=>$this->when(true,function() use ($accepted_seller_from_client ){
                 // fix accepted date
                 if($this->status != 'pending' && $accepted_seller_from_client != null){
-                    return $accepted_seller_from_client->reply->created_at;
+                    return $accepted_seller_from_client->reply->updated_at;
                 }else{
                     return null;
                 }
