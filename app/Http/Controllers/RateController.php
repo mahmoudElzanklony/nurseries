@@ -20,14 +20,14 @@ class RateController extends Controller
                 $e->where('user_id',auth()->id())->where('id',$data['order_id']);
             })->get();
         // TODO in future
-        if(true){
+        if(sizeof($order_items) > 0){
             foreach($order_items as $item){
                 $data['user_id'] = auth()->id();
                 $data['order_item_id'] = $item->id;
-                orders_items_rates::query()->create($data);
+                $rate = orders_items_rates::query()->create($data);
             }
 
-            return messages::success_output(trans('messages.rated_successfully'),$data);
+            return messages::success_output(trans('messages.rated_successfully'),RateResource::make($rate) ?? $data);
         }else{
             return messages::error_output(trans('errors.please_order_this_product_to_rate_it'));
         }
