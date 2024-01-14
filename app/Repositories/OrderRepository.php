@@ -256,10 +256,10 @@ class OrderRepository
         $price = 0;
         if($type == 'product') {
             $price = $product->main_price;
-            if($wholesale > 0){
+            if($wholesale > 0 && auth()->user()->role->name != 'client'){
                 $price = $wholesale;
             }
-            if($discount > 0){
+            if($discount > 0 && auth()->user()->role->name == 'client'){
                 $dis_val = ($discount / 100) * $price;
                 $price = $price - $dis_val;
             }
