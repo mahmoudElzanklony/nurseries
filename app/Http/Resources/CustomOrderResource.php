@@ -18,7 +18,7 @@ class CustomOrderResource extends JsonResource
     public function toArray($request)
     {
 
-        if($this->status == 'active') {
+        if($this->status != 'pending') {
             try{
                 $accepted_seller_from_client = custom_orders_sellers::query()->with('seller')
                     ->where('custom_order_id', '=', $this->id)
