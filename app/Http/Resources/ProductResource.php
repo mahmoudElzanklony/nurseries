@@ -51,8 +51,8 @@ class ProductResource extends JsonResource
         if(isset($this->discounts)){
             try{
                 $discount = $this->discounts[0]->discount;
-                dd(Carbon::make($this->discounts[0]->end_date) , Carbon::today());
-                if(Carbon::make($this->discounts[0]->end_date) <= Carbon::today() ){
+                dd(Carbon::make($this->discounts[0]->end_date) , Carbon::today() , Carbon::today() >= Carbon::make($this->discounts[0]->start_date) );
+                if(Carbon::today() >= Carbon::make($this->discounts[0]->start_date) && Carbon::today() <= Carbon::make($this->discounts[0]->end_date) ){
                     $dis_val = ($discount / 100) * $this->main_price;
                     $discount_price = $this->main_price - $dis_val;
                 }else{
