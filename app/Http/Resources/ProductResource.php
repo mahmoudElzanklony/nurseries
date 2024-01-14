@@ -12,6 +12,7 @@ use App\Actions\WantToBeRated;
 use App\Models\followers;
 use App\Models\orders_items;
 use App\Models\users_products_cares;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -47,6 +48,20 @@ class ProductResource extends JsonResource
             $delivery = false;
         }
 
+        if(isset($this->discounts)){
+            try{
+                $discount = $this->discounts[0]->discount;
+                if(Carbon::make($this->discounts[0]->end_date) <= Carbon::today() ){
+                    $dis_val = ($discount / 100) * $this->main_price;
+                    $discount_price = $this->main_price - $dis_val;
+                }else{
+                    $discount_price = 0;
+                }
+            }catch (\Exception $e){
+                $discount_price = 0;
+            }
+        }
+
         return [
             'id'=>$this->id,
             'user_id'=>$this->user_id,
@@ -58,6 +73,9 @@ class ProductResource extends JsonResource
             ],
             'quantity'=>$this->quantity,
             'main_price'=>$this->main_price,
+            'discount_price'=>$this->when($discount_price > 0,function () use ($discount_price){
+                return $discount_price;
+            }),
             'status'=>$this->status,
             'created_at'=>$this->created_at,
             'category'=>CategoriesResource::make($this->whenLoaded('category')),
