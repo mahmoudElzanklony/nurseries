@@ -168,7 +168,7 @@ class DashboardController extends Controller
         if(request()->filled('percentage') && ( $from_who == 'admin' || $from_who == 'seller')) {
             financial_reconciliations_profit_percentages::query()
                 ->where('from_who', '=', $from_who)
-                ->update(['percentage', '=', $percentage]);
+                ->update(['percentage '=> $percentage]);
             return messages::success_output(trans('messages.saved_successfully'));
         }else{
             return messages::error_output('percentage not sent or from who value is wrong');
