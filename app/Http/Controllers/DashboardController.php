@@ -154,7 +154,7 @@ class DashboardController extends Controller
     public function change_tax()
     {
         if(request()->filled('tax')){
-            return taxes::query()->update(['percentage'=>request('tax')]);
+            taxes::query()->update(['percentage'=>request('tax')]);
             return messages::success_output(trans('messages.saved_successfully'));
         }else{
             return messages::error_output('tax value not found');
