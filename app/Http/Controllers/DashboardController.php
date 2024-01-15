@@ -169,7 +169,7 @@ class DashboardController extends Controller
             financial_reconciliations_profit_percentages::query()
                 ->where('from_who', '=', $from_who)
                 ->update([
-                    'percentage '=> $percentage,
+                    'percentage'=> $percentage,
                     'note'=>request('note') ?? null
                 ]);
             return messages::success_output(trans('messages.saved_successfully'));
