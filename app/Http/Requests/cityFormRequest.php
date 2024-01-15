@@ -28,7 +28,7 @@ class cityFormRequest extends FormRequest
             'ar_name'=>'required',
             'en_name'=>'filled',
             'map_code'=>'filled',
-            'government_id'=>'required|exists:governments,id',
+            'country_id'=>'required|exists:countries,id',
         ];
     }
 
@@ -36,7 +36,7 @@ class cityFormRequest extends FormRequest
     {
         return [
           'name'=>trans('keywords.name'),
-          'government_id'=>trans('keywords.government'),
+          'country_id'=>trans('keywords.country_id'),
         ];
     }
 }
