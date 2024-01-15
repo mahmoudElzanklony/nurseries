@@ -11,7 +11,7 @@ class AdsController extends Controller
     //
     public function index()
     {
-        $data = ads::query()->orderBy('order','ASC')->get();
+        $data = ads::query()->with('image')->orderBy('order','ASC')->get();
         return AdResource::collection($data);
     }
 }
