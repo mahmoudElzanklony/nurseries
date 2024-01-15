@@ -270,6 +270,10 @@ Route::group(['middleware'=>'changeLang'],function (){
             Route::get('/',[DashboardController::class,'all_problems']);
             Route::post('/reply',[DashboardController::class,'reply_problem']);
         });
+        Route::group(['prefix'=>'/money'],function(){
+            Route::post('/change-tax',[DashboardController::class,'change_tax']);
+            Route::post('/change-profit',[DashboardController::class,'change_profit']);
+        });
         Route::group(['prefix'=>'/financial'],function(){
             Route::get('/',[DashboardController::class,'financial_data']);
             Route::get('/quick-statistics',[DashboardController::class,'quick_financial_statistics']);

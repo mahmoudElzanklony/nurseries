@@ -19,8 +19,10 @@ use App\Models\categories;
 use App\Models\categories_features;
 use App\Models\categories_heading_questions;
 use App\Models\categories_heading_questions_data;
+use App\Models\financial_reconciliations_profit_percentages;
 use App\Models\images;
 use App\Models\select_options;
+use App\Models\taxes;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\traits\helpers_requests_api\PackagesHelperApi;
@@ -147,6 +149,30 @@ class DashboardController extends Controller
         }
         DB::commit();
         return messages::success_output(trans('messages.saved_successfully'));
+    }
+
+    public function change_tax()
+    {
+        if(request()->filled('tax')){
+            return taxes::query()->update(['percentage',request('tax')]);
+            return messages::success_output(trans('messages.saved_successfully'));
+        }else{
+            return messages::error_output('tax value not found');
+        }
+    }
+
+    public function change_profit()
+    {
+        $from_who = request('from_who');
+        $percentage = request('percentage');
+        if(request()->filled('percentage') && ( $from_who == 'admin' || $from_who == 'seller')) {
+            financial_reconciliations_profit_percentages::query()
+                ->where('from_who', '=', $from_who)
+                ->update(['percentage', '=', $percentage]);
+            return messages::success_output(trans('messages.saved_successfully'));
+        }else{
+            return messages::error_output('percentage not sent or from who value is wrong');
+        }
     }
 
 

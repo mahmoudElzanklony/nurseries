@@ -27,6 +27,7 @@ class cityFormRequest extends FormRequest
             'id'=>'filled',
             'ar_name'=>'required',
             'en_name'=>'filled',
+            'map_code'=>'filled',
             'government_id'=>'required|exists:governments,id',
         ];
     }
