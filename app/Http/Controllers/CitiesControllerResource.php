@@ -43,7 +43,8 @@ class CitiesControllerResource extends Controller
         $city = cities::query()->updateOrCreate([
             'id'=>$data['id'] ?? null
         ],$data);
-        return messages::success_output(trans('messages.saved_successfully'),$city);
+        $output = cities::query()->with('country')->find($city->id);
+        return messages::success_output(trans('messages.saved_successfully'),CityResource::make($output));
     }
 
     /**
