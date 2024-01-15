@@ -18,7 +18,7 @@ class AdResource extends JsonResource
           'id'=>$this->id,
           'name'=>$this->{app()->getLocale().'_name'},
           'order'=>$this->order,
-          'image'=>$this->image->name,
+          'image'=>ImagesResource::make($this->whenLoaded('image')),
         ];
     }
 }
