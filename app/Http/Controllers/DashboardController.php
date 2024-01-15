@@ -178,5 +178,10 @@ class DashboardController extends Controller
         }
     }
 
+    public function profit()
+    {
+        return financial_reconciliations_profit_percentages::query()->get();
+    }
+
 
 }

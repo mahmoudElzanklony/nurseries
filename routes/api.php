@@ -273,6 +273,7 @@ Route::group(['middleware'=>'changeLang'],function (){
         Route::group(['prefix'=>'/money'],function(){
             Route::post('/change-tax',[DashboardController::class,'change_tax']);
             Route::post('/change-profit',[DashboardController::class,'change_profit']);
+            Route::get('/profit',[DashboardController::class,'profit']);
         });
         Route::group(['prefix'=>'/financial'],function(){
             Route::get('/',[DashboardController::class,'financial_data']);
