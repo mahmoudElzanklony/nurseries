@@ -33,7 +33,7 @@ class CitiesControllerResource extends Controller
                 NameFilter::class
             ])
             ->thenReturn()
-            ->paginate(15);
+            ->get();
         return CityResource::collection($output);
     }
 
