@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\EndDateFilter;
+use App\Filters\NameFilter;
+use App\Filters\StartDateFilter;
+use App\Filters\UsernameFilter;
+use App\Filters\users\RoleNameFilter;
 use App\Http\Requests\cityFormRequest;
 use App\Http\Resources\CityResource;
 use App\Http\traits\messages;
 use App\Models\cities;
 use Illuminate\Http\Request;
+use Illuminate\Pipeline\Pipeline;
 
 class CitiesControllerResource extends Controller
 {
@@ -20,8 +26,15 @@ class CitiesControllerResource extends Controller
         //
         $data = cities::query()->when(request()->has('country_id'),function($e){
             $e->where('country_id','=',request('country_id'));
-        })->orderBy('id','DESC')->get();
-        return CityResource::collection($data);
+        })->orderBy('id','DESC');
+        $output = app(Pipeline::class)
+            ->send($data)
+            ->through([
+                NameFilter::class
+            ])
+            ->thenReturn()
+            ->paginate(15);
+        return CityResource::collection($output);
     }
 
     /**
