@@ -66,7 +66,7 @@ class CategoriesControllerResource extends Controller
         if($data != null && sizeof($data->questions) > 0){
             return CategoryHeadingQuestionsDataResource::collection($data->questions);
         }else{
-            return messages::success_output([]);
+            return messages::success_output('',[]);
         }
     }
 
