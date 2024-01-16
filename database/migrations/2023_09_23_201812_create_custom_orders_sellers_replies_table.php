@@ -17,11 +17,13 @@ class CreateCustomOrdersSellersRepliesTable extends Migration
             $table->id();
             $table->foreignId('custom_orders_seller_id')->constrained('custom_orders_sellers')
                 ->onUpdate('cascade')->onDelete('cascade');
+            $table->string('name');
             $table->text('info');
+            $table->integer('quantity');
             $table->float('product_price');
             $table->integer('days_delivery');
             $table->integer('delivery_price');
-            $table->string('client_reply')->default('pending');
+            //$table->string('client_reply')->default('pending');
             $table->timestamps();
         });
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\GetHighDeliveryDays;
 use App\Models\cancelled_orders_items;
 use App\Models\custom_orders_sellers;
 use Carbon\Carbon;
@@ -20,17 +21,19 @@ class CustomOrderResource extends JsonResource
 
         if($this->status != 'pending') {
             try{
-                $accepted_seller_from_client = custom_orders_sellers::query()->with('seller')
+                $accepted_seller_from_client = custom_orders_sellers::query()
+                    ->with('seller')->with('reply')
                     ->where('custom_order_id', '=', $this->id)
-                    ->where('status', '=', 'accepted')->whereHas('reply', function ($e) {
-                        $e->where('client_reply', '=', 'accepted');
-                    })->with('reply')->first();
+                    ->where('status', '=', 'accepted')
+                    ->where('client_reply', '=', 'accepted')
+                    ->first();
             }catch (\Throwable $e){
                 $accepted_seller_from_client = null;
             }
         }else{
             $accepted_seller_from_client = null;
         }
+
         return [
            'id'=>$this->id,
            'client'=>UserResource::make($this->user),
@@ -39,6 +42,7 @@ class CustomOrderResource extends JsonResource
            'selected_seller'=>$this->when($this->status != 'pending' && $accepted_seller_from_client != null , function () use ($accepted_seller_from_client){
                return UserResource::make($accepted_seller_from_client->seller);
            }),
+           'selected_products'=>SelectedProductsResource::collection($this->whenLoaded('selected_products')),
            'address'=>$this->when(true,function (){
                 if($this->address != null){
                     return UserAddressesResource::make($this->address);
@@ -50,7 +54,7 @@ class CustomOrderResource extends JsonResource
            'accepted_date'=>$this->when(true,function() use ($accepted_seller_from_client ){
                 // fix accepted date
                 if($this->status != 'pending' && $accepted_seller_from_client != null){
-                    return $accepted_seller_from_client->reply->updated_at;
+                    return $accepted_seller_from_client->updated_at;
                 }else{
                     return null;
                 }
@@ -58,7 +62,8 @@ class CustomOrderResource extends JsonResource
            'delivery_date'=>$this->when(true ,function() use ($accepted_seller_from_client){
 
                 if($this->status != 'pending' && $accepted_seller_from_client != null){
-                    return Carbon::parse($accepted_seller_from_client->reply->created_at)->addDays($accepted_seller_from_client->reply->days_delivery);
+                    $delivery = GetHighDeliveryDays::get($accepted_seller_from_client->reply);
+                    return Carbon::parse($accepted_seller_from_client->updated_at)->addDays($delivery['days_delivery']);
                 }else{
                     return null;
                 }

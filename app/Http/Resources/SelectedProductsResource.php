@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CustomOrderSellerResource extends JsonResource
+class SelectedProductsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,12 +16,10 @@ class CustomOrderSellerResource extends JsonResource
     {
         return [
           'id'=>$this->id,
-          'seller'=>UserResource::make($this->seller),
-          'order'=>CustomOrderResource::make($this->whenLoaded('order')),
-          'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
-          'reply_status'=>$this->status,
-          'status'=>trans('keywords.'.$this->status),
-          'client_reply'=>$this->client_reply,
+          'quantity'=>$this->quantity,
+          'price'=>$this->price,
+          'item_price'=>round($this->price / $this->quantity,2),
+          'details'=>CustomOrderSellerReplyResource::make($this->whenLoaded('reply')),
           'created_at'=>$this->created_at,
         ];
     }

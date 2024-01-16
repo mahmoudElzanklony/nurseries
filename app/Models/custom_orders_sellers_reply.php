@@ -9,7 +9,9 @@ class custom_orders_sellers_reply extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['custom_orders_seller_id','info','product_price','days_delivery','delivery_price','client_reply'];
+    protected $table = 'custom_orders_sellers_replies';
+
+    protected $fillable = ['custom_orders_seller_id','name','info','quantity','product_price','days_delivery','delivery_price'];
 
     public function images(){
         return $this->morphMany(images::class,'imageable');

@@ -15,6 +15,11 @@ class custom_orders extends Model
         return $this->hasMany(custom_orders_sellers::class,'custom_order_id');
     }
 
+    public function selected_products()
+    {
+        return $this->hasMany(custom_orders_selected_products::class,'custom_order_id');
+    }
+
     public function payment(){
         return $this->morphOne(payments::class,'paymentable');
     }

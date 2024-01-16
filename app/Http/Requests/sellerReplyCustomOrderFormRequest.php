@@ -24,11 +24,16 @@ class sellerReplyCustomOrderFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'id'=>'filled',
-            'info'=>'required',
-            'product_price'=>'required',
-            'days_delivery'=>'required',
-            'delivery_price'=>'required',
+            'custom_order_id'=>'required|exists:custom_orders_sellers,id',
+            'items'=>'required|array',
+            'items.*.id'=>'filled',
+            'items.*.name'=>'required',
+            'items.*.info'=>'required',
+            'items.*.product_price'=>'required',
+            'items.*.delivery_price'=>'required',
+            'items.*.days_delivery'=>'required',
+            'items.*.quantity'=>'required|min:1',
+            'items.*.images'=>'filled|array',
         ];
     }
 
