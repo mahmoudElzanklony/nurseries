@@ -107,9 +107,13 @@ class DashboardController extends Controller
         ]);
         foreach(request('features') as $feature){
             $feature['category_id'] = $category->id;
-            categories_features::query()->updateOrCreate([
+            $fa = categories_features::query()->updateOrCreate([
                 'id'=>$feature['id'] ?? null
             ],$feature);
+            if(isset($feature['image'])) {
+                $image = $this->upload($feature['image'], 'features');
+                ImageModalSave::make($fa->id, 'categories_features', 'features/' . $image);
+            }
         }
         foreach(request('heading_questions') as $question){
             $heading = categories_heading_questions::query()->updateOrCreate([
