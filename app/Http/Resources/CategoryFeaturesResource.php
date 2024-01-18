@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use League\CommonMark\Extension\CommonMark\Renderer\Inline\ImageRenderer;
 
 class CategoryFeaturesResource extends JsonResource
 {
@@ -17,6 +18,7 @@ class CategoryFeaturesResource extends JsonResource
         return [
             'id'=>$this->id,
             'name'=>$this->{app()->getLocale().'_name'},
+            'image'=>ImagesResource::make($this->image),
         ];
     }
 }
