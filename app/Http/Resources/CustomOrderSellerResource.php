@@ -19,10 +19,10 @@ class CustomOrderSellerResource extends JsonResource
           'seller'=>UserResource::make($this->seller),
           'order'=>CustomOrderResource::make($this->whenLoaded('order')),
           'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
-          'reply_status'=>$this->status,
+          'reply_status'=>$this->status.'_invitation',
           'status'=>$this->status,
           'ar_status'=>trans('keywords.'.$this->status),
-          'client_reply'=>$this->client_reply,
+          'client_reply'=>$this->client_reply.'_offer',
           'created_at'=>$this->created_at,
         ];
     }
