@@ -37,7 +37,6 @@ class CustomOrderSellerResource extends JsonResource
           'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
           'status'=>$status ?? '',
           'ar_status'=>$ar_status ?? '',
-          'client_reply'=>$this->client_reply.'_offer',
           'created_at'=>$this->created_at,
         ];
     }
