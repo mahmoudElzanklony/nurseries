@@ -20,7 +20,8 @@ class CustomOrderSellerResource extends JsonResource
           'order'=>CustomOrderResource::make($this->whenLoaded('order')),
           'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
           'reply_status'=>$this->status,
-          'status'=>trans('keywords.'.$this->status),
+          'status'=>$this->status,
+          'ar_status'=>trans('keywords.'.$this->status),
           'client_reply'=>$this->client_reply,
           'created_at'=>$this->created_at,
         ];
