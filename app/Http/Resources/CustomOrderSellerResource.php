@@ -14,7 +14,7 @@ class CustomOrderSellerResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->reply_status == 'pending'){
+        if($this->reply_status == 'pending' || $this->reply_status == null){
             $status = 'pending_invitation';
             $ar_status = 'لم يتم الرد علي الدعوة';
         }else if($this->reply_status == 'rejected'){
@@ -30,7 +30,7 @@ class CustomOrderSellerResource extends JsonResource
             $status = 'rejected_offer';
             $ar_status = 'تم رفض عرضك من قبل العميل';
         }
-        dd($this->reply_status);
+        dd($status);
         return [
           'id'=>$this->id,
           'seller'=>UserResource::make($this->seller),
