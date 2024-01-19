@@ -30,6 +30,7 @@ class CustomOrderSellerResource extends JsonResource
             $status = 'rejected_offer';
             $ar_status = 'تم رفض عرضك من قبل العميل';
         }
+        dd($status);
         return [
           'id'=>$this->id,
           'seller'=>UserResource::make($this->seller),
