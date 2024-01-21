@@ -14,7 +14,7 @@ class CustomOrderSellerResource extends JsonResource
      */
     public function toArray($request)
     {
-        if($this->status == 'pending' || $this->reply_status == null){
+        if($this->status == 'pending'){
             $status = 'pending_invitation';
             $ar_status = 'لم يتم الرد علي الدعوة';
         }else if($this->status == 'rejected'){
@@ -36,8 +36,8 @@ class CustomOrderSellerResource extends JsonResource
           'order'=>CustomOrderResource::make($this->whenLoaded('order')),
           'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
           'status'=>$status ?? '',
-          'reply_status'=>$this->status,
-          'client_reply'=>$this->client_reply,
+         /* 'reply_status'=>$this->status,
+          'client_reply'=>$this->client_reply,*/
           'ar_status'=>$ar_status ?? '',
           'created_at'=>$this->created_at,
         ];
