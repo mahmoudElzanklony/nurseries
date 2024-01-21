@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\GetHighDeliveryDays;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class CustomOrderSellerResource extends JsonResource
@@ -35,6 +36,7 @@ class CustomOrderSellerResource extends JsonResource
           'seller'=>UserResource::make($this->seller),
           'order'=>CustomOrderResource::make($this->whenLoaded('order')),
           'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
+          'calc_max'=>GetHighDeliveryDays::get($this->reply),
           'status'=>$status ?? '',
          /* 'reply_status'=>$this->status,
           'client_reply'=>$this->client_reply,*/
