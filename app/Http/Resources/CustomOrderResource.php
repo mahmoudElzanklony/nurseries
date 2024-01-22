@@ -44,7 +44,7 @@ class CustomOrderResource extends JsonResource
            }),
            'selected_products'=>SelectedProductsResource::collection($this->whenLoaded('selected_products')),
            'delivery_data'=>$this->when($this->whenLoaded('selected_products'),function (){
-               return 0;
+               return $this->selected_products[0];
            }),
            'address'=>$this->when(true,function (){
                 if($this->address != null){
