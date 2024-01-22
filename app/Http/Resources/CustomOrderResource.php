@@ -43,6 +43,12 @@ class CustomOrderResource extends JsonResource
                return UserResource::make($accepted_seller_from_client->seller);
            }),
            'selected_products'=>SelectedProductsResource::collection($this->whenLoaded('selected_products')),
+           'delivery_data'=>$this->when($this->whenLoaded('selected_products'),function (){
+               $data = $this->selected_products->map(function($e){
+                  return $e->details;
+               });
+               return GetHighDeliveryDays::get($data);
+           }),
            'address'=>$this->when(true,function (){
                 if($this->address != null){
                     return UserAddressesResource::make($this->address);
