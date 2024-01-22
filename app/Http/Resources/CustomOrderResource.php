@@ -18,7 +18,6 @@ class CustomOrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        dd($this);
         if($this->status != 'pending') {
             try{
                 $accepted_seller_from_client = custom_orders_sellers::query()
