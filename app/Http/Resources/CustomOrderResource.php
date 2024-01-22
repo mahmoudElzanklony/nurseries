@@ -33,7 +33,7 @@ class CustomOrderResource extends JsonResource
         }else{
             $accepted_seller_from_client = null;
         }
-        dd($this->status);
+
         return [
            'id'=>$this->id,
            'client'=>UserResource::make($this->user),
