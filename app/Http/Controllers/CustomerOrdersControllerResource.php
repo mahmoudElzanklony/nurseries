@@ -353,7 +353,7 @@ class CustomerOrdersControllerResource extends Controller
             return CustomOrderSellerResource::make($data);
         }else{
             $data = CustomOrdersWithAllData::get()->with('selected_products.reply.images')->find($id);
-            $data['has_pending'] = true;
+            //$data['has_pending'] = true;
             return $data;
             return CustomOrderResource::make($data);
         }
