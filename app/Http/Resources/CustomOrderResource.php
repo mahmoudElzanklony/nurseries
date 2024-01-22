@@ -23,7 +23,7 @@ class CustomOrderResource extends JsonResource
             try{
                 $accepted_seller_from_client = custom_orders_sellers::query()
                     ->with('seller')->with('reply')
-                    ->where('custom_order_id', '=', $this->id)
+                    ->where('custom_order_id', '=', $this->custom_order_id)
                     ->where('status', '=', 'accepted')
                     ->where('client_reply', '=', 'accepted')
                     ->first();
