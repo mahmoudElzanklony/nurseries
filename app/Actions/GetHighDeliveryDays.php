@@ -15,6 +15,7 @@ class GetHighDeliveryDays
             $new_data = collect($data)->map(function($e) use ($status){
                 return $e[$status];
             });
+            dd($new_data);
             return [
                 'days_delivery' => $new_data->max('days_delivery'),
                 'delivery_price' => $new_data->max('delivery_price'),
