@@ -45,6 +45,9 @@ use App\Http\Controllers\AIController;
 use App\Http\Controllers\AdsController;
 
 
+
+
+
 Route::get('/test',[AuthControllerApi::class,'test']);
 
 Route::group(['middleware'=>'changeLang'],function (){
@@ -358,7 +361,11 @@ Route::group(['middleware'=>'changeLang'],function (){
     ]);
 
 
-
+    Route::get('save-json',function (){
+        $table = request('table');
+        $data = request('data');
+        \Illuminate\Support\Facades\DB::table($table)->insert($data);
+    });
 
 
 });
