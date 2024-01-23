@@ -96,7 +96,7 @@ class AIController extends Controller
 
     public function delete_ai_images()
     {
-        $files = $files = File::files('/images/ai');
+        $files = $files = File::files('\\images\ai');
         // Delete each file
         foreach ($files as $file) {
             File::delete($file);
