@@ -49,11 +49,12 @@ class AIController extends Controller
                 }
             }
         }
+        $prompt .= " plants strategically around the room without any cropping or cutting, avoiding any modifications to the existing furniture. Enrich the environment with tall fiddle leaf figs in corners, small succulents on desks or shelves, and cascading spider plants in hanging planters. Ensure that the plants complement the current furniture layout.";
+
         if(request()->filled('prompt')){
             $prompt = request('prompt');
         }
 
-        $prompt .= " plants strategically around the room without any cropping or cutting, avoiding any modifications to the existing furniture. Enrich the environment with tall fiddle leaf figs in corners, small succulents on desks or shelves, and cascading spider plants in hanging planters. Ensure that the plants complement the current furniture layout.";
 
 
         try {
@@ -95,7 +96,7 @@ class AIController extends Controller
 
     public function delete_ai_images()
     {
-        $files = $files = File::files('images/ai');
+        $files = $files = File::files('/images/ai');
         // Delete each file
         foreach ($files as $file) {
             File::delete($file);
