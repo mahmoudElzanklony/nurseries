@@ -206,7 +206,7 @@ class CustomerOrdersControllerResource extends Controller
             $sellers_replies = custom_orders_sellers::query()
                 ->where('custom_order_id','=',$data[0]->custom_order_seller->custom_order_id)
                 ->where('id','!=',request('custom_orders_seller_id'))
-                ->update(['client_reply'=>'rejected ']);
+                ->update(['client_reply'=>'rejected']);
             // handle visa payment
             $payment_status = $this->handle_payment(request('visa_id'),$data[0]->custom_order_seller->order->id,$total_money);
             if($payment_status == true){

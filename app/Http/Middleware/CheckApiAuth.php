@@ -30,7 +30,7 @@ class CheckApiAuth extends BaseMiddleware
         try {
 
             if($user == false){
-                return messages::error_output(['invalid credential']);
+                return messages::error_output(['invalid credential'],401);
             }
         }catch (\Exception $e){
             return messages::error_output([$e->getMessage()]);
