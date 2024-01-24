@@ -116,7 +116,7 @@ class Year_month_week_day
         }else{
             $result[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
         }
-
+        dd($result[0]['placeholder']);
         return $result;
     }
 
