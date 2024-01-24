@@ -26,12 +26,18 @@ use App\Models\users_commercial_info;
 use App\Models\users_store_info;
 use App\Services\sellers\StatisticsService;
 use App\Services\statistics\Year_month_week_day;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\traits\upload_image;
 class SellerInfoController extends Controller
 {
     //
     use upload_image;
+
+    public function __construct()
+    {
+        Carbon::today('Asia/Riyadh');
+    }
 
     public function save_store(SellerInfoFormRequest $request){
         $data = $request->validated();
