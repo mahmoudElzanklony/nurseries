@@ -111,7 +111,6 @@ class Year_month_week_day
             ->whereMonth($created_at,date('m'))
             ->first();
         $result = [];
-        dd(Carbon::parse(Carbon::today()));
         if($output != null){
             $result[0] = ['placeholder'=>Carbon::parse(Carbon::today()) , 'value'=> floatval($output->{$column_sum}) ];
         }else{
