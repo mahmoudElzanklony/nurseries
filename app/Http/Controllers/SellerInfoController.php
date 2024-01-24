@@ -96,9 +96,9 @@ class SellerInfoController extends Controller
             $info['placeholder'] = $item['placeholder'];
 
             $info['value'] = floatval($item['value']) + floatval($output_two[$key]['value']);
-            dd($info);
             array_push($final,$info);
         }
+        dd($final[0]['placeholder']);
         return $final;
     }
 
