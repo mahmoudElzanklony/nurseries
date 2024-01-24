@@ -11,6 +11,10 @@ use function OpenAI\ValueObjects\Transporter\data;
 
 class Year_month_week_day
 {
+    public function __construct()
+    {
+        Carbon::today('Asia/Riyadh');
+    }
     public  function get_profit($model,$table = null ,$column_sum,$time_time,$conditions = [] , $created_at = 'created_at',$func_name = 'sum'){
 
         $method = 'statistics_per_'.$time_time;

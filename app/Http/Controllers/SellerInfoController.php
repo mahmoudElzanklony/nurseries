@@ -34,10 +34,7 @@ class SellerInfoController extends Controller
     //
     use upload_image;
 
-    public function __construct()
-    {
-        Carbon::today('Asia/Riyadh');
-    }
+
 
     public function save_store(SellerInfoFormRequest $request){
         $data = $request->validated();
