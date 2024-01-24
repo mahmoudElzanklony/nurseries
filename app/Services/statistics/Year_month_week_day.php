@@ -106,13 +106,13 @@ class Year_month_week_day
             ->whereYear($created_at,date('Y'))
             ->whereMonth($created_at,date('m'))
             ->first();
-
+        dd($output);
         if($output != null){
             $output[0] = ['placeholder'=>Carbon::now() , 'value'=> floatval($output->{$column_sum}) ];
         }else{
             $output[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
         }
-        dd($output[0]);
+
         return $output;
     }
 
