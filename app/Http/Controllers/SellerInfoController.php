@@ -86,6 +86,7 @@ class SellerInfoController extends Controller
         $output = $obj->get_profit('App\Actions\SellerOrdersClientsStatistics',null,'money',$time_type,[],'orders.created_at','sum');
         $output_two = $obj->get_profit('App\Actions\SellerCustomOrdersClientsStatistics',null,'money',$time_type,[],'custom_orders.created_at','sum');
         $final = [];
+        dd(date('y-m-d'));
         foreach($output as $key => $item){
             $info = [];
             $info['placeholder'] = $item['placeholder'];
