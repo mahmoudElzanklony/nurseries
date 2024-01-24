@@ -92,7 +92,7 @@ class SellerInfoController extends Controller
         foreach($output as $key => $item){
             $info = [];
             //dd($item['placeholder']);
-            $info['placeholder'] = $item['placeholder'];
+            $info['placeholder'] = date('y-m-d');
             $info['value'] = floatval($item['value']) + floatval($output_two[$key]['value']);
             array_push($final,$info);
         }
