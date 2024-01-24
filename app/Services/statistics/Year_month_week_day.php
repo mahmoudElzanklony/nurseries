@@ -106,14 +106,14 @@ class Year_month_week_day
             ->whereYear($created_at,date('Y'))
             ->whereMonth($created_at,date('m'))
             ->first();
-
+        $result = [];
         if($output != null){
-            $output[0] = ['placeholder'=>Carbon::parse(date('Y-m-d')) , 'value'=> floatval($output->{$column_sum}) ];
+            $result[0] = ['placeholder'=>Carbon::parse(date('Y-m-d')) , 'value'=> floatval($output->{$column_sum}) ];
         }else{
-            $output[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
+            $result[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
         }
-        dd($output);
-        return $output;
+
+        return $result;
     }
 
 
