@@ -109,7 +109,7 @@ class Year_month_week_day
 
         if($output != null){
             $output[0] = ['placeholder'=>Carbon::now() , 'value'=> floatval($output->{$column_sum}) ];
-            dd($output);
+            dd($output[0]);
         }else{
             $output[0] = ['placeholder'=>Carbon::now() , 'value'=> 0 ];
         }
