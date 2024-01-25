@@ -7,7 +7,11 @@ use App\Models\custom_orders;
 class SellerCustomOrdersClientsStatistics
 {
     public static function get($user_id = null, $time_type = null){
-        $data = custom_orders::query()->whereHas('reply',function($e) use ($user_id){
+        $data = custom_orders::query()
+            ->when($user_id != null , function ($e) use ($user_id){
+                $e->where('seller_id','=',$user_id);
+            })
+            ->whereHas('reply',function($e) use ($user_id){
             $e->whereHas('custom_order_seller',function($q) use ($user_id){
                 $q->where('seller_id','=',$user_id);
             });
