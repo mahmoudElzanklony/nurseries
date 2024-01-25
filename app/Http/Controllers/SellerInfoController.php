@@ -93,7 +93,7 @@ class SellerInfoController extends Controller
         $today = Carbon::parse(date('Y-m-d H:i:s'));
 
 // Output the formatted date
-       return $today;
+       return date('Y-m-d H:i:s');
         foreach($output as $key => $item){
             $info = [];
             //dd($item['placeholder']);
