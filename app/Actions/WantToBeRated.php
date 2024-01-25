@@ -14,6 +14,7 @@ class WantToBeRated
                 $e->where('user_id','=',auth()->id());
             })->where('product_id','=',$product_id)
               ->whereDoesntHave('rate')->first();
+            dd($order);
             if($order != null){
                 return true;
             }else{
