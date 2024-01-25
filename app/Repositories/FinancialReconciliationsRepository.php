@@ -43,6 +43,7 @@ class FinancialReconciliationsRepository
                   })->with('payment')->get();
 
         $custom_orders = custom_orders_sellers::query()
+            ->where('client_reply','=','accepted')
             ->whereHas('order',function($e){
                 $e->whereRaw('financial_reconciliation_id is null')->whereDoesntHave('cancelled');
             })
@@ -52,7 +53,9 @@ class FinancialReconciliationsRepository
                 });
             })
             ->when($completed == true , function($e){
-                $e->where('status','=','completed');
+                $e->whereHas('order',function($e) {
+                    $e->where('status', '=', 'completed');
+                });
             })
             ->when($user_id != null && $user_id > 0 , function ($e) use ($user_id){
                 $e->where('seller_id','=',$user_id);
