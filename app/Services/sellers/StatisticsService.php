@@ -42,11 +42,7 @@ class StatisticsService
 
         $total_sales = self::my_orders($user_id)->withSum('payment','money')->get()->sum('payment_sum_money')
             +
-            custom_orders::query()->whereHas('reply',function($e) use ($user_id){
-                $e->whereHas('custom_order_seller',function($q) use ($user_id){
-                    $q->where('seller_id','=',$user_id);
-                });
-            })->withSum('payment','money')->get()->sum('payment_sum_money');
+            custom_orders::query()->with('accepted_seller')->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
 
