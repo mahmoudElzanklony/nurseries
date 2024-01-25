@@ -82,7 +82,8 @@ class Year_month_week_day
             }else{
                 $query_data = app($model)::get();
             }
-            echo Carbon::parse($currentWeek->toDateString())->addDays($i)->toDateString()."<br>";
+            //echo Carbon::parse($currentWeek->toDateString())->addDays($i)->toDateString()."<br>";
+            echo $created_at;
             $value =  $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
