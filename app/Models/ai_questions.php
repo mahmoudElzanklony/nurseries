@@ -12,6 +12,6 @@ class ai_questions extends Model
     protected $fillable = ['ar_name','en_name','type'];
 
     public function options(){
-        return $this->morphMany(select_options::class,'selectable');
+        return $this->morphMany(multi_selections::class,'selectable');
     }
 }
