@@ -93,7 +93,7 @@ class SellerInfoController extends Controller
         $today = Carbon::today();
 
 // Output the formatted date
-        return $today;
+        return $today->toDateString();
         foreach($output as $key => $item){
             $info = [];
             //dd($item['placeholder']);
