@@ -90,10 +90,9 @@ class SellerInfoController extends Controller
         $output_two = $obj->get_profit('App\Actions\SellerCustomOrdersClientsStatistics',null,'money',$time_type,[],'custom_orders.created_at','sum');
         $final = [];
         // Get today's date using Carbon directly
-        $today = Carbon::parse(date('Y-m-d H:i:s'))->toTimeString();
 
 // Output the formatted date
-       return $today;
+
         foreach($output as $key => $item){
             $info = [];
             //dd($item['placeholder']);
