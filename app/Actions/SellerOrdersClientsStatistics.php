@@ -19,7 +19,7 @@ class SellerOrdersClientsStatistics
             ->join('payments','orders.id','=','payments.paymentable_id')
             ->where('payments.paymentable_type','=','App\Models\orders')
             ->selectRaw('orders.* , payments.money');
-        dd($clients->get());
+
         return $clients;
     }
 }
