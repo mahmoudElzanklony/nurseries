@@ -47,13 +47,13 @@ class Year_month_week_day
 
 
         $output = [];
-        for($i = 1; $i <= 4; $i++) {
+        for($i = 0; $i < 4; $i++) {
             if($table != null){
                 $query_data = $table;
             }else{
                 $query_data = app($model)::get();
             }
-            $week = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay()->week($i);
+            $week = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay()->week($i + 1);
 
             $value = $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
