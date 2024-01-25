@@ -82,12 +82,11 @@ class Year_month_week_day
             }else{
                 $query_data = app($model)::get();
             }
-            dd($query_data);
             $value =  $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
-                ->whereRaw(DB::raw("DAY(".$created_at.")").' = '.($i+1))
+               // ->whereRaw(DB::raw("DAY(".$created_at.")").' = '.($i+1))
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
                 ->{$func_name}($column_sum) ;
