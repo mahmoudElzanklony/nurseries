@@ -91,7 +91,7 @@ class Year_month_week_day
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
                 ->{$func_name}($column_sum) ;
-            $output[$i - 1] = ['placeholder'=>Carbon::parse($currentWeek->toDateString())->addDays($i-1) , 'value'=> floatval($value)] ;
+            $output[$i - 1] = ['placeholder'=>Carbon::parse($currentWeek->toDateString())->addDays($i) , 'value'=> floatval($value)] ;
         }
         return $output;
     }
