@@ -87,7 +87,7 @@ class Year_month_week_day
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
                 })
-                ->whereRaw(DB::raw("DAY(".$created_at.")").' = '.($i+1))
+                ->whereRaw($created_at.' = '.(Carbon::parse($currentWeek->toDateString())->addDays($i)->toDateString()))
                 ->whereYear($created_at,date('Y'))
                 ->whereMonth($created_at,date('m'))
                 ->{$func_name}($column_sum) ;
