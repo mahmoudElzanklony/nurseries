@@ -42,6 +42,7 @@ class CustomOrderSellerResource extends JsonResource
           'client_reply'=>$this->client_reply,*/
           'ar_status'=>$ar_status ?? '',
           'created_at'=>$this->created_at,
+          'updated_at'=>$this->updated_at,
         ];
     }
 }
