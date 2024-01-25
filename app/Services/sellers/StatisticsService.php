@@ -35,11 +35,9 @@ class StatisticsService
                 $e->where('content','!=',OrdersDeliveryCases::$completed);
             })->withSum('payment','money')->get()->sum('payment_sum_money')
             +
-            custom_orders::query()->whereHas('reply',function($e) use ($user_id){
-                $e->whereHas('custom_order_seller',function($q) use ($user_id){
-                    $q->where('seller_id','=',$user_id);
-                });
-            })->where('status','=','completed')->withSum('payment','money')->get()->sum('payment_sum_money');
+            custom_orders::query()->with('accepted_seller')
+                           ->where('status','!=','completed')
+                           ->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
         $total_sales = self::my_orders($user_id)->withSum('payment','money')->get()->sum('payment_sum_money')
@@ -51,7 +49,9 @@ class StatisticsService
             })->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
-
+        dd(custom_orders::query()->with('accepted_seller')
+            ->where('status','!=','completed')
+            ->withSum('payment','money')->get()->sum('payment_sum_money'));
         $financil_repo = new FinancialReconciliationsRepository();
         $orders = $financil_repo->get_orders_to_be_financial(true);
         $active_money = $financil_repo->detect_total_money($orders['orders'],$orders['custom_orders']);
