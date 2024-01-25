@@ -14,4 +14,9 @@ class orders_items_rates extends Model
     public function user(){
         return $this->belongsTo(User::class,'user_id');
     }
+
+    public function order_item()
+    {
+        return $this->belongsTo(orders_items::class,'order_item_id');
+    }
 }
