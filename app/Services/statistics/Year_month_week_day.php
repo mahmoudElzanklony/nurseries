@@ -54,9 +54,7 @@ class Year_month_week_day
                 $query_data = app($model)::get();
             }
             $week = Carbon::parse(date('Y').'-'.($i+1).'-01')->firstOfMonth()->addDay()->week($i + 1);
-            /*if($i == 1){
-                dd($week);
-            }*/
+
             $value = $query_data
                 ->when(sizeof($conditions) > 0 && $table != null , function($e) use ($conditions,$time_time,$i){
                     $e->where($conditions);
