@@ -49,9 +49,7 @@ class StatisticsService
             })->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
-        dd(custom_orders::query()->with('accepted_seller')
-            ->where('status','!=','completed')
-            ->withSum('payment','money')->get()->sum('payment_sum_money'));
+        dd(self::my_orders($user_id)->withSum('payment','money')->get()->sum('payment_sum_money'));
         $financil_repo = new FinancialReconciliationsRepository();
         $orders = $financil_repo->get_orders_to_be_financial(true);
         $active_money = $financil_repo->detect_total_money($orders['orders'],$orders['custom_orders']);
