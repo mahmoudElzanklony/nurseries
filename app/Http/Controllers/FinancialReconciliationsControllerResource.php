@@ -59,7 +59,7 @@ class FinancialReconciliationsControllerResource extends Controller
      * @return \Illuminate\Http\Response
      */
     public function percentage_per_request(){
-        $percentage = financial_reconciliations_profit_percentages::query()->where('from_who','=','seller')->first();
+        $percentage = financial_reconciliations_profit_percentages::query()->get();
         return messages::success_output('',$percentage);
     }
     public function store()
