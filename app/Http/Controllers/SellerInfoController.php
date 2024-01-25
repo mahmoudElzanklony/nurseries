@@ -89,7 +89,11 @@ class SellerInfoController extends Controller
         $output = $obj->get_profit('App\Actions\SellerOrdersClientsStatistics',null,'money',$time_type,[],'orders.created_at','sum');
         $output_two = $obj->get_profit('App\Actions\SellerCustomOrdersClientsStatistics',null,'money',$time_type,[],'custom_orders.created_at','sum');
         $final = [];
+        $now = Carbon::now();
 
+// Get the timezone of the Carbon instance
+        $timeZone = $now->timezone;
+        return $timeZone;
         foreach($output as $key => $item){
             $info = [];
             //dd($item['placeholder']);
