@@ -15,7 +15,7 @@ class SellerCustomOrdersClientsStatistics
             ->join('payments','custom_orders.id','=','payments.paymentable_id')
             ->where('payments.paymentable_type','=','App\Models\custom_orders')
             ->selectRaw('custom_orders.* , payments.money');
-        dd($data->get());
+
         return $data;
     }
 }
