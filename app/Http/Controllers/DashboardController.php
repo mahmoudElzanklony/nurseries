@@ -134,7 +134,6 @@ class DashboardController extends Controller
                 ]);
                 // upload image for question
                 if(isset($q['image'])) {
-
                     $image = $this->upload($q['image'], 'questions');
                     ImageModalSave::make($q_data->id, 'categories_heading_questions_data', 'questions/' . $image);
                 }
