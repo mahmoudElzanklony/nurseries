@@ -73,7 +73,7 @@ class Year_month_week_day
 
         $output = [];
 
-        $currentDate = Carbon::now();
+        $currentDate = Carbon::parse(date('Y-m-d H:i:s'));
         Carbon::setWeekStartsAt(Carbon::SATURDAY);
         $currentWeek = $currentDate->startOfWeek();
         for($i = 1; $i <= 7 ; $i++) {
