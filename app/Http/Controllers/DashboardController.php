@@ -134,9 +134,7 @@ class DashboardController extends Controller
                 ]);
                 // upload image for question
                 if(isset($q['image'])) {
-                    images::query()
-                        ->where('imageable_id','=',$q_data->id)
-                        ->where('imageable_type','=','App\Models\categories_heading_questions_data')->delete();
+
                     $image = $this->upload($q['image'], 'questions');
                     ImageModalSave::make($q_data->id, 'categories_heading_questions_data', 'questions/' . $image);
                 }
