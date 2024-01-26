@@ -53,7 +53,7 @@ class CustomOrderResource extends JsonResource
                     return null;
                 }
             }),
-           'ar_status'=>trans('keywords.'.$this->status),
+           'ar_status'=>$this->status  == 'active' && auth()->user()->role->name != 'admin' ? trans('keywords.reviewing'):trans('keywords.'.$this->status),
            'accepted_date'=>$this->when(true,function() use ($accepted_seller_from_client ){
                 // fix accepted date
                 if($this->status != 'pending' && $accepted_seller_from_client != null){
