@@ -95,6 +95,7 @@ class OrdersController extends Controller
             $shipment = orders_shipment_info::query()->create([
                 'user_id' => auth()->id(),
                 'order_id' => $order->id,
+                'type'=>'order',
                 'content' => $status
             ]);
 

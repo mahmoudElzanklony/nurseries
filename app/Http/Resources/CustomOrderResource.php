@@ -76,6 +76,8 @@ class CustomOrderResource extends JsonResource
                     ->where('order_item_id','=',$this->id)
                     ->where('type','=','custom-order')->first() != null ? true:false;
             }),
+           'shipments'=>OrderShipmentsInfo::collection($this->whenLoaded('shipments_info')),
+
            'images'=>ImagesResource::collection($this->images),
            'pending_alerts'=>$this->when(auth()->check() && isset($this->has_pending),function(){
                return CustomOrderSellerResource::collection($this->whenLoaded('pending_alerts'));

@@ -9,9 +9,13 @@ class orders_shipment_info extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','order_id','content'];
+    protected $fillable = ['user_id','order_id','content','type'];
 
     public function order(){
-        return $this->belongsTo(orders::class,'order_id');
+        return $this->belongsTo(orders::class,'order_id')->where('type','=','order');
     }
+    public function custom_order(){
+        return $this->belongsTo(orders::class,'order_id')->where('type','=','custom_order');
+    }
+
 }

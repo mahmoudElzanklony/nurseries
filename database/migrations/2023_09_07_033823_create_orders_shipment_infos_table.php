@@ -16,7 +16,8 @@ class CreateOrdersShipmentInfosTable extends Migration
         Schema::create('orders_shipment_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('order_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('order_id');
+            $table->string('type')->default('order');
             $table->string('content');
             $table->timestamps();
         });

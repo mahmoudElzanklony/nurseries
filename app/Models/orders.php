@@ -24,7 +24,7 @@ class orders extends Model
     }
 
     public function shipments_info(){
-        return $this->hasMany(orders_shipment_info::class,'order_id');
+        return $this->hasMany(orders_shipment_info::class,'order_id')->where('type','=','order');
     }
 
     public function last_shipment_info(){

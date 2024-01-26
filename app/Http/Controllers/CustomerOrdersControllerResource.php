@@ -28,6 +28,7 @@ use App\Models\custom_orders;
 use App\Models\custom_orders_selected_products;
 use App\Models\custom_orders_sellers;
 use App\Models\custom_orders_sellers_reply;
+use App\Models\orders_shipment_info;
 use App\Models\payments;
 use App\Models\User;
 use App\Repositories\CustomOrdersRepository;
@@ -276,6 +277,17 @@ class CustomerOrdersControllerResource extends Controller
         if($custom != null){
             $custom->status = request('status');
             $custom->save();
+
+            orders_shipment_info::query()->updateOrCreate([
+                'order_id'=>$custom->id,
+                'type'=>'custom_order',
+                'content'=>request('status'),
+                'user_id'=>auth()->id()
+            ],[
+                'user_id'=>auth()->id(),
+                'type'=>'custom_order',
+                'content'=>request('status')
+            ]);
         }else{
             return messages::error_output(trans('errors.not_found'));
         }
