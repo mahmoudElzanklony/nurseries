@@ -43,12 +43,16 @@ use App\Http\Controllers\ProductsProblemsControllerResource;
 use App\Http\Controllers\AllSellersDataController;
 use App\Http\Controllers\AIController;
 use App\Http\Controllers\AdsController;
-
+use App\Http\Controllers\DemoController;
 
 
 
 
 Route::get('/test',[AuthControllerApi::class,'test']);
+
+Route::post('/users',[DemoController::class,'demo']);
+
+
 
 Route::group(['middleware'=>'changeLang'],function (){
 

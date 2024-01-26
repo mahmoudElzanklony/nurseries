@@ -16,6 +16,11 @@ class categories extends Model
         return $this->hasMany(categories_features::class,'category_id');
     }
 
+    public function products()
+    {
+        return $this->hasMany(products::class,'product_id');
+    }
+
     public function heading_questions(){
         return $this->hasMany(categories_heading_questions::class,'category_id');
     }
