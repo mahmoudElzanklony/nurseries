@@ -38,7 +38,7 @@ class CustomOrderResource extends JsonResource
            'id'=>$this->id,
            'client'=>UserResource::make($this->user),
            'name'=>$this->name,
-           'status'=>$this->status,
+           'status'=>$this->status  == 'active' && auth()->user()->role->name != 'admin' ? 'reviewing':$this->status,
            'selected_seller'=>$this->when($this->status != 'pending' && $accepted_seller_from_client != null , function () use ($accepted_seller_from_client){
                return UserResource::make($accepted_seller_from_client->seller);
            }),
