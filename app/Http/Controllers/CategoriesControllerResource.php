@@ -37,7 +37,7 @@ class CategoriesControllerResource extends Controller
     }
 
     public function cat_questions_features(){
-        $data = categories::query()->with(['features','heading_questions'=>function($e){
+        $data = categories::query()->withCount('products')->with(['features','heading_questions'=>function($e){
             $e->with('questions_data',function($e){
                 $e->with('selections')->with('image');
             });
