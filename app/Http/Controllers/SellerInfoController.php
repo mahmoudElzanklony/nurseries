@@ -79,7 +79,22 @@ class SellerInfoController extends Controller
         //return $data_model->get();
         $obj = new Year_month_week_day();
         $output = $obj->get_profit('App\Actions\SellerOrdersAndCustomOrdersAction',null,'money',$time_type,[],'orders.created_at');
-        return $output;
+        $output_two = $obj->get_profit('App\Actions\CustomOrdersProfitAction',null,'money',$time_type,[],'custom_orders.created_at');
+        $final = [];
+        // Get today's date using Carbon directly
+
+// Output the formatted date
+
+        foreach($output as $key => $item){
+            $info = [];
+            //dd($item['placeholder']);
+            $info['placeholder'] = $item['placeholder'];
+
+            $info['value'] = floatval($item['value']) + floatval($output_two[$key]['value']);
+            array_push($final,$info);
+        }
+
+        return $final;
     }
 
     public function clients_orders(){
