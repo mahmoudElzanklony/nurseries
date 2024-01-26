@@ -156,7 +156,7 @@ trait FinancialHelperApi
                     ->whereIn('id',$rejected_custom_ids)
                     ->get();
             }else {
-                $products = orders_items::query()->with('cancelled')->whereHas('order', function ($e) {
+                $products = orders_items::query()->with('cancelled')->with('order')->whereHas('order', function ($e) {
                     $e->where('financial_reconciliation_id', '=', request('financial_reconciliation_id'));
                 })->with('product', function ($e) {
                     $e->with(['problems', 'images', 'features.feature.image', 'answers' => function ($e) {

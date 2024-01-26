@@ -31,6 +31,7 @@ class OrderItemsResource extends JsonResource
         return [
           'id'=>$this->id,
           'product'=>ProductResource::make($this->whenLoaded('product')),
+          'order'=>OrderResource::make($this->whenLoaded('order')),
           'rate'=>RateResource::make($this->whenLoaded('rate')),
           'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
           'quantity'=>$this->quantity,
