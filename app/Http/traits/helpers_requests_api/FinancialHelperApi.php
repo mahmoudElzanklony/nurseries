@@ -108,13 +108,14 @@ trait FinancialHelperApi
 
             }
             $custom  = custom_orders_sellers::query()
-
+                ->where('client_reply','=','accepted')
+                ->where('seller_id',$seller->id)
                 ->whereHas('order',function($e){
                     $e->whereHas('last_shipment_info',function ($e){
                         $e->where('content','=','completed');
                     })->whereDoesntHave('canceled');
                 })
-                ->where('seller_id',$seller->id)->whereHas('order',function ($o){
+                ->whereHas('order',function ($o){
                     $o->whereRaw('financial_reconciliation_id is null');
                 })->with(['order.payment'])->orderBy('id','DESC')->get();
             dd($custom);
