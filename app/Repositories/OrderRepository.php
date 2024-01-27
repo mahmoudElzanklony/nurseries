@@ -154,7 +154,7 @@ class OrderRepository
                     // handle final price
                     //echo 'quantity ==>'.$item['quantity'] .'<br>';
                     $final_price = $this->handle_final_price($product,$whole_price,$discount,'product',$item['quantity']);
-                    dd($discount);
+                    dd($final_price);
                     $this->order_total_price += $final_price;
                     //echo 'price of product'.$final_price.' and final now =====> '.$this->order_total_price .'<br>';
                     $order_item = orders_items::query()->create([
