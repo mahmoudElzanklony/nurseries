@@ -108,7 +108,7 @@ trait FinancialHelperApi
 
             }
             $custom  = custom_orders_sellers::query()
-                ->where('client_reply','=','accepted')
+
                 ->whereHas('order',function($e){
                     $e->whereHas('last_shipment_info',function ($e){
                         $e->where('content','=','completed');
