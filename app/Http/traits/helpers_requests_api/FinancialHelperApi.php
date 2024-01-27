@@ -106,6 +106,7 @@ trait FinancialHelperApi
                 }
 
             }
+            dd($money);
             $custom  = custom_orders_sellers::query()
                 ->whereHas('order',function($e){
                     $e->whereHas('last_shipment_info',function ($e){
