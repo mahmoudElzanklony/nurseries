@@ -117,7 +117,7 @@ trait FinancialHelperApi
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
             foreach($custom as $c){
-                echo $c->order->payment->money;
+                echo $c->order->payment->money.'<br>';
                 $money += $c->order->payment->money;
             }
             $result = [
