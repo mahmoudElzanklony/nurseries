@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Actions\GetHighDeliveryDays;
 use App\Models\custom_orders;
 use App\Models\orders;
 use App\Models\rejected_financial_orders;
@@ -15,13 +16,50 @@ class FinancialReconciliationResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
+    public function get_deliveries_per_orders($financial_id)
+    {
+        $delivery = 0;
+        $orders = orders::query()->where('financial_reconciliation_id','=',$financial_id)->with('address')->get();
+        foreach ($orders as $order){
+            if($order != null && $order->address != null){
+                $delivery += $order->address->delivery_price;
+            }
+        }
+        return $delivery;
+
+    }
+
+    public function get_deliveries_per_custom_orders($financial_id)
+    {
+        $delivery = 0;
+        $orders = custom_orders::query()->where('financial_reconciliation_id','=',$financial_id)
+            ->whereHas('accepted_seller_per_order')->with('accepted_seller_per_order.reply')
+            ->get();
+        foreach ($orders as $order){
+            if($order != null && $order->accepted_seller_per_order != null){
+                $del = GetHighDeliveryDays::get($order->accepted_seller_per_order->reply);
+                try{
+                    $del += $del['delivery_price'];
+                }catch (\Exception $exception){
+
+                }
+            }
+        }
+        return $delivery;
+
+    }
+
     public function toArray($request)
     {
+
+        //
+
         return [
           'id'=>$this->id,
           'user_id'=>$this->user_id,
           'seller_id'=>$this->seller_id,
           'total_money'=>$this->total_money,
+          'total_delivery_money'=>$this->get_deliveries_per_orders($this->id) + $this->get_deliveries_per_custom_orders($this->id) ,
           'admin_profit_percentage'=>$this->admin_profit_percentage,
           'seller_profit'=>$this->total_money - ($this->total_money * $this->admin_profit_percentage / 100),
           'admin_profit'=>$this->total_money * $this->admin_profit_percentage / 100,

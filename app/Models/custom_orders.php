@@ -53,6 +53,10 @@ class custom_orders extends Model
         return $this->hasOne(custom_orders_sellers::class,'custom_order_id')->whereRaw('seller_id = '.auth()->id().' AND client_reply = "accepted"');
     }
 
+    public function accepted_seller_per_order(){
+        return $this->hasOne(custom_orders_sellers::class,'custom_order_id')->whereRaw(' AND client_reply = "accepted"');
+    }
+
 
     public function user(){
         return $this->belongsTo(User::class,'user_id');

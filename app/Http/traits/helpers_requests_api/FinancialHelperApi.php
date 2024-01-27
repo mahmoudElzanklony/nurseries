@@ -68,7 +68,7 @@ trait FinancialHelperApi
                 EndDateFilter::class,
             ])
             ->thenReturn()
-            ->paginate(15);
+            ->paginate(10);
         return FinancialReconciliationResource::collection($final);
     }
 
