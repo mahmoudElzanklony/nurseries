@@ -9,7 +9,12 @@ class cancelled_orders_items extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['order_item_id','content','type'];
+    protected $fillable = ['order_item_id','product_id','content','type'];
+
+    public function product()
+    {
+        return $this->belongsTo(products::class,'product_id');
+    }
 
     public function order_item(){
         return $this->belongsTo(orders_items::class,'order_item_id');
