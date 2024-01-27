@@ -139,6 +139,7 @@ class OrderRepository
         $total_days_delivery = 0;
         foreach($items as $key => $item){
             $product = products::query()->with(['wholesale_prices','discounts'=>function($e){
+                $e->whereRaw('CURDATE() BETWEEN start_date AND end_date');
                 /*$e->where('start_date','>=',date('Y-m-d'))
                    ->where('end_date','<=',date('Y-m-d'));*/
             }])->find($item['product_id']);

@@ -65,7 +65,7 @@ class SendNotification
 
                         "sound" => "default",// required for sound on ios
 
-                        "image" => "https://media.istockphoto.com/id/1045368942/vector/abstract-green-leaf-logo-icon-vector-design-ecology-icon-set-eco-icon.jpg?s=612x612&w=0&k=20&c=XIfHMI8r1G73blCpCBFmLIxCtOLx8qX0O3mZC9csRLs=",
+                       // "image" => "https://media.istockphoto.com/id/1045368942/vector/abstract-green-leaf-logo-icon-vector-design-ecology-icon-set-eco-icon.jpg?s=612x612&w=0&k=20&c=XIfHMI8r1G73blCpCBFmLIxCtOLx8qX0O3mZC9csRLs=",
 
                         "click_action"=> "FLUTTER_NOTIFICATION_CLICK"
 
