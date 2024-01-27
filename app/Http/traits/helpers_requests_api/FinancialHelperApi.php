@@ -79,7 +79,7 @@ trait FinancialHelperApi
         $all_sellers = User::query()->whereHas('role',function($e){
             $e->where('name','=','seller');
         })->get();
-        dd($all_sellers);
+
         foreach($all_sellers as  $seller){
             $money = 0;
             $orders = orders::query()->with('items.cancelled')->whereHas('last_shipment_info',function ($e){
@@ -87,7 +87,7 @@ trait FinancialHelperApi
                 })
                 ->whereRaw('financial_reconciliation_id is null and seller_id = '.$seller->id)
                 ->with('payment:paymentable_id,money')->get();
-
+            dd($orders);
             foreach($orders as $o){
                 $cancel = 0;
                 foreach($o->items as $item){
