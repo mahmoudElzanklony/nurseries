@@ -39,7 +39,7 @@ class FinancialReconciliationResource extends JsonResource
             if($order != null && $order->accepted_seller_per_order != null){
                 $del = GetHighDeliveryDays::get($order->accepted_seller_per_order->reply);
                 try{
-                    $del += intval($del['delivery_price']);
+                    $delivery += intval($del['delivery_price']);
                 }catch (\Exception $exception){
 
                 }
