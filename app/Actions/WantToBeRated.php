@@ -21,7 +21,7 @@ class WantToBeRated
             })->where('product_id','=',$product_id)
               ->whereDoesntHave('rate')->first();
 
-            if($order == null){
+            if($order != null){
                 return true;
             }else{
                 return false;
