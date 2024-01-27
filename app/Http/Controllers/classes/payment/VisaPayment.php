@@ -26,6 +26,7 @@ class VisaPayment implements IPayment
         $user_visa = users_visa::query()
             ->where('user_id','=',auth()->id())
             ->where('id','=',$data['id'])->first();
+        dd($data,auth()->id());
         if($user_visa != null){
             $status = true;
         }else{
