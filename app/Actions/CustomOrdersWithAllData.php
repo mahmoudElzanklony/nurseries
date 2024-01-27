@@ -22,4 +22,11 @@ class CustomOrdersWithAllData
                 ->with(['images','shipments_info','payment','pending_alerts.reply.images','accepted_alerts.reply.images','rejected_alerts.reply.images','sellers_alerts'])->orderBy('id','DESC');
         }
     }
+
+    public static function CustomOrderObj()
+    {
+        return custom_orders::query()
+            ->with(['images','shipments_info','payment','pending_alerts.reply.images','accepted_alerts.reply.images','rejected_alerts.reply.images','sellers_alerts'])
+            ->orderBy('id','DESC');
+    }
 }

@@ -293,9 +293,8 @@ class CustomerOrdersControllerResource extends Controller
             return messages::error_output(trans('errors.not_found'));
         }
 
-        $result = CustomOrdersWithAllData::get()->where('custom_order_id',$custom->id)->first();
-        //return $result;
-        return messages::success_output(trans('messages.saved_successfully'),CustomOrderSellerResource::make($custom));
+        $custom = CustomOrdersWithAllData::CustomOrderObj()->find($custom->id);
+        return messages::success_output(trans('messages.saved_successfully'),CustomOrderResource::make($custom));
     }
 
 
