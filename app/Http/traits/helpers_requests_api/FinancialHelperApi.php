@@ -82,6 +82,7 @@ trait FinancialHelperApi
 
         foreach($all_sellers as  $seller){
             $money = 0;
+            $orders_info = [];
             $orders = orders::query()->with('items.cancelled')->whereHas('last_shipment_info',function ($e){
                     $e->where('content','=','completed');
                 })
@@ -102,6 +103,7 @@ trait FinancialHelperApi
                 if(isset($o->payment) && $o->payment != null) {
                     $money += $o->payment->money;
                     $money -= $cancel;
+                    array_push($orders_info,['type'=>'order','info'=>$o]);
                 }
 
             }
@@ -118,10 +120,12 @@ trait FinancialHelperApi
                 })->orderBy('id','DESC')->get();
             foreach($custom as $c){
                 $money += $c->order->payment->money;
+                array_push($orders_info,['type'=>'order','info'=>$c]);
             }
             $result = [
                 'seller'=>UserResource::make(User::query()->with('bank_info')->find($seller->id)),
                 'total_money'=>$money,
+                'details'=>$orders_info,
                 'total_money_per_seller'=>$money - ($money * $financial_percentage->percentage / 100),
                 'admin_profit_percentage'=>$financial_percentage->percentage
             ];
