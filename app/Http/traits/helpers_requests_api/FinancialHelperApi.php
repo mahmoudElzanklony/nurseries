@@ -82,7 +82,9 @@ trait FinancialHelperApi
 
         foreach($all_sellers as  $seller){
             $money = 0;
-            $orders = orders::query()->with('items.cancelled')
+            $orders = orders::query()->with('items.cancelled')->whereHas('last_shipment_info',function ($e){
+                    $e->where('content','=','completed');
+                })
                 ->whereRaw('financial_reconciliation_id is null and seller_id = '.$seller->id)
                 ->with('payment:paymentable_id,money')->get();
 
@@ -100,6 +102,7 @@ trait FinancialHelperApi
                 }
                 if(isset($o->payment) && $o->payment != null) {
                     $money += $o->payment->money;
+                    echo 'money now ======>'.$money;
                     $money -= $cancel;
                 }
 
