@@ -115,7 +115,9 @@ trait FinancialHelperApi
                 })
                 ->where('seller_id',$seller->id)->whereHas('order',function ($o){
                     $o->whereRaw('financial_reconciliation_id is null');
-                })->get();
+                })->with(['order.payment'])->whereHas('reply',function($q){
+                    $q->where('client_reply','=','accepted');
+                })->orderBy('id','DESC')->get();
             dd($custom);
             foreach($custom as $c){
                 $money += $c->order->payment->money;
