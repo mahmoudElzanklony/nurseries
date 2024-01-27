@@ -102,7 +102,6 @@ trait FinancialHelperApi
                 }
                 if(isset($o->payment) && $o->payment != null) {
                     $money += $o->payment->money;
-                    echo 'money now ======>'.$money;
                     $money -= $cancel;
                 }
 
