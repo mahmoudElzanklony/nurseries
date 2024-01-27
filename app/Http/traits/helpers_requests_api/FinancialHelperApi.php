@@ -120,7 +120,7 @@ trait FinancialHelperApi
                 })->orderBy('id','DESC')->get();
             foreach($custom as $c){
                 $money += $c->order->payment->money;
-                array_push($orders_info,['type'=>'order','info'=>$c]);
+                array_push($orders_info,['type'=>'custom_order','info'=>$c]);
             }
             $result = [
                 'seller'=>UserResource::make(User::query()->with('bank_info')->find($seller->id)),
