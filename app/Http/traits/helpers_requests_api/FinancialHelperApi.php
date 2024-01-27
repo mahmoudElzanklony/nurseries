@@ -116,7 +116,10 @@ trait FinancialHelperApi
                 })->with(['order.payment'])->whereHas('reply',function($q){
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
-
+            foreach($custom as $c){
+                echo $c->order->payment->money;
+                $money += $c->order->payment->money;
+            }
             $result = [
                 'seller'=>UserResource::make(User::query()->with('bank_info')->find($seller->id)),
                 'total_money'=>$money,
