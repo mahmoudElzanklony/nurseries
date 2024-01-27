@@ -54,7 +54,7 @@ class custom_orders extends Model
     }
 
     public function accepted_seller_per_order(){
-        return $this->hasOne(custom_orders_sellers::class,'custom_order_id')->whereRaw(' AND client_reply = "accepted"');
+        return $this->hasOne(custom_orders_sellers::class,'custom_order_id')->whereRaw(' client_reply = "accepted"');
     }
 
 
