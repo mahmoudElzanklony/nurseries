@@ -56,7 +56,7 @@ class SendNotification
                     "registration_ids" => [
                         $token_1
                     ],
-                    "data" => ['type' => 'activation'],
+                    "data" => ['type' => 'activation','click_action'=>'FLUTTER_NOTIFICATION_CLICK'],
                     "notification" => [
 
                         "title" => $from,
