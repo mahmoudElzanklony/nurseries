@@ -24,7 +24,7 @@ class sellerReplyCustomOrderFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'custom_order_id'=>'required|exists:custom_orders_sellers,id',
+            'custom_order_id'=>'required|exists:custom_orders,id',
             'items'=>'required|array',
             'items.*.id'=>'filled',
             'items.*.name'=>'required',
