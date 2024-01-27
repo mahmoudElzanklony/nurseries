@@ -363,6 +363,7 @@ class CustomerOrdersControllerResource extends Controller
         //
         if(auth()->user()->role->name == 'seller') {
             $data = CustomOrdersWithAllData::get()->with('order.selected_products.reply.images')->where('custom_order_id','=',$id)->first();
+            return $data;
             $data['has_pending'] = true;
             return CustomOrderSellerResource::make($data);
         }else{
