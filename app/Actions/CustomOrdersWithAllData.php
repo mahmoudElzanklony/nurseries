@@ -19,7 +19,7 @@ class CustomOrdersWithAllData
             return custom_orders::query()->when($user->role->name == 'client' || $user->role->name == 'company',function ($e){
                 $e->where('user_id','=',auth()->id());
             })
-                ->with(['images','shipments_info','pending_alerts.reply.images','accepted_alerts.reply.images','rejected_alerts.reply.images','sellers_alerts'])->orderBy('id','DESC');
+                ->with(['images','shipments_info','payment','pending_alerts.reply.images','accepted_alerts.reply.images','rejected_alerts.reply.images','sellers_alerts'])->orderBy('id','DESC');
         }
     }
 }

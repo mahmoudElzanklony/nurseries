@@ -36,6 +36,7 @@ class CustomOrderSellerResource extends JsonResource
           'seller'=>UserResource::make($this->seller),
           'order'=>CustomOrderResource::make($this->whenLoaded('order')),
           'reply'=>CustomOrderSellerReplyResource::collection($this->reply),
+          'payment'=>PaymentResource::make($this->whenLoaded('payment')),
           'calc_max_delivery_with_days'=>GetHighDeliveryDays::get($this->reply),
           'status'=>$status ?? '',
          /* 'reply_status'=>$this->status,
