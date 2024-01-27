@@ -117,10 +117,10 @@ trait FinancialHelperApi
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
             foreach($custom as $c){
-                echo 'money custom order now ======>'.$money;
 
                 $money += $c->order->payment->money;
             }
+            dd($money);
             $result = [
                 'seller'=>UserResource::make(User::query()->with('bank_info')->find($seller->id)),
                 'total_money'=>$money,
