@@ -118,7 +118,7 @@ trait FinancialHelperApi
                 })->with(['order.payment'])->whereHas('reply',function($q){
                     $q->where('client_reply','=','accepted');
                 })->orderBy('id','DESC')->get();
-            dd($custom);
+            dd($seller->id);
             foreach($custom as $c){
                 $money += $c->order->payment->money;
                 array_push($orders_info,['type'=>'custom_order','info'=>$c]);
