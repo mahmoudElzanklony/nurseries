@@ -28,6 +28,7 @@ use App\Models\custom_orders;
 use App\Models\custom_orders_selected_products;
 use App\Models\custom_orders_sellers;
 use App\Models\custom_orders_sellers_reply;
+use App\Models\custom_orders_shipment_info;
 use App\Models\orders_shipment_info;
 use App\Models\payments;
 use App\Models\User;
@@ -278,7 +279,7 @@ class CustomerOrdersControllerResource extends Controller
             $custom->status = request('status');
             $custom->save();
 
-            orders_shipment_info::query()->updateOrCreate([
+            custom_orders_shipment_info::query()->updateOrCreate([
                 'order_id'=>$custom->id,
                 'type'=>'custom_order',
                 'content'=>request('status'),

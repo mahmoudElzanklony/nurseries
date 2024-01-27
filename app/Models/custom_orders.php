@@ -22,7 +22,7 @@ class custom_orders extends Model
 
     public function shipments_info()
     {
-        return $this->hasMany(orders_shipment_info::class,'order_id')->where('type','=','custom_order');
+        return $this->hasMany(custom_orders_shipment_info::class,'order_id')->where('type','=','custom_order');
     }
 
     public function payment(){
@@ -32,7 +32,7 @@ class custom_orders extends Model
 
 
     public function last_shipment_info(){
-        return $this->hasOne(orders_shipment_info::class,'order_id')->where('type','=','custom_order')->latestOfMany();
+        return $this->hasOne(custom_orders_shipment_info::class,'order_id')->latestOfMany();
     }
 
     public function pending_alerts(){
