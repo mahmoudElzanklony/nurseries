@@ -28,7 +28,8 @@ class orders extends Model
     }
 
     public function last_shipment_info(){
-        return $this->hasOne(orders_shipment_info::class,'order_id')->where('type','=','order')->latestOfMany();
+        return $this->hasOne(orders_shipment_info::class,'order_id')
+            ->where('type','=','order');
     }
 
     public function client(){
