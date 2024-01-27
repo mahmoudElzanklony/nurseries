@@ -79,7 +79,7 @@ trait FinancialHelperApi
         $all_sellers = User::query()->whereHas('role',function($e){
             $e->where('name','=','seller');
         })->get();
-
+        dd($all_sellers);
         foreach($all_sellers as  $seller){
             $money = 0;
             $orders = orders::query()->with('items.cancelled')->whereHas('last_shipment_info',function ($e){
