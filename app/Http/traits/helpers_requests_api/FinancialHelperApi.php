@@ -87,7 +87,7 @@ trait FinancialHelperApi
                 })
                 ->whereRaw('financial_reconciliation_id is null and seller_id = '.$seller->id)
                 ->with('payment:paymentable_id,money')->get();
-
+            dd($orders);
             foreach($orders as $o){
                 $cancel = 0;
                 foreach($o->items as $item){
@@ -106,7 +106,6 @@ trait FinancialHelperApi
                 }
 
             }
-            dd($money);
             $custom  = custom_orders_sellers::query()
                 ->whereHas('order',function($e){
                     $e->whereHas('last_shipment_info',function ($e){
