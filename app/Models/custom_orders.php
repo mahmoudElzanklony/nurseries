@@ -29,6 +29,12 @@ class custom_orders extends Model
         return $this->morphOne(payments::class,'paymentable');
     }
 
+
+
+    public function last_shipment_info(){
+        return $this->hasOne(orders_shipment_info::class,'order_id')->where('type','=','custom_order')->latestOfMany();
+    }
+
     public function pending_alerts(){
         return $this->hasMany(custom_orders_sellers::class,'custom_order_id')->whereRaw('status = "pending" or status is null');
     }
