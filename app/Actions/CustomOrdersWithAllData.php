@@ -14,7 +14,7 @@ class CustomOrdersWithAllData
         $user = User::query()->with('role')->find(auth()->id());
         if($user->role->name == 'seller'){
             return custom_orders_sellers::query()
-                ->where('seller_id',auth()->id())->with(['order','reply.images'])->orderBy('id','DESC');
+                ->where('seller_id',auth()->id())->with(['order.payment','reply.images'])->orderBy('id','DESC');
         }else{
             return custom_orders::query()->when($user->role->name == 'client' || $user->role->name == 'company',function ($e){
                 $e->where('user_id','=',auth()->id());
