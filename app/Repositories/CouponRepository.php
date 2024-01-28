@@ -46,7 +46,7 @@ class CouponRepository
     public function validate_exist($code , $products = []){
         $coupon = coupons::query()
             ->where('code','=',$code)
-            ->whereRaw('CURDATE() < end_date or end_date is null')
+            ->whereRaw('(CURDATE() < end_date or end_date is null)')
             ->first();
         if($coupon != null){
             // check date
