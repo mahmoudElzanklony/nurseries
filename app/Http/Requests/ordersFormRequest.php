@@ -36,7 +36,7 @@ class ordersFormRequest extends FormRequest
                 'items.*' => 'required',
                 'payment_method' => 'filled',
                 'has_coupon' => 'filled',
-                'payment_data' => 'required',
+                'payment_data' => 'filled',
             ];
         }
     }
