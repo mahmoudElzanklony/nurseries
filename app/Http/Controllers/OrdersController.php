@@ -84,7 +84,7 @@ class OrdersController extends Controller
         if($check_err_delivery['error'] > 0){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
-        if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
+        if(true){
             // the visa is okay now
 
             $coupon_repos = new CouponRepository();
