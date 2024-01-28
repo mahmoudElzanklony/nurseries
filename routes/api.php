@@ -155,6 +155,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/orders','middleware'=>'CheckApiAuth'],function (){
         Route::get('/',[OrdersController::class,'all_orders']);
         Route::post('/make',[OrdersController::class,'make_order']);
+        Route::post('/check-coupon',[OrdersController::class,'check_coupon']);
         Route::post('/update-status',[OrdersController::class,'update_status']);
 
     });

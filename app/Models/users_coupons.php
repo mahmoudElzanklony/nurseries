@@ -9,7 +9,7 @@ class users_coupons extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','coupon_id','couponable_id','couponable_type','coupon_value'];
+    protected $fillable = ['user_id','coupon_id','couponable_id','couponable_type','total_price_before_apply','coupon_value'];
 
     public function couponable(){
         return $this->morphTo();

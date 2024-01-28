@@ -19,6 +19,7 @@ class CreateUsersCouponsTable extends Migration
             $table->foreignId('coupon_id')->constrained('coupons')->onUpdate('cascade')->onDelete('cascade');
             $table->string('couponable_id')->nullable();
             $table->string('couponable_type')->nullable();
+            $table->float('total_price_before_apply');
             $table->float('coupon_value');
             $table->timestamps();
         });

@@ -13,7 +13,7 @@ class OrdersWithAllData
     public static function get(){
         $user = User::query()->with('role')->find(auth()->id());
         $orders = orders::query()->with(['payment','shipments_info','address','items'=>function($e){
-            $e->with(['rate','product'=>function($e){
+            $e->with('coupon.coupon')->with(['rate','product'=>function($e){
                 $e->when(GetAuthenticatedUser::get_info() != null , function ($e){
                     $e->with('favourite');
                 })

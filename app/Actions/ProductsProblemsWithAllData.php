@@ -14,4 +14,8 @@ class ProductsProblemsWithAllData
                 $e->where('user_id','=',auth()->id());
             })->with('images')->orderBy('id','DESC');
     }
+
+    public static function test($data){
+        return  $data;
+    }
 }

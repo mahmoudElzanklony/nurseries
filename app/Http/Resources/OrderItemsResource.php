@@ -33,6 +33,7 @@ class OrderItemsResource extends JsonResource
           'product'=>ProductResource::make($this->whenLoaded('product')),
           'order'=>OrderResource::make($this->whenLoaded('order')),
           'rate'=>RateResource::make($this->whenLoaded('rate')),
+          'coupon'=>ProductCouponActivationResource::make($this->whenLoaded('coupon')),
           'features'=>OrderItemsFeaturesResource::collection($this->whenLoaded('features')),
           'quantity'=>$this->quantity,
           'prices_info'=>$this->when(self::$payment != null, function(){

@@ -44,17 +44,16 @@ class CouponRepository
     }
 
     public function validate_exist($code , $products = []){
-        $coupon = coupons::query()->where('code','=',$code)
+        $coupon = coupons::query()
+            ->where('code','=',$code)
+            ->whereRaw('CURDATE() < end_date')
             ->first();
         if($coupon != null){
             // check date
-            if(!($coupon->end_date == null || $coupon->end_date > Carbon::now())){
-                $this->error = trans('errors.expired_coupon_date');
-            }else if($coupon->number == 0){
+            if($coupon->number == 0){
                 $this->error = trans('errors.coupon_amount_end');
             }else {
                 $this->coupon = $coupon;
-
                 return $this->is_used_by_user(auth()->id(),$products);
             }
         }
@@ -75,7 +74,7 @@ class CouponRepository
                         ->where('coupon_id','=',$this->coupon->id)
                         ->whereIn('product_id',$products)->get();
                     if(sizeof($products_check) == 0){
-                        // this coupon doesnt support these products
+                        // this coupon doesn't support these products
                         return $this->error = trans('errors.coupon_doesnt_support_products');
                     }else{
                         return $this->coupon;

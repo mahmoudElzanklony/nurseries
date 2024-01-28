@@ -23,6 +23,11 @@ class orders_items extends Model
         return $this->belongsTo(products::class,'product_id');
     }
 
+    public function coupon()
+    {
+        return $this->morphOne(users_coupons::class,'couponable');
+    }
+
     public function features(){
         return $this->hasMany(orders_items_features::class,'order_item_id');
     }

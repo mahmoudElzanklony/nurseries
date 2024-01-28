@@ -40,6 +40,11 @@ class OrderRepository
         $this->default_address = $default_address;
     }
 
+    public function set_coupon($coupon)
+    {
+        $this->coupon = $coupon;
+    }
+
     public  function check_delivery_products($products){
         $err = 0;
         foreach($products as $product){
@@ -67,7 +72,6 @@ class OrderRepository
     public function init_order($data){
         $this->payment_data = $data['payment_data'];
         // check from coupon
-
         if($data['has_coupon'] != 0){
             $coupon_repos = new CouponRepository();
             $coupon_repos->validate_exist($data['has_coupon']);
@@ -77,7 +81,9 @@ class OrderRepository
 
                 $this->coupon = $coupon_repos->coupon;
 
+
             }
+
         }
         DB::beginTransaction();
         $order = orders::query()->create([
@@ -122,7 +128,7 @@ class OrderRepository
             } else {
                 $check = false;
                 foreach($this->coupon->products as $product){
-                    if($product->product_id == $product_id) {
+                    if($product->id == $product_id) {
                         $check = true;
                         break;
                     }
@@ -154,7 +160,12 @@ class OrderRepository
                     // handle final price
                     //echo 'quantity ==>'.$item['quantity'] .'<br>';
                     $final_price = $this->handle_final_price($product,$whole_price,$discount,'product',$item['quantity']);
-
+                    // check if this product applied for coupon
+                    if($this->validate_product_for_coupon($item['product_id']) == true){
+                        $total_price_before_apply_coupon = $final_price;
+                        $coupon_value_cash = $final_price * $this->coupon->discount / 100;
+                        $final_price -= ($final_price * $this->coupon->discount / 100);
+                    }
                     $this->order_total_price += $final_price;
                     //echo 'price of product'.$final_price.' and final now =====> '.$this->order_total_price .'<br>';
                     $order_item = orders_items::query()->create([
@@ -164,9 +175,10 @@ class OrderRepository
                         'price' => $final_price, // this is total prices for all quantities
                     ]);
                     // check for apply coupon
+
                     if($this->validate_product_for_coupon($item['product_id']) == true){
 
-                         UserCouponModal::make($this->coupon->id,$order_item->id,$this->coupon->discount);
+                         UserCouponModal::make($this->coupon->id,$order_item->id,$coupon_value_cash,'orders_items',$total_price_before_apply_coupon);
                          $this->remove_from_coupon = true;
                     }
 
@@ -182,7 +194,7 @@ class OrderRepository
                     // remove from product stock the amount of quantity client take
                     $this->remove_from_stock($product,$item['quantity']);
                     // handle order items features
-                    $this->orders_items_features($order_item->id,$product,$discount,$item['features'] ?? [] , $item['quantity']);
+                    $this->orders_items_features($order_item->id,$product,$discount,$item['features'] ?? [] , $item['quantity'] ,$this->validate_product_for_coupon($item['product_id']) );
 
                 }else{
                     $err_quantity++;
@@ -208,7 +220,7 @@ class OrderRepository
 
     }
 
-    public function orders_items_features($order_item_id,$product,$discount,$features , $quantity){
+    public function orders_items_features($order_item_id,$product,$discount,$features , $quantity , $coupon_status = false){
         if(sizeof($features) > 0){
             foreach ($features as $feature){
                 $feat = products_features_prices::query()->find($feature['id']);
@@ -230,7 +242,7 @@ class OrderRepository
         }
     }
 
-    protected function wholesale_price_item($product,$client_quantity){
+    public function wholesale_price_item($product,$client_quantity){
         $wholesale_prices_data = $product->wholesale_prices;
         $wholesale_price = $product->main_price;
         if(sizeof($wholesale_prices_data) > 0){
@@ -243,7 +255,7 @@ class OrderRepository
         return $wholesale_price;
     }
 
-    protected function discount_per_product($product){
+    public function discount_per_product($product){
         $discounts = $product->discounts;
         $dis = 0;
         if(sizeof($discounts) > 0){
@@ -254,7 +266,7 @@ class OrderRepository
         return $dis;
     }
 
-    protected function handle_final_price($product,$wholesale = 0,$discount = 0,$type='product',$quantity = 1){
+    public function handle_final_price($product,$wholesale = 0,$discount = 0,$type='product',$quantity = 1){
         $price = 0;
         if($type == 'product') {
             $price = $product->main_price;
