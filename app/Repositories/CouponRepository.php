@@ -67,13 +67,14 @@ class CouponRepository
             $user_used = users_coupons::query()
                 ->where('coupon_id','=',$this->coupon->id)
                 ->where('user_id','=',$user_id)->first();
+
             if($user_used == null){
                 // check if this product support these products or not
                 if(sizeof($products) > 0){
                     $products_check = coupons_products::query()
                         ->where('coupon_id','=',$this->coupon->id)
                         ->whereIn('product_id',$products)->get();
-                    if(sizeof($products_check) == 0){
+                    if(sizeof($products_check) == 0 && sizeof($this->coupon->products) > 0){
                         // this coupon doesn't support these products
                         return $this->error = trans('errors.coupon_doesnt_support_products');
                     }else{
