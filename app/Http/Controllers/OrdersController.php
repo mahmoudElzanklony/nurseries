@@ -15,6 +15,7 @@ use App\Filters\StartDateFilter;
 use App\Filters\EndDateFilter;
 use App\Http\Requests\ordersFormRequest;
 use App\Http\Resources\CheckCouponResource;
+use App\Http\Resources\OrderCouponResource;
 use App\Http\Resources\OrderItemsResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderShipmentsInfo;
@@ -84,7 +85,6 @@ class OrdersController extends Controller
         if($check_err_delivery['error'] > 0){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
-
         if(true){
             // the visa is okay now
 
@@ -132,9 +132,13 @@ class OrdersController extends Controller
                 array_push($final,$obj);
             }
 
+            $final_result = [
+                'data'=>$data,
+                'coupon'=>$coupon_repos->coupon
+            ];
 
 
-            return CheckCouponResource::collection($final);
+            return OrderCouponResource::collection($final_result);
         }else{
             return messages::error_output('بيانات الفيزا الخاصه بك خاطئة يرجي مراجعتها من فضلك');
         }
