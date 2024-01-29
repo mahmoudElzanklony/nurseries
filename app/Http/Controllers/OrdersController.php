@@ -85,6 +85,7 @@ class OrdersController extends Controller
         if($check_err_delivery['error'] > 0){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
+
         if(true){
             // the visa is okay now
 
@@ -132,8 +133,9 @@ class OrdersController extends Controller
                 array_push($final,$obj);
             }
 
+
             $last_final = [
-                'data'=>$final,
+                'data'=>collect($final),
                 'coupon'=> $coupon_repos->coupon
             ];
 
