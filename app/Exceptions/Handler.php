@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
            'errors'=>$exception->errors(),
            'status'=>400,
            'code'=>$exception->getCode(),
-        ]);
+        ],400);
     }
 
     public function register()
