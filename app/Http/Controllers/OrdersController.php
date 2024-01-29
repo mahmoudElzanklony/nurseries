@@ -15,7 +15,6 @@ use App\Filters\StartDateFilter;
 use App\Filters\EndDateFilter;
 use App\Http\Requests\ordersFormRequest;
 use App\Http\Resources\CheckCouponResource;
-use App\Http\Resources\OrderCouponResource;
 use App\Http\Resources\OrderItemsResource;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderShipmentsInfo;
@@ -134,12 +133,8 @@ class OrdersController extends Controller
             }
 
 
-            $last_final = [
-                'data'=>$final,
-                'coupon'=> $coupon_repos->coupon
-            ];
 
-            return OrderCouponResource::collection(collect($last_final));
+            return CheckCouponResource::collection($final);
         }else{
             return messages::error_output('بيانات الفيزا الخاصه بك خاطئة يرجي مراجعتها من فضلك');
         }
