@@ -71,7 +71,7 @@ class OrderRepository
 
     public function validate_error_coupon($data)
     {
-        if($data['has_coupon'] != 0){
+        if(isset($data['has_coupon']) && $data['has_coupon'] != 0){
             $coupon_repos = new CouponRepository();
             $coupon_repos->validate_exist($data['has_coupon']);
 
