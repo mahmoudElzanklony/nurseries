@@ -10,7 +10,7 @@ class ProductStatisticsForSeller
 {
     public static function get($id){
         $orders = orders_items::query()
-            ->join('orders_items_features','orders_items_features.order_item_id','=','orders_items.id')
+            ->leftJoin('orders_items_features','orders_items_features.order_item_id','=','orders_items.id')
             ->selectRaw('(orders_items.quantity * orders_items.price) + orders_items_features.price as total_price')
             ->where('product_id','=',$id);
         $orders_no = sizeof($orders->get());
