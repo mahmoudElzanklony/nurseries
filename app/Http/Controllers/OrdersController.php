@@ -138,7 +138,7 @@ class OrdersController extends Controller
             ];
 
 
-            return OrderCouponResource::collection($final);
+            return OrderCouponResource::make($final_result);
         }else{
             return messages::error_output('بيانات الفيزا الخاصه بك خاطئة يرجي مراجعتها من فضلك');
         }
