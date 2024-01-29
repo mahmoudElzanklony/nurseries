@@ -24,6 +24,18 @@ class ProductStatisticsForSeller
             $e->where('product_id','=',$id);
         });
         $pending_money = $financil_repo->detect_total_money($orders,[]);
+        $another_pending = orders_items::query()->where('product_id','=',$id)->with('features')->whereHas('order',function($e){
+            $e->whereRaw('financial_reconciliation_id is null');
+        })->get();
+        $another_pending_count = 0;
+        foreach ($another_pending as $item) {
+            $another_pending_count += ($item->quantity * $item->price);
+            foreach($item->features as $feature){
+                if($feature->price > 0){
+                    $another_pending_count += ($feature->price * $item->quantity);
+                }
+            }
+        }
         $active_profit = financial_reconciliations::query()
             ->where('status','=','completed')
             ->where('seller_id','=',auth()->id())
@@ -44,8 +56,8 @@ class ProductStatisticsForSeller
         $statistics = [
             'orders'=>$orders_no,
             'profit_money'=>$active,
-            'pending_money'=>$pending_money,
-            'total_money' => $active + $pending_money
+            'pending_money'=>$pending_money + $another_pending_count,
+            'total_money' => $active + $pending_money + $another_pending_count
         ];
         return $statistics;
     }
