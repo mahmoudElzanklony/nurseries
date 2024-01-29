@@ -71,14 +71,6 @@ class OrderRepository
 
     public function validate_error_coupon($data)
     {
-        $coupon_repos = new CouponRepository();
-        $coupon_repos->validate_exist($data['has_coupon']);
-        return $coupon_repos->error;
-    }
-
-    public function init_order($data){
-        $this->payment_data = $data['payment_data'];
-        // check from coupon
         if($data['has_coupon'] != 0){
             $coupon_repos = new CouponRepository();
             $coupon_repos->validate_exist($data['has_coupon']);
@@ -90,8 +82,15 @@ class OrderRepository
 
 
             }
-
+            return $coupon_repos->error;
         }
+        return '';
+    }
+
+    public function init_order($data){
+        $this->payment_data = $data['payment_data'];
+        // check from coupon
+
         DB::beginTransaction();
         $order = orders::query()->create([
            'user_id'=>auth()->id(),
@@ -106,9 +105,9 @@ class OrderRepository
             'en'=>'New order has been made from '.auth()->user()->username,
         ];
         // send notification to seller
-        SendNotification::to_any_one_else_admin($data['seller_id'],$msg,'/orders');
+        /*SendNotification::to_any_one_else_admin($data['seller_id'],$msg,'/orders');
         // send notification to admin
-        SendNotification::to_admin(auth()->id(),$msg,'/orders');
+        SendNotification::to_admin(auth()->id(),$msg,'/orders');*/
         return $this;
     }
 
