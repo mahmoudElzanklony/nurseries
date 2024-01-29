@@ -55,7 +55,6 @@ class OrdersController extends Controller
         if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
             // the visa is okay now
             $chk_coupon = $order_repo->validate_error_coupon($data);
-            dd($chk_coupon);
             if($chk_coupon != ''){
                 return messages::error_output($chk_coupon);
             }
