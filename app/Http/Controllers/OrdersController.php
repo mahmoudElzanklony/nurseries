@@ -125,6 +125,13 @@ class OrdersController extends Controller
                     $obj->coupon->total_price_before_apply = $total_price_before_apply_coupon;
                     $obj->coupon->coupon_value = $coupon_value_cash;
                     $obj->coupon->coupon = $coupon_repos->coupon;
+                }else{
+                    $total_price_before_apply_coupon =null;
+                    $coupon_value_cash = null;
+                    $obj->coupon = new users_coupons();
+                    $obj->coupon->total_price_before_apply = $total_price_before_apply_coupon;
+                    $obj->coupon->coupon_value = $coupon_value_cash;
+                    $obj->coupon->coupon = $coupon_repos->coupon;
                 }
                 $obj->price = $final_price;
                 // check for apply coupon
