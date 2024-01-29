@@ -29,7 +29,7 @@ class couponsFormRequest extends FormRequest
             'en_name'=>'filled',
             'code'=>'required',
             'discount'=>'required',
-            'number'=>'required',
+            'number'=>'required|numeric|min:1',
             'using_once'=>'filled',
             'status'=>'filled',
             'end_date'=>'filled',
