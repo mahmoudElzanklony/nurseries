@@ -303,8 +303,9 @@ class OrderRepository
 
     protected function remove_from_coupon_quantity(){
         if($this->coupon->number > 0){
-            $this->coupon->number --;
-            $this->coupon->save();
+            coupons::query()->find($this->coupon->id)->update([
+                'number'=> $this->coupon->number - 1
+            ]);
         }
     }
 }
