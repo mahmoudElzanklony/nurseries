@@ -83,7 +83,7 @@ class OrderRepository
 
 
             }else{
-                return $coupon_repos->error;
+                return messages::error_output($coupon_repos->error);
             }
 
         }
