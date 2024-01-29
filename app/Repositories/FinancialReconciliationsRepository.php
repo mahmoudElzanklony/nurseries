@@ -133,8 +133,7 @@ class FinancialReconciliationsRepository
                 $total_money += $order->payment->money;
             }
         }
-
-        $percentages = financial_reconciliations_profit_percentages::query()->where('from_who','=','admin')->first();
+        $percentages = financial_reconciliations_profit_percentages::query()->where('from_who', '=', auth()->user()->role->name)->first();
         if($financial_id != null){
             $finan_obj = financial_reconciliations::query()->find($financial_id);
             $finan_obj->status = 'completed';
