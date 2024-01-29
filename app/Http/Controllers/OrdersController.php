@@ -139,7 +139,7 @@ class OrdersController extends Controller
                 'coupon'=> $coupon_repos->coupon
             ];
 
-            return OrderCouponResource::collection($last_final);
+            return OrderCouponResource::collection(collect($last_final));
         }else{
             return messages::error_output('بيانات الفيزا الخاصه بك خاطئة يرجي مراجعتها من فضلك');
         }
