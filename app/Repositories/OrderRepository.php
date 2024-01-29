@@ -105,9 +105,9 @@ class OrderRepository
             'en'=>'New order has been made from '.auth()->user()->username,
         ];
         // send notification to seller
-        /*SendNotification::to_any_one_else_admin($data['seller_id'],$msg,'/orders');
+        SendNotification::to_any_one_else_admin($data['seller_id'],$msg,'/orders');
         // send notification to admin
-        SendNotification::to_admin(auth()->id(),$msg,'/orders');*/
+        SendNotification::to_admin(auth()->id(),$msg,'/orders');
         return $this;
     }
 

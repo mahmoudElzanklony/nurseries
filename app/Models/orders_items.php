@@ -25,7 +25,7 @@ class orders_items extends Model
 
     public function coupon()
     {
-        return $this->morphOne(users_coupons::class,'couponable');
+        return $this->morphOne(users_coupons::class,'couponable')->withTrashed();
     }
 
     public function features(){

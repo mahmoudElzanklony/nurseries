@@ -4,7 +4,9 @@ namespace App\Http\Resources;
 
 use App\Actions\SellerRateAVG;
 use App\Models\cancelled_orders_items;
+use App\Models\coupons;
 use App\Models\financial_reconciliations;
+use App\Models\orders_items;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -24,6 +26,17 @@ class OrderResource extends JsonResource
           'id'=>$this->id,
           'payment_method'=>$this->payment_method,
           'has_coupon'=>$this->has_coupon == 0 ? false:true,
+          'coupon'=>$this->when($this->has_coupon == 1 , function (){
+              $item =  orders_items::query()->where('order_id','=',$this->id)->has('coupon')->with('coupon')->first();
+              if($item != null){
+                  $coupon = coupons::query()->withTrash($item->couponable_id);
+                  if($coupon != null) {
+                      return CouponRessource::make($coupon);
+                  }
+                  return null;
+              }
+              return null;
+          }),
           'seller_profit'=>$this->seller_profit == 0 ? false:true,
           'items_price'=>round(doubleval($this->total_items),2),
           'address'=>$this->when(true,function (){

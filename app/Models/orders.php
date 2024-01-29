@@ -15,6 +15,7 @@ class orders extends Model
         return $this->belongsTo(User::class,'seller_id');
     }
 
+
     public function payment(){
         return $this->morphOne(payments::class,'paymentable');
     }
