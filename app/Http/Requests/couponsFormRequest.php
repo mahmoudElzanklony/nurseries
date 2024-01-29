@@ -41,6 +41,7 @@ class couponsFormRequest extends FormRequest
         return [
           'ar_name'=>trans('keywords.name'),
           'discount'=>trans('keywords.value'),
+          'number'=>trans('keywords.number'),
         ];
     }
 }
