@@ -75,13 +75,15 @@ class OrderRepository
         if($data['has_coupon'] != 0){
             $coupon_repos = new CouponRepository();
             $coupon_repos->validate_exist($data['has_coupon']);
-            dd($coupon_repos->error);
+
             if($coupon_repos->error == ''){
                 // no error
 
                 $this->coupon = $coupon_repos->coupon;
 
 
+            }else{
+                return $coupon_repos->error;
             }
 
         }
