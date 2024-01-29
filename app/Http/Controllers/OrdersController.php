@@ -135,7 +135,7 @@ class OrdersController extends Controller
 
 
             $last_final = [
-                'data'=>collect($final),
+                'data'=>$final,
                 'coupon'=> $coupon_repos->coupon
             ];
 
