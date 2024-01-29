@@ -20,7 +20,7 @@ class ProductStatisticsForSeller
 
 
         $financil_repo = new FinancialReconciliationsRepository();
-        $orders = orders::query()->whereHas('order_items',function ($e) use ($id){
+        $orders = orders::query()->whereHas('items',function ($e) use ($id){
             $e->where('product_id','=',$id);
         });
         $pending_money = $financil_repo->detect_total_money($orders,[]);
@@ -28,7 +28,7 @@ class ProductStatisticsForSeller
             ->where('status','=','completed')
             ->where('seller_id','=',auth()->id())
             ->whereHas('orders',function ($e) use ($id){
-                $e->whereHas('order_items',function($i) use ($id){
+                $e->whereHas('items',function($i) use ($id){
                     $i->where('product_id','=',$id);
                 });
             })
