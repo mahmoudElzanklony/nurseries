@@ -30,7 +30,7 @@ class OrderResource extends JsonResource
               $item =  orders_items::query()->where('order_id','=',$this->id)->has('coupon')->with('coupon')->first();
 
               if($item != null){
-                  $coupon = coupons::query()->withTrash($item->couponable_id);
+                  $coupon = coupons::query()->withTrash()->find($item->couponable_id);
                   if($coupon != null) {
                       return CouponRessource::make($coupon);
                   }
