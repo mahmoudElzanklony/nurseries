@@ -14,9 +14,10 @@ class OrderCouponResource extends JsonResource
      */
     public function toArray($request)
     {
+        return (object)$this['coupon']->name;
         return [
-            'data' => CheckCouponResource::collection(json_decode(json_encode($this['data']))),
-            'coupon' => CouponRessource::make(json_decode(json_encode($this['coupon']))),
+            'data' => CheckCouponResource::collection($this['data']),
+            'coupon' => CouponRessource::make($this['coupon']),
         ];
     }
 }
