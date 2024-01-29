@@ -69,6 +69,13 @@ class OrderRepository
         return $visa_obj->handle($data);
     }
 
+    public function validate_error_coupon($data)
+    {
+        $coupon_repos = new CouponRepository();
+        $coupon_repos->validate_exist($data['has_coupon']);
+        return $coupon_repos->error;
+    }
+
     public function init_order($data){
         $this->payment_data = $data['payment_data'];
         // check from coupon
@@ -82,8 +89,6 @@ class OrderRepository
                 $this->coupon = $coupon_repos->coupon;
 
 
-            }else{
-                return messages::error_output($coupon_repos->error);
             }
 
         }
