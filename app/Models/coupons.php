@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class coupons extends Model
 {
+    use SoftDeletes;
     use HasFactory;
 
     protected $fillable = ['user_id','ar_name','en_name','code','number','discount','using_once','end_date','status'];
