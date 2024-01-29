@@ -50,7 +50,7 @@ class CouponRepository
             ->first();
         if($coupon != null){
             // check date
-            if($coupon->number == 0){
+            if($coupon->number <= 0){
                 $this->error = trans('errors.coupon_amount_end');
             }else {
                 $this->coupon = $coupon;
