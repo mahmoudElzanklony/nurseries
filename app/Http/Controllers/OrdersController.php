@@ -59,7 +59,7 @@ class OrdersController extends Controller
                 return messages::error_output($chk_coupon);
             }
             $result = $order_repo->init_order($data);
-            dd($result);
+
             if($result != null) {
                 $result = json_decode($result->content(), true);
                 if (array_key_exists('status', $result) && $result['status'] != 200) {
