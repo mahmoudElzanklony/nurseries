@@ -54,7 +54,8 @@ class OrdersController extends Controller
         }
         if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
             // the visa is okay now
-            $result = $order_repo->init_order($data)->order_items($data['items']);
+            $result = $order_repo->init_order($data);
+            dd($result);
             if($result != null) {
                 $result = json_decode($result->content(), true);
                 if (array_key_exists('status', $result) && $result['status'] != 200) {
