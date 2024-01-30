@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class couponsFormRequest extends FormRequest
 {
@@ -29,7 +30,7 @@ class couponsFormRequest extends FormRequest
             'en_name'=>'filled',
             'code'=>'required',
             'discount'=>'required',
-            'type'=>'required',
+            'type' => ['required', Rule::in(['client', 'company', 'all'])],
             'number'=>'required|numeric|min:1',
             'using_once'=>'filled',
             'status'=>'filled',
