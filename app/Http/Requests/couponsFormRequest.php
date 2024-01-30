@@ -29,6 +29,7 @@ class couponsFormRequest extends FormRequest
             'en_name'=>'filled',
             'code'=>'required',
             'discount'=>'required',
+            'type'=>'required',
             'number'=>'required|numeric|min:1',
             'using_once'=>'filled',
             'status'=>'filled',
@@ -42,6 +43,7 @@ class couponsFormRequest extends FormRequest
           'ar_name'=>trans('keywords.name'),
           'discount'=>trans('keywords.value'),
           'number'=>trans('keywords.number'),
+          'type'=>trans('keywords.type'),
         ];
     }
 }

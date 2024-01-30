@@ -10,7 +10,7 @@ class coupons extends Model
     use SoftDeletes;
     use HasFactory;
 
-    protected $fillable = ['user_id','ar_name','en_name','code','number','discount','using_once','end_date','status'];
+    protected $fillable = ['user_id','ar_name','en_name','code','number','discount','using_once','end_date','status','type'];
 
     /*public function products(){
         return $this->hasMany(coupons_products::class,'coupon_id');

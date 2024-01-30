@@ -48,7 +48,7 @@ class CouponRepository
             ->where('code','=',$code)
             ->whereRaw('(CURDATE() < end_date or end_date is null)')
             ->first();
-        if($coupon != null){
+        if($coupon != null || ($coupon->type == auth()->user()->role->name || $coupon->type == 'all' )){
             // check date
             if($coupon->number <= 0){
                 $this->error = trans('errors.coupon_amount_end');
