@@ -48,7 +48,7 @@ class CouponRepository
             ->where('code','=',$code)
             ->whereRaw('(CURDATE() < end_date or end_date is null)')
             ->first();
-        if($coupon != null || ($coupon->type == auth()->user()->role->name || $coupon->type == 'all' )){
+        if($coupon != null && ($coupon->type == auth()->user()->role->name || $coupon->type == 'all' )){
             // check date
             if($coupon->number <= 0){
                 $this->error = trans('errors.coupon_amount_end');
@@ -56,6 +56,8 @@ class CouponRepository
                 $this->coupon = $coupon;
                 return $this->is_used_by_user(auth()->id(),$products);
             }
+        }else{
+            $this->error = 'عذرا بيانات الكوبون خاطئه يرجي المحاولة مرة اخري';
         }
     }
 

@@ -97,7 +97,7 @@ class OrdersController extends Controller
             });
 
             $coupon_repos->validate_exist($data['has_coupon'],$products->map(fn ($e)=> $e['id'] ));
-            if($coupon_repos->coupon == null || ($coupon_repos->coupon->type == auth()->user()->role->name || $coupon_repos->coupon->type == 'all' )){
+            if($coupon_repos->coupon == null || !($coupon_repos->coupon->type == auth()->user()->role->name || $coupon_repos->coupon->type == 'all' )){
                 return messages::error_output('عذرا بيانات الكوبون خاطئه يرجي المحاولة مرة اخري');
             }
             if($coupon_repos->error != null){
