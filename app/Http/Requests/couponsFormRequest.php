@@ -31,7 +31,7 @@ class couponsFormRequest extends FormRequest
             'code'=>'required',
             'discount'=>'required',
             'type' => ['required', Rule::in(['client', 'company', 'all'])],
-            'number'=>'required|numeric|min:1',
+            'number'=>'required|numeric',
             'using_once'=>'filled',
             'status'=>'filled',
             'end_date'=>'filled',
