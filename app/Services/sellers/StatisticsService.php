@@ -35,14 +35,14 @@ class StatisticsService
                 $e->where('content','!=',OrdersDeliveryCases::$completed);
             })->withSum('payment','money')->get()->sum('payment_sum_money')
             +
-            custom_orders::query()->with('accepted_seller')
+            custom_orders::query()->with('accepted_seller')->has('accepted_seller')
                            ->where('status','!=','completed')
                            ->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
         $total_sales = self::my_orders($user_id)->withSum('payment','money')->get()->sum('payment_sum_money')
             +
-            custom_orders::query()->with('accepted_seller')->withSum('payment','money')->get()->sum('payment_sum_money');
+            custom_orders::query()->with('accepted_seller')->has('accepted_seller')->withSum('payment','money')->get()->sum('payment_sum_money');
 
 
 
