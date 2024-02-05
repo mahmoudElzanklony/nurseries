@@ -43,7 +43,7 @@ class register_service
                     }
                     $user_phone = User::withTrashed()->where('phone','=',$req['phone'])->first();
                     if($user_phone != null) {
-                        return self::success_output('رقم التليفون موجود بالفعل');
+                        return self::error_output('رقم التليفون موجود بالفعل');
                     }
 
                     $user_info['activation_code'] = rand(1000,9999);
