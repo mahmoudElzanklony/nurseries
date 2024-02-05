@@ -12,7 +12,7 @@ class orders extends Model
     protected $fillable = ['user_id','seller_id','payment_method','has_coupon','seller_profit','financial_reconciliation_id'];
 
     public function seller(){
-        return $this->belongsTo(User::class,'seller_id');
+        return $this->belongsTo(User::class,'seller_id')->withTrashed();
     }
 
 
@@ -33,7 +33,7 @@ class orders extends Model
     }
 
     public function client(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
 
     public function items(){

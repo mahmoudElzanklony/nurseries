@@ -12,7 +12,7 @@ class custom_orders_sellers extends Model
     protected $fillable = ['custom_order_id','seller_id','status','client_reply'];
 
     public function seller(){
-        return $this->belongsTo(User::class,'seller_id');
+        return $this->belongsTo(User::class,'seller_id')->withTrashed();
     }
 
     public function reply(){

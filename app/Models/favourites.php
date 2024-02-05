@@ -12,7 +12,7 @@ class favourites extends Model
     protected $fillable =  ['user_id','item_id','type'];
 
     public function product(){
-        return $this->belongsTo(products::class,'item_id');
+        return $this->belongsTo(products::class,'item_id')->withTrashed();
     }
 
     public function article(){

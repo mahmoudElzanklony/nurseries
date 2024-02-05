@@ -12,6 +12,6 @@ class articles_comments extends Model
     protected $fillable = ['article_id','user_id','comment'];
 
     public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
 }

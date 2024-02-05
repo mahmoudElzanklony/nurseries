@@ -12,6 +12,6 @@ class followers extends Model
     protected $fillable = ['user_id','following_id'];
 
     public function follower(){
-        return $this->belongsTo(User::class,'following_id');
+        return $this->belongsTo(User::class,'following_id')->withTrashed();
     }
 }

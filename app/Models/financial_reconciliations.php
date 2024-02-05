@@ -12,11 +12,11 @@ class financial_reconciliations extends Model
     protected $fillable = ['user_id','seller_id','total_money','admin_profit_percentage','status','note'];
 
     public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
 
     public function seller(){
-        return $this->belongsTo(User::class,'seller_id');
+        return $this->belongsTo(User::class,'seller_id')->withTrashed();
     }
 
     public function image(){
