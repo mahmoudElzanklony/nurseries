@@ -7,6 +7,7 @@ use App\Http\traits\messages;
 use App\Models\advertising_points_price;
 use App\Models\listings_info;
 use App\Models\products_care;
+use App\Models\User;
 use App\Services\notifications\pagiante_notifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,16 +34,18 @@ class GeneralServiceController extends Controller
             }catch (\Throwable $e){
 
             }
-        }else{
-        try {
-            $model = app("App\Models\\".$table);
-            $model->where('id',request('id'))->delete();
-        }catch (\Throwable $e){
-            if(request()->has('id')) {
-                $id = request('id');
-                DB::table($table)->delete($id);
+        }else if($table == 'users'){
+            User::query()->find(request('id'))->delete();
+        } else{
+            try {
+                $model = app("App\Models\\".$table);
+                $model->where('id',request('id'))->delete();
+            }catch (\Throwable $e){
+                if(request()->has('id')) {
+                    $id = request('id');
+                    DB::table($table)->delete($id);
+                }
             }
-        }
         }
         return messages::success_output(trans('messages.deleted_successfully'));
 
