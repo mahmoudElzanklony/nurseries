@@ -41,10 +41,10 @@ class register_service
                     }else{
                         $country = countries::query()->first();
                     }
-                    $user_phone = User::withTrashed()->where('phone','=',$req['phone'])->first();
+                    /*$user_phone = User::withTrashed()->where('phone','=',$req['phone'])->first();
                     if($user_phone != null) {
                         return self::error_output('رقم التليفون موجود بالفعل');
-                    }
+                    }*/
 
                     $user_info['activation_code'] = rand(1000,9999);
                     $user_info['role_id'] = $role->id;
