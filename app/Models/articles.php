@@ -12,7 +12,7 @@ class articles extends Model
     protected $fillable = ['user_id','title','category_id','description'];
 
     public function user(){
-        return $this->belongsTo(User::class,'user_id');
+        return $this->belongsTo(User::class,'user_id')->withTrashed();
     }
 
     public function category(){
