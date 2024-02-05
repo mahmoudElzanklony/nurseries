@@ -39,7 +39,7 @@ class usersFormRequest extends FormRequest
 
     public function register(){
         return [
-            'phone'=>'filled',
+            'phone'=>'filled|unique:users,phone,NULL,id,deleted_at,NULL',
             'country_code'=>'required',
             'type'=>'required',
             'email'=>'filled',
