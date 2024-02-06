@@ -31,6 +31,13 @@ class products extends Model
         return $this->hasOne(seen::class,'item_id');
     }
 
+    public function scopeHasUser($query)
+    {
+        return $query->whereHas('user',function($e){
+            $e->whereRaw('deleted_at is null');
+        });
+    }
+
     public function cares(){
         return $this->hasMany(products_care::class,'product_id')
             ->whereRaw('(type = "seller" '.(auth()->check() == true ? ' OR user_id =  '.auth()->id():'').' ) ');

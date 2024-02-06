@@ -61,6 +61,7 @@ class ProductsControllerResource extends Controller
         // all products data info
 
         $data = products::withTrashed()
+            ->hasUser()
             ->when(GetAuthenticatedUser::get_info() != null , function ($e){
                 $e->with('favourite');
             })
