@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\orders;
 use Illuminate\Http\Request;
 use CodeBugLab\NoonPayment\NoonPayment;
 
@@ -16,7 +17,7 @@ class NoonPaymentController extends Controller
 
             $response = NoonPayment::getInstance()->initiate([
                 "order" => [
-                    "reference" => "1",
+                    "reference" => "1881",
                     "amount" => $amount,
                     "currency" => "SAR",
                     "name" => $name,
@@ -41,17 +42,20 @@ class NoonPaymentController extends Controller
     public function response(Request $request)
     {
         $response = NoonPayment::getInstance()->getOrder($request->orderId);
-
+        $order_id = request('merchantReference');
         if ($this->isSaleTransactionSuccess($response)) {
             //success
+            orders::query()->find($order_id)->update(['is_draft'=>0]);
             return response()->json([
                 'transaction_status'=>1,
+                'order_id'=>$order_id,
             ]);
         }
 
         // cancel
         return response()->json([
             'transaction_status'=>0,
+            'order_id'=>$order_id,
         ]);
     }
 

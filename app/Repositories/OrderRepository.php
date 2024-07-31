@@ -31,9 +31,11 @@ class OrderRepository
     public $default_address;
     private $payment_data;
     private $deliveries_arr = [];
-    private $order_total_price = 0;
+    public $order_total_price = 0;
     private $coupon;
     private $remove_from_coupon = false;
+
+    public $noon_items_format = [];
 
     public function __construct($default_address)
     {
@@ -180,6 +182,12 @@ class OrderRepository
                         'quantity' => $item['quantity'],
                         'price' => $final_price, // this is total prices for all quantities
                     ]);
+                    $noon_item = [
+                        'name'=>$product->ar_name,
+                        'quantity'=>$item['quantity'],
+                        'unitPrice'=>$final_price,
+                    ];
+                    array_push($this->noon_items_format,$noon_item);
                     // check for apply coupon
 
                     if($this->validate_product_for_coupon($item['product_id']) == true){

@@ -30,6 +30,7 @@ use App\Models\user_addresses;
 use App\Models\users_coupons;
 use App\Repositories\CouponRepository;
 use App\Repositories\OrderRepository;
+use CodeBugLab\NoonPayment\NoonPayment;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Facades\DB;
@@ -49,7 +50,8 @@ class OrdersController extends Controller
         $seller = User::query()->find(request('seller_id'));
         // check if this of any these products any one that has no delivery way to default client address
         $check_err_delivery = $order_repo->check_delivery_products($data['items']);
-        if($check_err_delivery['error'] > 0){
+        //if($check_err_delivery['error'] > 0){
+        if(false){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
         if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
@@ -65,7 +67,28 @@ class OrdersController extends Controller
                     return messages::error_output($result['errors']);
                 }
             }
+
             DB::commit();
+
+            $response = NoonPayment::getInstance()->initiate([
+                "order" => [
+                    "reference" => $order_repo->order->id,
+                    "amount" => $order_repo->order_total_price,
+                    "currency" => "SAR",
+                    "name" => "Mraken Noon payment",
+                    "items"=>$order_repo->noon_items_format
+                ],
+                "configuration" => [
+                    "locale" => "ar"
+                ]
+            ]);
+
+
+            if ($response->resultCode == 0) {
+                return redirect($response->result->checkoutData->postUrl);
+            }
+
+            return $response;
 
             return messages::success_output(trans('messages.order_done_successfully'),OrderResource::make(OrdersWithAllData::get()->find($order_repo->order->id)));
         }else{

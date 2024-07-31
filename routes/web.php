@@ -9,7 +9,7 @@ use App\Http\Controllers\NoonPaymentController;
 
 
 Route::get('/noon_payment',[NoonPaymentController::class,'index']);
-Route::get('/noon_payment_response',[NoonPaymentController::class,'response']);
+Route::get('/noon_payment_response',[NoonPaymentController::class,'response'])->name('noon.payment.response');
 
 
 
