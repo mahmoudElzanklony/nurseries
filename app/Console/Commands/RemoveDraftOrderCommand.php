@@ -40,7 +40,6 @@ class RemoveDraftOrderCommand extends Command
     public function handle()
     {
         $data = orders::query()
-            ->where('id','>',49)
             ->where('is_draft','=',1)
             ->where('created_at', '<', Carbon::now()->subMinutes(15))->get();
         foreach($data as $datum){
