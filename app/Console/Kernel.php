@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
             ->runInBackground();
 
         $schedule->command('draft:delete')
-            ->everyTwoHours()
+            ->everyMinute()
             ->withoutOverlapping()
             ->runInBackground();
 
