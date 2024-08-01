@@ -85,6 +85,10 @@ class OrdersController extends Controller
 
 
             if ($response->resultCode == 0) {
+                return response()->json([
+                   'url'=>$response->result->checkoutData->postUrl,
+                   'total'=>$order_repo->order_total_price,
+                ]);
                 return redirect($response->result->checkoutData->postUrl);
             }
 
