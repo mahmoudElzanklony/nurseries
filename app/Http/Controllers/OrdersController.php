@@ -51,6 +51,7 @@ class OrdersController extends Controller
         // check if this of any these products any one that has no delivery way to default client address
         $check_err_delivery = $order_repo->check_delivery_products($data['items']);
         if($check_err_delivery['error'] > 0){
+        //if(false){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
         if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
@@ -79,7 +80,7 @@ class OrdersController extends Controller
                 ],
                 "billing"=> [
                     "address"=> [
-                        "street"=> $default_address>address,
+                        "street"=> $default_address->default_address,
                         "city"=>"",
                         "stateProvince"=> "arabia sudia",
                         "country"=> "SA",
