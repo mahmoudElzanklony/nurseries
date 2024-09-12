@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\custom_orders;
 use App\Models\orders;
 use App\Models\products;
 use Carbon\Carbon;
@@ -45,6 +46,12 @@ class RemoveDraftOrderCommand extends Command
             ->with('items')
             ->where('is_draft','=',1)
             ->where('created_at', '<', Carbon::now()->subMinutes(15))->get();
+
+        $data_custom = custom_orders::query()
+            ->where('is_draft','=',1)
+            ->where('created_at', '<', Carbon::now()->subMinutes(15))->get();
+
+
         foreach($data as $datum){
             try{
                 foreach($datum->items as $item){
@@ -57,6 +64,10 @@ class RemoveDraftOrderCommand extends Command
             }catch (Exception $e){
 
             }
+            $datum->delete();
+        }
+
+        foreach($data_custom as $datum){
             $datum->delete();
         }
     }

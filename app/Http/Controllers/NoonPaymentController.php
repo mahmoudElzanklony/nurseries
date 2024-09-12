@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\custom_orders;
 use App\Models\orders;
 use Illuminate\Http\Request;
 use CodeBugLab\NoonPayment\NoonPayment;
@@ -45,7 +46,12 @@ class NoonPaymentController extends Controller
         $order_id = request('merchantReference');
         if ($this->isSaleTransactionSuccess($response)) {
             //success
-            orders::query()->find($order_id)->update(['is_draft'=>0]);
+            try{
+                orders::query()->find($order_id)->update(['is_draft'=>0]);
+            }catch (\Exception $e){}
+            try{
+                custom_orders::query()->find($order_id)->update(['is_draft'=>0]);
+            }catch (\Exception $e){}
             return response()->json([
                 'transaction_status'=>1,
                 'order_id'=>$order_id,
