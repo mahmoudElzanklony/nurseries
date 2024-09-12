@@ -33,6 +33,7 @@ use App\Models\orders_shipment_info;
 use App\Models\payments;
 use App\Models\User;
 use App\Repositories\CustomOrdersRepository;
+use CodeBugLab\NoonPayment\NoonPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\traits\upload_image;
@@ -241,6 +242,49 @@ class CustomerOrdersControllerResource extends Controller
                 }])->where('custom_order_id','=',$data[0]->custom_order_seller->order->id)
                     ->where('seller_id','=',$data[0]->custom_order_seller->seller_id)->first();
                 DB::commit();
+
+                $response = NoonPayment::getInstance()->initiate([
+                    "order" => [
+                        "reference" => $final->custom_order_id,
+                        "amount" => $total_money,
+                        "currency" => "SAR",
+                        "name" => "Mraken Noon payment",
+                        "items"=>"custom order"
+                    ],
+                    "billing"=> [
+                        "address"=> [
+                            "street"=> "",
+                            "city"=>"",
+                            "stateProvince"=> "arabia sudia",
+                            "country"=> "SA",
+                            "postalCode"=> "12345"
+                        ],
+                        "contact"=> [
+                            "firstName"=> auth()->user()->username,
+                            "lastName"=> "",
+                            "phone"=> auth()->user()->phone,
+                            "mobilePhone"=> auth()->user()->phone,
+                            "email"=> auth()->user()->email
+                        ]
+                    ],
+                    "configuration" => [
+                        "locale" => "ar"
+                    ]
+                ]);
+
+
+                if ($response->resultCode == 0) {
+                    return response()->json([
+                        'url'=>$response->result->checkoutData->postUrl,
+                        'total'=>$total_money,
+                        'success_url'=>env('API_URL').'/noon_payment_response',
+                        'failure_url'=>env('API_URL').'/noon_payment_response_failure',
+                    ]);
+                    return redirect($response->result->checkoutData->postUrl);
+                }
+
+                return $response;
+
 
                 return messages::success_output(trans('messages.saved_successfully')
                     ,CustomOrderSellerResource::make($final));
