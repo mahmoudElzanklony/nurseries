@@ -274,7 +274,7 @@ class CustomerOrdersControllerResource extends Controller
                     ]
                 ]);
 
-
+                dd($response);
                 if ($response->resultCode == 0) {
                     return response()->json([
                         'url'=>$response->result->checkoutData->postUrl,
