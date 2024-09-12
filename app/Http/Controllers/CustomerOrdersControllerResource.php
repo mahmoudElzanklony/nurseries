@@ -183,9 +183,10 @@ class CustomerOrdersControllerResource extends Controller
 
             // client select what he want
             $high_delivery_and_price = GetHighDeliveryDays::get($data);
-
+            $noon_items_format = [];
             $total_money = 0;
             foreach($inputs_data['selected_items'] as $item){
+
 
                 $selected_item = $data->first(function ($e) use ($item){
                     return $e->id == $item['id'];
@@ -198,6 +199,12 @@ class CustomerOrdersControllerResource extends Controller
                 if($selected_item->quantity < $item['quantity']){
                     return messages::error_output('لقد قمت بطلب كمية من المنتج '.$selected_item->name.' وهي اكثر من المتوافر حاليا ');
                 }
+                $noon_item = [
+                    'name'=>'custom order',
+                    'quantity'=>$item['quantity'],
+                    'unitPrice'=>$price,
+                ];
+                array_push($noon_items_format,$noon_item);
                 custom_orders_selected_products::query()->create([
                     'custom_order_id'=>$data[0]->custom_order_seller->order->id,
                     'custom_orders_sellers_replies_id'=>$item['id'],
@@ -250,17 +257,19 @@ class CustomerOrdersControllerResource extends Controller
                     ->where('default_address','=',1)
                     ->first();
 
+
+
                 $response = NoonPayment::getInstance()->initiate([
                     "order" => [
                         "reference" => $final->custom_order_id,
                         "amount" => $total_money,
                         "currency" => "SAR",
                         "name" => "Mraken Noon payment",
-                        "items"=>"custom order"
+                        "items"=>$noon_items_format
                     ],
                     "billing"=> [
                         "address"=> [
-                            "street"=>$default_address->address ?? '',
+                            "street"=> $default_address->default_address,
                             "city"=>"",
                             "stateProvince"=> "arabia sudia",
                             "country"=> "SA",
