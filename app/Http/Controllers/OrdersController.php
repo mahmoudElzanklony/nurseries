@@ -54,7 +54,7 @@ class OrdersController extends Controller
         if(false){
             return messages::error_output(trans('keywords.seller').' ( '.$seller->username.' ) '.trans('keywords.dont_support_delivery_product').' ( '.$check_err_delivery['product_name'].' ) '.trans('keywords.to_default_address'),401);
         }
-        if($order_repo->validate_payment_info($data['payment_data'])['status'] == true){
+
             // the visa is okay now
             $chk_coupon = $order_repo->validate_error_coupon($data);
             if($chk_coupon != ''){
@@ -113,9 +113,7 @@ class OrdersController extends Controller
             return $response;
 
             return messages::success_output(trans('messages.order_done_successfully'),OrderResource::make(OrdersWithAllData::get()->find($order_repo->order->id)));
-        }else{
-            return messages::error_output('بيانات الفيزا الخاصه بك خاطئة يرجي مراجعتها من فضلك');
-        }
+
 
     }
 

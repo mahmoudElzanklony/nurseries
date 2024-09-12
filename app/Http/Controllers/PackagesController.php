@@ -57,15 +57,15 @@ class PackagesController extends Controller
         /*$visa_info = [
             'id'=>$data['visa_id']
         ];*/
-        $validate_visa = $visa_obj->handle($visa_info);
-        if($validate_visa['status'] == true){
+        //$validate_visa = $visa_obj->handle($visa_info);
+        if(true){
             // handle object of data to be inserted
 
             $data = $this->handle_package($data);
             $order = users_packages::query()->updateOrCreate([
                 'user_id'=>auth()->id()
             ],$data);
-            PaymentModalSave::make($order->id,'users_packages',$visa_info['id'],$data['price']);
+            PaymentModalSave::make($order->id,'users_packages',$data['price']);
             return messages::success_output(trans('messages.saved_successfully'),UserPackageOrderResource::make($order));
         }else{
             return messages::error_output($validate_visa['message']);

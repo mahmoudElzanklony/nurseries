@@ -90,7 +90,7 @@ class OrderRepository
     }
 
     public function init_order($data){
-        $this->payment_data = $data['payment_data'];
+        $this->payment_data = $data['payment_data'] ?? null;
         // check from coupon
 
         DB::beginTransaction();
@@ -227,7 +227,7 @@ class OrderRepository
         $this->order_total_price += $total_price_delivery;
         //ho $this->order_total_price .'<br>';
         //dd($this->order_total_price);
-        PaymentModalSave::make($this->order->id,'orders',$this->payment_data['id'],$this->order_total_price);
+        PaymentModalSave::make($this->order->id,'orders',$this->order_total_price);
         // add address and delivery for this order
         $this->order_address($total_days_delivery,$total_price_delivery);
         DB::commit();
