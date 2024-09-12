@@ -175,7 +175,7 @@ class CustomerOrdersControllerResource extends Controller
                 return messages::error_output(trans('errors.no_data'));
             }
             // it must be pending , active ==> this mean it in progress now
-            dd($data[0]->custom_order_seller->order);
+            //dd($data[0]->custom_order_seller->order);
             if($data[0]->custom_order_seller->order->status != 'pending'){
                 return messages::error_output(trans('errors.cant_select_seller_to_this_order'));
             }
