@@ -26,7 +26,6 @@ class packagesOrdersFormRequest extends FormRequest
     {
         return [
             'package_id'=>'required|exists:packages,id',
-            'visa_id'=>'required|exists:users_visa,id',
         ];
     }
 

@@ -28,7 +28,6 @@ class customOrderClientReplyFormRequest extends FormRequest
             'selected_items'=>'required|array',
             'selected_items.*.id'=>'required|exists:custom_orders_sellers_replies,id',
             'selected_items.*.quantity'=>'required|min:1',
-            'visa_id'=>'required|exists:users_visa,id',
         ];
     }
 

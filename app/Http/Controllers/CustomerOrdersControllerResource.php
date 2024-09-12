@@ -210,7 +210,7 @@ class CustomerOrdersControllerResource extends Controller
                 ->where('id','!=',request('custom_orders_seller_id'))
                 ->update(['client_reply'=>'rejected']);
             // handle visa payment
-            $payment_status = $this->handle_payment(request('visa_id'),$data[0]->custom_order_seller->order->id,$total_money);
+            $payment_status = $this->handle_payment($data[0]->custom_order_seller->order->id,$total_money);
             if($payment_status == true){
                 // reject orders
 
@@ -336,14 +336,10 @@ class CustomerOrdersControllerResource extends Controller
 
     }
 
-    public function handle_payment($visa_id,$order_id,$money){
+    public function handle_payment($order_id,$money){
         $visa_obj = new VisaPayment();
-        if($visa_obj->handle(['id'=>$visa_id]) == true){
-            PaymentModalSave::make($order_id,'custom_orders',$visa_id,$money);
-            return true;
-        }else{
-            return false;
-        }
+        PaymentModalSave::make($order_id,'custom_orders',$money);
+        return true;
     }
 
     public function make_order_active($order_id){

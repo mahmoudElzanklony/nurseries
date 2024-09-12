@@ -54,9 +54,9 @@ class PackagesController extends Controller
         $data = $packagesOrdersFormRequest->validated();
 
         $visa_obj = new VisaPayment();
-        $visa_info = [
+        /*$visa_info = [
             'id'=>$data['visa_id']
-        ];
+        ];*/
         $validate_visa = $visa_obj->handle($visa_info);
         if($validate_visa['status'] == true){
             // handle object of data to be inserted
@@ -75,7 +75,7 @@ class PackagesController extends Controller
 
     public function handle_package($data){
         $package = packages::query()->find($data['package_id']);
-        unset($data['visa_id']);
+       // unset($data['visa_id']);
         $data['price'] = $package->price;
 
         $data['expiration_date'] = $package->type == 'month' ? Carbon::now()->addMonths(1) : Carbon::now()->addYears(1);
