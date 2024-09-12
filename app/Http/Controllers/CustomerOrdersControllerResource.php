@@ -288,7 +288,7 @@ class CustomerOrdersControllerResource extends Controller
                     ]
                 ]);
 
-                dd($response);
+
                 DB::commit();
                 if ($response->resultCode == 0) {
                     return response()->json([
