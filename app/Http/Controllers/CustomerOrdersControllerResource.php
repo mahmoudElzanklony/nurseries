@@ -32,6 +32,7 @@ use App\Models\custom_orders_shipment_info;
 use App\Models\orders_shipment_info;
 use App\Models\payments;
 use App\Models\User;
+use App\Models\user_addresses;
 use App\Repositories\CustomOrdersRepository;
 use CodeBugLab\NoonPayment\NoonPayment;
 use Illuminate\Http\Request;
@@ -243,7 +244,11 @@ class CustomerOrdersControllerResource extends Controller
                     $e->with('images');
                 }])->where('custom_order_id','=',$data[0]->custom_order_seller->order->id)
                     ->where('seller_id','=',$data[0]->custom_order_seller->seller_id)->first();
-                DB::commit();
+
+                $default_address = user_addresses::query()->
+                    where('user_id','=',auth()->id())
+                    ->where('default_address','=',1)
+                    ->first();
 
                 $response = NoonPayment::getInstance()->initiate([
                     "order" => [
@@ -255,7 +260,7 @@ class CustomerOrdersControllerResource extends Controller
                     ],
                     "billing"=> [
                         "address"=> [
-                            "street"=> "",
+                            "street"=>$default_address->address ?? '',
                             "city"=>"",
                             "stateProvince"=> "arabia sudia",
                             "country"=> "SA",
@@ -275,6 +280,7 @@ class CustomerOrdersControllerResource extends Controller
                 ]);
 
                 dd($response);
+                DB::commit();
                 if ($response->resultCode == 0) {
                     return response()->json([
                         'url'=>$response->result->checkoutData->postUrl,
