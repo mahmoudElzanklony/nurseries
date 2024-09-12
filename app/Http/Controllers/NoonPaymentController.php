@@ -51,11 +51,19 @@ class NoonPaymentController extends Controller
                 'order_id'=>$order_id,
             ]);
         }
-
+        return redirect()->to('/noon_payment_response_failure');
         // cancel
         return response()->json([
             'transaction_status'=>0,
             'order_id'=>$order_id,
+        ]);
+    }
+
+    public function failure()
+    {
+        return response()->json([
+            'transaction_status'=>0,
+
         ]);
     }
 
