@@ -168,8 +168,8 @@ class AIController extends Controller
                 $result[0] = ['url' => url('/') . '/images/ai/' . $fileName];
                 return $result;
             } else {
-                dd($response->body());
-                return response()->json(['message' => 'Failed to download file'], 500);
+                $res = json_decode($response->body(),true);
+                return messages::error_output($res['errors']);
             }
         }
 
