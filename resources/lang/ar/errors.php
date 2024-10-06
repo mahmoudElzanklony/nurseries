@@ -37,4 +37,5 @@ return [
     'your_account_is_blocked'=>'تم حظر حسابك في الوقت الحالي',
     'seller_has_no_permission_to_write_articles'=>'نعتذر لك ليس لديك صلاحية كتب المقال يرجي التواصل مع الادارة',
     'you_cant_access_this_app'=>'ليس لك صلاحيات الدخول الي هذا التطبيق من فضلك جرب النوع الاخر من التطبيق',
+    'please_put_default_address'=>'يجب اضافة عنوان افتراضى لتحديد امكانية التوصيل'
 ];

@@ -161,7 +161,7 @@ class ProductResource extends JsonResource
             'deliveries'=>ProductDeliveriesResource::collection($this->whenLoaded('deliveries')),
             'answers'=>ProductAnswersResource::collection($this->whenLoaded('answers')),
             'delivery'=>auth()->check() && $delivery != false ? $delivery :null,
-            'delivery_ar'=>auth()->check() && $delivery == false ? trans('errors.product_doesnt_support_delivery'):null,
+            'delivery_ar'=>$default_address == null ? trans('errors.please_put_default_address'):(auth()->check() && $delivery == false ? trans('errors.product_doesnt_support_delivery'):null),
             'discounts'=>ProductDiscountsResource::collection($this->whenLoaded('discounts')),
             'wholesale_prices'=>ProductWholesalePricesResource::collection($this->whenLoaded('wholesale_prices')),
 
