@@ -25,7 +25,7 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-
+        $default_address = null;
         if(str_contains(request()->fullUrl(), 'orders') == false){
             $seller_avg_rate = SellerRateAVG::get($this->user_id);
             $default_address = DefaultAddress::get();
