@@ -139,7 +139,7 @@ class AIController extends Controller
                 "prompt" => $prompt,
                 "output_format"=> "png",
                 "mode"=>"image-to-image",
-                "strength"=>"0.6",
+                "strength"=>"0.5",
             ];
 
             $response =  Http::withHeaders($headers)
