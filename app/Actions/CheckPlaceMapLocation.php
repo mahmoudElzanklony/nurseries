@@ -13,19 +13,17 @@ class CheckPlaceMapLocation
         $deliveries = products_delivery::query()->with('city')
             ->where('product_id','=',$product_id)->get();
 
-        if(sizeof($deliveries) == 0 || $deliveries == null){
-            return false;
-        }
-        if($default_address == null){
-            return false;
-        }
 
         $cities_en_english = $deliveries->map(function($e){
             return $e['city']['en_name'];
         })->toArray();
 
-
-
+        if(sizeof($deliveries) == 0){
+            return false;
+        }
+        if($default_address == null){
+            return false;
+        }
         $client = new Client();
 
         $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='.$default_address->latitude.','.$default_address->longitude.'&key='.env('GOOGLE_MAPS_API_KEY');
