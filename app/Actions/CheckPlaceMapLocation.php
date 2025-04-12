@@ -13,7 +13,7 @@ class CheckPlaceMapLocation
         $deliveries = products_delivery::query()->with('city')
             ->where('product_id','=',$product_id)->get();
 
-        if(sizeof($deliveries) == 0){
+        if(sizeof($deliveries) == 0 || $deliveries == null){
             return false;
         }
         if($default_address == null){
