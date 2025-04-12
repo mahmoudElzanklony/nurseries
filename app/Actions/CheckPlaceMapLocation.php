@@ -13,7 +13,7 @@ class CheckPlaceMapLocation
         $deliveries = products_delivery::query()->with('city')
             ->where('product_id','=',$product_id)->get();
 
-        dd($deliveries);
+
         $cities_en_english = $deliveries->map(function($e){
             return $e['city']['en_name'];
         })->toArray();
