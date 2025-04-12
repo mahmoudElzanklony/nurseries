@@ -17,7 +17,7 @@ class CheckPlaceMapLocation
         $cities_en_english = $deliveries->map(function($e){
             return $e['city']['en_name'];
         })->toArray();
-        dd($cities_en_english);
+
         if(sizeof($deliveries) == 0){
             return false;
         }
@@ -36,7 +36,6 @@ class CheckPlaceMapLocation
             foreach ($response['results'] as $result) {
                 foreach ($result['address_components'] as $address_component) {
                    // echo $address_component['long_name']."<br>";
-                    dump($result['address_components'],in_array('locality', $address_component['types']),in_array($address_component['long_name'],$cities_en_english));
                     if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
                       //  echo $address_component['long_name'] ."<br>";
                         return collect($deliveries)->first(function ($e) use ($address_component){
