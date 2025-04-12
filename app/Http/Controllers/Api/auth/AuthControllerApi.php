@@ -47,6 +47,7 @@ class AuthControllerApi extends AuthServicesClass
 
     public function test_sms()
     {
+
         return $this->externalSmsService->send('966500462405','تيست تيست');
     }
 
