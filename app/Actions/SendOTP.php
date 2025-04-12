@@ -14,6 +14,7 @@ class SendOTP
         if($user == null){
             return messages::error_output(trans('errors.not_found_user'));
         }
+
         //$user->activation_code = rand(1000,9999);
         $user->activation_code = 1234;
         $user->save();
