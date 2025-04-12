@@ -29,7 +29,6 @@ class CheckPlaceMapLocation
         $apiUrl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng='.$default_address->latitude.','.$default_address->longitude.'&key='.env('GOOGLE_MAPS_API_KEY');
 
         $client_request = $client->get($apiUrl);
-        dd($client_request);
         // Parse the response
         $response = json_decode($client_request->getBody(), true);
         $place_id = null;
@@ -38,6 +37,9 @@ class CheckPlaceMapLocation
                 foreach ($result['address_components'] as $address_component) {
                    // echo $address_component['long_name']."<br>";
                     if (in_array('locality', $address_component['types']) && in_array($address_component['long_name'],$cities_en_english)) {
+                        dd(collect($deliveries)->first(function ($e) use ($address_component){
+                            return $e['city']['en_name'] == $address_component['long_name'];
+                        }));
                       //  echo $address_component['long_name'] ."<br>";
                         return collect($deliveries)->first(function ($e) use ($address_component){
                             return $e['city']['en_name'] == $address_component['long_name'];
