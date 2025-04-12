@@ -30,8 +30,6 @@ class ProductResource extends JsonResource
             $seller_avg_rate = SellerRateAVG::get($this->user_id);
             $default_address = DefaultAddress::get();
             $delivery = CheckPlaceMapLocation::check_delivery($this->id,$default_address);
-
-            //dd($delivery);
             try {
                 if (sizeof($this->rates) > 0) {
                     $rate_bars = [
