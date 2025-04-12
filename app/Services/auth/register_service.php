@@ -46,7 +46,8 @@ class register_service
                         return self::error_output('رقم التليفون موجود بالفعل');
                     }*/
 
-                    $user_info['activation_code'] = rand(1000,9999);
+                    //$user_info['activation_code'] = rand(1000,9999);
+                    $user_info['activation_code'] = 1234;
                     $user_info['role_id'] = $role->id;
                     $user_info['country_id'] = $country->id ?? 1;
                     $user_info['new_user'] = true;

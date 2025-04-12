@@ -16,6 +16,7 @@ use App\Models\tenants;
 use App\Models\User;
 use App\Models\user_devices;
 use App\Services\auth\register_service;
+use App\Services\SendSmsExternalService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -28,7 +29,11 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthControllerApi extends AuthServicesClass
 {
     use messages;
-
+    private $externalSmsService;
+    public function __construct(SendSmsExternalService $externalService)
+    {
+        $this->externalSmsService = $externalService;
+    }
     public function test(){
        // echo dirname('routes/api.php');
         $output =  orders::query()
@@ -38,6 +43,11 @@ class AuthControllerApi extends AuthServicesClass
             })->find(10);
         return $output;
        // echo date('Y/m/d H:m:s');
+    }
+
+    public function test_sms()
+    {
+        return $this->externalSmsService->send('966500462405','تيست تيست');
     }
 
     public function validate_user(){
@@ -124,6 +134,7 @@ class AuthControllerApi extends AuthServicesClass
                         'notification_token'=>request('notification_token') ?? null,
                     ]);
                 }
+                $this->externalSmsService->send($user->phone,'رقم التحقق هو '.$user->activation_code);
                 $user->save();
                 $user['role'] = $role;
                 if($user->email == '' && $user->username == '') {

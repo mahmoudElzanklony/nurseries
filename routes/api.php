@@ -63,6 +63,7 @@ Route::group(['middleware'=>'changeLang'],function (){
     Route::group(['prefix'=>'/auth'],function(){
         Route::post('/register-check',[AuthControllerApi::class,'register_post']);
         Route::post('/login',[AuthControllerApi::class,'login_api']);
+        Route::post('/test-sms',[AuthControllerApi::class,'test_sms']);
         Route::post('/get-user-by-token',[AuthControllerApi::class,'get_user_by_token'])->middleware('CheckApiAuth');
         Route::post('/check-otp',[AuthControllerApi::class,'check_otp']);
         Route::post('/logout',[AuthControllerApi::class,'logout_api']);
