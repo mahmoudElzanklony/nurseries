@@ -46,6 +46,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class ProductsControllerResource extends Controller
 {
     use upload_image;
+
     public function __construct()
     {
          $this->middleware('CheckApiAuth')->only('store');
