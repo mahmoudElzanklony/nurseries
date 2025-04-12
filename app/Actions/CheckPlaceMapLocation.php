@@ -17,6 +17,7 @@ class CheckPlaceMapLocation
         $cities_en_english = $deliveries->map(function($e){
             return $e['city']['en_name'];
         })->toArray();
+        dd($cities_en_english);
         if(sizeof($deliveries) == 0){
             return false;
         }
