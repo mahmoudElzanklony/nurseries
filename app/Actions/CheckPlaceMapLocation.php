@@ -13,14 +13,14 @@ class CheckPlaceMapLocation
         $deliveries = products_delivery::query()->with('city')
             ->where('product_id','=',$product_id)->get();
 
-
+        if(sizeof($deliveries) == 0){
+            return false;
+        }
         $cities_en_english = $deliveries->map(function($e){
             return $e['city']['en_name'];
         })->toArray();
 
-        if(sizeof($deliveries) == 0){
-            return false;
-        }
+
         if($default_address == null){
             return false;
         }
