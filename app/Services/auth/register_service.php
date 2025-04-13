@@ -57,7 +57,7 @@ class register_service
                     $user = User::query()->create($user_info);
                     ImageModalSave::make($user->id,'User','users/default.png');
                     SendOTP::send($user);
-
+                    unset($user->activation_code);
 
 
                     return self::success_output(trans('messages.registered_user'),$user);
