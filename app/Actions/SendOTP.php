@@ -4,6 +4,7 @@
 namespace App\Actions;
 
 
+use App\Http\Resources\UserResource;
 use App\Http\traits\messages;
 use App\Models\User;
 use App\Services\mail\send_email;
@@ -28,6 +29,6 @@ class SendOTP
         }else{
             // send phone otp
         }
-        return messages::success_output(trans('messages.sent_otp_successfully'),$user);
+        return messages::success_output(trans('messages.sent_otp_successfully'),UserResource::make($user));
     }
 }
