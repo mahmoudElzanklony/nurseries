@@ -6,6 +6,7 @@ namespace App\Services\auth;
 
 use App\Actions\ImageModalSave;
 use App\Actions\SendOTP;
+use App\Http\Resources\UserResource;
 use App\Models\countries;
 use App\Models\marketer_clients;
 use App\Models\roles;
@@ -57,10 +58,10 @@ class register_service
                     $user = User::query()->create($user_info);
                     ImageModalSave::make($user->id,'User','users/default.png');
                     SendOTP::send($user);
-                    unset($user->activation_code);
+                    //unset($user->activation_code);
 
 
-                    return self::success_output(trans('messages.registered_user'),$user);
+                    return self::success_output(trans('messages.registered_user'),UserResource::make($user));
                 } else {
                     // role isn't correct
                     return self::error_output(self::errors(['type' => trans('messages.err_invalid_type')]));
