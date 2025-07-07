@@ -43,8 +43,12 @@ class OrdersController extends Controller
     public function make_order(ordersFormRequest $request){
         DB::beginTransaction();
         $data = $request->validated();
+        if(request()->filled('payment_method') && request('payment_method') != 'COD'){
+            $data['is_draft'] = 0;
+        }
 
-        $default_address = user_addresses::query()->find(request('address_id'));
+
+            $default_address = user_addresses::query()->find(request('address_id'));
 
         $order_repo = new OrderRepository($default_address);
         $seller = User::query()->find(request('seller_id'));
@@ -70,47 +74,51 @@ class OrdersController extends Controller
 
             DB::commit();
 
-            $response = NoonPayment::getInstance()->initiate([
-                "order" => [
-                    "reference" => $order_repo->order->id,
-                    "amount" => $order_repo->order_total_price,
-                    "currency" => "SAR",
-                    "name" => "Mraken Noon payment",
-                    "items"=>$order_repo->noon_items_format
-                ],
-                "billing"=> [
-                    "address"=> [
-                        "street"=> $default_address->default_address,
-                        "city"=>"",
-                        "stateProvince"=> "arabia sudia",
-                        "country"=> "SA",
-                        "postalCode"=> "12345"
+            if(request()->filled('payment_method') && request('payment_method') != 'COD'){
+                $response = NoonPayment::getInstance()->initiate([
+                    "order" => [
+                        "reference" => $order_repo->order->id,
+                        "amount" => $order_repo->order_total_price,
+                        "currency" => "SAR",
+                        "name" => "Mraken Noon payment",
+                        "items"=>$order_repo->noon_items_format
                     ],
-                    "contact"=> [
-                        "firstName"=> auth()->user()->username,
-                        "lastName"=> "",
-                        "phone"=> auth()->user()->phone,
-                        "mobilePhone"=> auth()->user()->phone,
-                        "email"=> auth()->user()->email
+                    "billing"=> [
+                        "address"=> [
+                            "street"=> $default_address->default_address,
+                            "city"=>"",
+                            "stateProvince"=> "arabia sudia",
+                            "country"=> "SA",
+                            "postalCode"=> "12345"
+                        ],
+                        "contact"=> [
+                            "firstName"=> auth()->user()->username,
+                            "lastName"=> "",
+                            "phone"=> auth()->user()->phone,
+                            "mobilePhone"=> auth()->user()->phone,
+                            "email"=> auth()->user()->email
+                        ]
+                    ],
+                    "configuration" => [
+                        "locale" => "ar"
                     ]
-                 ],
-                "configuration" => [
-                    "locale" => "ar"
-                ]
-            ]);
-
-
-            if ($response->resultCode == 0) {
-                return response()->json([
-                   'url'=>$response->result->checkoutData->postUrl,
-                   'total'=>$order_repo->order_total_price,
-                    'success_url'=>env('API_URL').'/noon_payment_response',
-                    'failure_url'=>env('API_URL').'/noon_payment_response_failure',
                 ]);
-                return redirect($response->result->checkoutData->postUrl);
+
+
+                if ($response->resultCode == 0) {
+                    return response()->json([
+                        'url'=>$response->result->checkoutData->postUrl,
+                        'total'=>$order_repo->order_total_price,
+                        'success_url'=>env('API_URL').'/noon_payment_response',
+                        'failure_url'=>env('API_URL').'/noon_payment_response_failure',
+                    ]);
+                    return redirect($response->result->checkoutData->postUrl);
+                }
+
+                return $response;
+
             }
 
-            return $response;
 
             return messages::success_output(trans('messages.order_done_successfully'),OrderResource::make(OrdersWithAllData::get()->find($order_repo->order->id)));
 
