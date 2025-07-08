@@ -101,6 +101,7 @@ class AuthControllerApi extends AuthServicesClass
                 ]);
 
 
+
             } catch (\Exception $e) {
                 return messages::error_output([$e->getMessage()]);
             }

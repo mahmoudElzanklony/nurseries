@@ -100,7 +100,7 @@ class OrderRepository
            'payment_method'=>$data['payment_method'] ?? 'visa',
            'has_coupon'=>isset($this->coupon) ? 1 : 0,
            'seller_profit'=>0,
-           'is_draft'=>$data['is_draft'] ?? 0
+           'is_draft'=>$data['is_draft'] ?? 1
         ]);
         $this->order = $order;
         $msg = [
