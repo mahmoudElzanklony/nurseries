@@ -258,7 +258,10 @@ class CustomerOrdersControllerResource extends Controller
                     ->first();
 
                 DB::commit();
-                if(request('payment') == 'COD'){
+                if(request()->filled('payment') && request('payment') == 'COD'){
+                    return messages::success_output(trans('messages.saved_successfully')
+                        ,CustomOrderSellerResource::make($final));
+                }else{
                     $response = NoonPayment::getInstance()->initiate([
                         "order" => [
                             "reference" => $final->custom_order_id,
@@ -299,9 +302,7 @@ class CustomerOrdersControllerResource extends Controller
                         ]);
                         return redirect($response->result->checkoutData->postUrl);
                     }
-                }else{
-                    return messages::success_output(trans('messages.saved_successfully')
-                        ,CustomOrderSellerResource::make($final));
+
                 }
 
 
