@@ -222,7 +222,7 @@ class CustomerOrdersControllerResource extends Controller
                 ->update(['client_reply'=>'rejected']);
             // handle visa payment
             $payment_status = $this->handle_payment($data[0]->custom_order_seller->order->id,$total_money);
-            if($payment_status == true){
+            if($payment_status == true || request()->filled('payment')){
                 // reject orders
 
                 // accept only one
@@ -257,54 +257,58 @@ class CustomerOrdersControllerResource extends Controller
                     ->where('default_address','=',1)
                     ->first();
 
-
-
-                $response = NoonPayment::getInstance()->initiate([
-                    "order" => [
-                        "reference" => $final->custom_order_id,
-                        "amount" => $total_money,
-                        "currency" => "SAR",
-                        "name" => "Mraken Noon payment",
-                        "items"=>$noon_items_format
-                    ],
-                    "billing"=> [
-                        "address"=> [
-                            "street"=> $default_address->default_address,
-                            "city"=>"",
-                            "stateProvince"=> "arabia sudia",
-                            "country"=> "SA",
-                            "postalCode"=> "12345"
-                        ],
-                        "contact"=> [
-                            "firstName"=> auth()->user()->username,
-                            "lastName"=> "",
-                            "phone"=> auth()->user()->phone,
-                            "mobilePhone"=> auth()->user()->phone,
-                            "email"=> auth()->user()->email
-                        ]
-                    ],
-                    "configuration" => [
-                        "locale" => "ar"
-                    ]
-                ]);
-
-
                 DB::commit();
-                if ($response->resultCode == 0) {
-                    return response()->json([
-                        'url'=>$response->result->checkoutData->postUrl,
-                        'total'=>$total_money,
-                        'success_url'=>env('API_URL').'/noon_payment_response',
-                        'failure_url'=>env('API_URL').'/noon_payment_response_failure',
+                if(request('payment') == 'COD'){
+                    $response = NoonPayment::getInstance()->initiate([
+                        "order" => [
+                            "reference" => $final->custom_order_id,
+                            "amount" => $total_money,
+                            "currency" => "SAR",
+                            "name" => "Mraken Noon payment",
+                            "items"=>$noon_items_format
+                        ],
+                        "billing"=> [
+                            "address"=> [
+                                "street"=> $default_address->default_address,
+                                "city"=>"",
+                                "stateProvince"=> "arabia sudia",
+                                "country"=> "SA",
+                                "postalCode"=> "12345"
+                            ],
+                            "contact"=> [
+                                "firstName"=> auth()->user()->username,
+                                "lastName"=> "",
+                                "phone"=> auth()->user()->phone,
+                                "mobilePhone"=> auth()->user()->phone,
+                                "email"=> auth()->user()->email
+                            ]
+                        ],
+                        "configuration" => [
+                            "locale" => "ar"
+                        ]
                     ]);
-                    return redirect($response->result->checkoutData->postUrl);
+
+
+
+                    if ($response->resultCode == 0) {
+                        return response()->json([
+                            'url'=>$response->result->checkoutData->postUrl,
+                            'total'=>$total_money,
+                            'success_url'=>env('API_URL').'/noon_payment_response',
+                            'failure_url'=>env('API_URL').'/noon_payment_response_failure',
+                        ]);
+                        return redirect($response->result->checkoutData->postUrl);
+                    }
+                }else{
+                    return messages::success_output(trans('messages.saved_successfully')
+                        ,CustomOrderSellerResource::make($final));
                 }
+
 
                 return $response;
 
 
-                return messages::success_output(trans('messages.saved_successfully')
-                    ,CustomOrderSellerResource::make($final));
+
             }else{
                 return messages::error_output($payment_status);
             }
