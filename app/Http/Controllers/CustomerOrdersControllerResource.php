@@ -262,6 +262,7 @@ class CustomerOrdersControllerResource extends Controller
                     return messages::success_output(trans('messages.saved_successfully')
                         ,CustomOrderSellerResource::make($final));
                 }else{
+                    custom_orders::query()->find($data[0]->custom_order_seller->order->id)->update(['payment_method'=>'visa']);
                     $response = NoonPayment::getInstance()->initiate([
                         "order" => [
                             "reference" => $final->custom_order_id,

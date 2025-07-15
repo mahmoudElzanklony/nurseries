@@ -21,6 +21,7 @@ class CreateCustomOrdersTable extends Migration
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->string('status')->default('pending');
+            $table->string('payment_method')->default('COD');
             $table->integer('financial_reconciliation_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
