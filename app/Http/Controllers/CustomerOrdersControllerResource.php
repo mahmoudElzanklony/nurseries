@@ -258,7 +258,7 @@ class CustomerOrdersControllerResource extends Controller
                     ->first();
 
                 DB::commit();
-                if(request()->filled('payment') && request('payment') == 'COD'){
+                if(request()->filled('payment_method') && request('payment_method') == 'COD'){
                     return messages::success_output(trans('messages.saved_successfully')
                         ,CustomOrderSellerResource::make($final));
                 }else{
